@@ -34,7 +34,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Akylas/nativescript-canvaslabel.git"
+        "url": "git+https://github.com/farfromrefug/nativescript-canvaslabel.git"
     },
     "author": {
         "name": "Martin Guillon",
@@ -42,9 +42,9 @@
     },
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/Akylas/nativescript-canvaslabel/issues"
+        "url": "https://github.com/farfromrefug/nativescript-canvaslabel/issues"
     },
-    "homepage": "https://github.com/Akylas/nativescript-canvaslabel#readme",
+    "homepage": "https://github.com/farfromrefug/nativescript-canvaslabel#readme",
     "commitlint": {
         "extends": [
             "@commitlint/config-conventional"

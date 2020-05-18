@@ -2,7 +2,7 @@
     "description": "NativeScript CanvasLabel Demo",
     "license": "SEE LICENSE IN LICENSE.md",
     "readme": "README.md",
-    "repository": "http://www.github.com/Akylas/nativescript-canvaslabel.git",
+    "repository": "http://www.github.com/farfromrefug/nativescript-canvaslabel.git",
     "nativescript": {
         "id": "org.nativescript.demovuecanvaslabel",
         "tns-android": {
