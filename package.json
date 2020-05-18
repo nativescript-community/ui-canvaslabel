@@ -1,0 +1,53 @@
+{
+    "name": "nativescript-canvaslabel",
+    "version": "0.0.0",
+    "scripts": {
+        "tsc": "cp src/canvaslabel.d.ts plugin && tsc -skipLibCheck",
+        "build": "npm run tsc && \\cp README.md plugin/",
+        "publish": "npm run build && lerna publish",
+        "commitmsg": "commitlint -e $GIT_PARAMS",
+        "demo.ios": "npm i && npm run tsc && cd demo && tns run ios",
+        "demo.android": "npm i && npm run tsc && cd demo && tns run android",
+        "clean.demo": "rimraf demo/hooks demo/node_modules demo/platforms",
+        "clean": "rimraf plugin/ios plugin/android plugin/**/*.d.ts plugin/**/*.js plugin/**/*.js.map plugin/node_modules plugin/package-lock.json",
+        "plugin.watch.tsc": "npm run tsc -- -w",
+        "plugin.watch.android": "npm i && npm-watch build.android",
+        "plugin.watch.ios": "npm i && npm-watch build.ios",
+        "plugin.watch": "npm run plugin.watch.tsc & npm run plugin.watch.android & npm run plugin.watch.ios"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-conventional": "^8.3.4",
+        "@nativescript/core": "6.5.1",
+        "@types/node": "^14.0.1",
+        "@typescript-eslint/eslint-plugin": "2.33.0",
+        "@typescript-eslint/parser": "2.33.0",
+        "eslint": "7.0.0",
+        "husky": "^4.2.5",
+        "lerna": "^3.21.0",
+        "nativescript-canvas": "^2.1.28",
+        "npm-watch": "^0.6.0",
+        "prompt": "^1.0.0",
+        "rimraf": "^3.0.2",
+        "tns-platform-declarations": "^6.5.1",
+        "typescript": "~3.9.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Akylas/nativescript-canvaslabel.git"
+    },
+    "author": {
+        "name": "Martin Guillon",
+        "email": "martin@akylas.fr"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Akylas/nativescript-canvaslabel/issues"
+    },
+    "homepage": "https://github.com/Akylas/nativescript-canvaslabel#readme",
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "name": "nativescript-canvaslabel",
+    "version": "0.0.7",
+    "main": "./index.js",
+    "typings": "./index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Akylas/nativescript-canvaslabel.git"
+    },
+    "nativescript": {
+        "platforms": {
+            "android": "6.1.0",
+            "ios": "6.1.0"
+        }
+    },
+    "keywords": [
+        "NativeScript",
+        "JavaScript",
+        "Android",
+        "iOS"
+    ],
+    "author": {
+        "name": "Martin Guillon",
+        "email": "martin@akylas.fr"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Akylas/nativescript-canvaslabel/issues"
+    },
+    "homepage": "https://github.com/Akylas/nativescript-canvaslabel#readme",
+    "dependencies": {
+        "nativescript-canvas": "^2.1.28"
+    }
+}
