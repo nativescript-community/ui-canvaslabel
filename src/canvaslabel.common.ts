@@ -308,9 +308,9 @@ export abstract class Group extends Span {
         return this.getOrCreateNative();
     }
 
-    toString() {
-        return `[Group:${this._spans.length}]:` + JSON.stringify(this._spans.map((s) => s.text));
-    }
+    // toString() {
+    //     return `[Group:${this._spans.length}]:` + JSON.stringify(this._spans.map((s) => s.text));
+    // }
 }
 
 declare module '@nativescript/core/ui/core/view' {

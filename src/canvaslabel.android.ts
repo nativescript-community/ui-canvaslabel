@@ -72,7 +72,6 @@ export function createSpannable(span: Span, parent?: Group) {
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const verticaltextalignment = span.verticalTextAlignment || (parent && parent.verticalTextAlignment);
-    console.log('createSpannable', text, span.fontSize, parent && parent.fontSize);
 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
