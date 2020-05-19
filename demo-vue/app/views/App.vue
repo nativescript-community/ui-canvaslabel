@@ -3,12 +3,12 @@
         <StackLayout>
             <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index">
                 <v-template>
-                    <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray">
-                        <CGroup fontSize="18" verticalAlignment="middle" paddingLeft="20">
+                    <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray" margin="4">
+                        <CGroup fontSize="18" verticalAlignment="middle" paddingLeft="20" fontStyle="italic">
                             <CSpan :text="item.text1" fontWeight="bold" />
-                            <CSpan :text="'\n' + item.text2" color="#ccc" fontSize="16" />
+                            <CSpan :text="'\n' + item.text2" color="#ccc" fontSize="16"  fontStyle="normal"/>
                         </CGroup>
-
+                        <Line :antiAlias="true" color="yellow" startX="10%" startY="34%" stopX="90%" stopY="90%" strokeCap="round" strokeJoin="round" strokeWidth="4" dash="1 10 0" />
                         <CGroup fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
                             <CSpan :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
                             <CSpan :text="' ' + item.texticon1" verticalTextAlignment="center" />
@@ -23,6 +23,7 @@
                             <CSpan :text="'\n' + item.texticon1" paddingRight="10" />
                         </CGroup>
                         <CSpan :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
+                        
                     </CanvasLabel>
                     <!-- <GridLayout backgroundColor="darkgray">
                         <label fontSize="18" verticalAlignment="middle" paddingLeft="20"  whiteSpace="true">

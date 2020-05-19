@@ -8,7 +8,7 @@ android {
     versionName "1.0"
     ndk {
       abiFilters.clear()
-      		abiFilters "armeabi-v7a"
+      		// abiFilters "armeabi-v7a"
     }
   }
   aaptOptions {

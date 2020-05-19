@@ -10,6 +10,8 @@ import CollectionView from 'nativescript-collectionview/vue';
 Vue.use(CollectionView);
 import CanvasLabel from 'nativescript-canvaslabel/vue';
 Vue.use(CanvasLabel);
+import Canvas from 'nativescript-canvas/vue';
+Vue.use(Canvas);
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = true;
 
