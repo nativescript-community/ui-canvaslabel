@@ -1,6 +1,6 @@
 {
     "name": "nativescript-canvaslabel",
-    "version": "0.0.8",
+    "version": "1.0.0",
     "main": "./canvaslabel.js",
     "typings": "./canvaslabel.d.ts",
     "repository": {
