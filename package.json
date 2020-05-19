@@ -25,7 +25,7 @@
         "eslint": "7.0.0",
         "husky": "^4.2.5",
         "lerna": "^3.21.0",
-        "nativescript-canvas": "^2.1.29",
+        "nativescript-canvas": "^3.0.0",
         "npm-watch": "^0.6.0",
         "prompt": "^1.0.0",
         "rimraf": "^3.0.2",
