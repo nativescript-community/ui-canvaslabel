@@ -44,7 +44,6 @@ function isBold(fontWeight: FontWeight): boolean {
 let lineSeparator;
 export function createSpannable(span: Span, parent?: Group) {
     let text = span.text;
-    // console.log('createSpannable', text);
     if (!text) {
         return null;
     }
@@ -64,15 +63,16 @@ export function createSpannable(span: Span, parent?: Group) {
         ssb.append(text);
     }
 
-    const fontFamily = span.fontfamily || (parent && parent.fontfamily);
-    const fontSize = span.fontsize || (parent && parent.fontsize);
-    const fontweight = span.fontweight || (parent && parent.fontweight) || 'normal';
-    const fontstyle = span.fontstyle || (parent && parent.fontstyle) || 'normal';
+    const fontFamily = span.fontFamily || (parent && parent.fontFamily);
+    const fontSize = span.fontSize || (parent && parent.fontSize);
+    const fontweight = span.fontWeight || (parent && parent.fontWeight) || 'normal';
+    const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
 
     const textcolor = span.color || (parent && parent.color);
-    const textDecorations = span.textdecoration || (parent && parent.textdecoration);
-    const backgroundcolor = span.backgroundcolor || (parent && parent.backgroundcolor);
-    const verticaltextalignment = span.verticaltextalignment || (parent && parent.verticaltextalignment);
+    const textDecorations = span.textDecoration || (parent && parent.textDecoration);
+    const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
+    const verticaltextalignment = span.verticalTextAlignment || (parent && parent.verticalTextAlignment);
+    console.log('createSpannable', text, span.fontSize, parent && parent.fontSize);
 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
@@ -139,7 +139,7 @@ export class Group extends GroupBase {
         } else {
             ssb.clear();
         }
-        this.spans.forEach((s) => {
+        this._spans.forEach((s) => {
             // s._startIndexInGroup = ssb.length();
             // s._endIndexInGroup = s._startIndexInGroup + (s.text ? s.text.length: 0);
             const native = s.getOrCreateNative(this);

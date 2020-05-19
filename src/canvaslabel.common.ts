@@ -2,101 +2,90 @@ import { Align, Canvas, CanvasView, LayoutAlignment, Paint, Rect, StaticLayout, 
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
 import { layout } from '@nativescript/core/utils/utils';
 import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
-import { Color, HorizontalAlignment, PercentLength, TextAlignment, TextDecoration, VerticalAlignment } from '@nativescript/core/ui/text-base';
+import { Color, HorizontalAlignment, Observable, PercentLength, TextAlignment, TextDecoration, VerticalAlignment } from '@nativescript/core/ui/text-base';
 import { Font, FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { profile } from '@nativescript/core/profiling';
+import Shape, { colorProperty, percentLengthProperty, stringProperty } from 'nativescript-canvas/shapes/shape';
+
 export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'center';
 
 // const debugPaint = new Paint();
 // debugPaint.style = Style.STROKE;
 // debugPaint.color = 'red';
 
-export abstract class Span {
-    fontsize: number;
-    fontfamily: string;
-    fontstyle: FontStyle;
-    fontweight: FontWeight;
-    textalignment: TextAlignment;
-    color: Color | string | number;
-    textdecoration: TextDecoration;
+export abstract class Span extends Shape {
+    // fontsize: number;
+    // fontfamily: string;
+    // fontstyle: FontStyle;
+    // fontweight: FontWeight;
+    @stringProperty fontFamily: string;
+    @stringProperty fontStyle: FontStyle;
+    @stringProperty fontWeight: FontWeight;
+    @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment;
+    // color: Color | string | number;
+    @stringProperty({ nonPaintProp: true }) textDecoration: TextDecoration;
 
-    width: PercentLength;
-    height: PercentLength;
+    // width: PercentLength;
+    // height: PercentLength;
+    @percentLengthProperty({ nonPaintProp: true }) width: PercentLength;
+    @percentLengthProperty({ nonPaintProp: true }) height: PercentLength;
 
-    paddingleft: PercentLength;
-    paddingright: PercentLength;
-    paddingtop: PercentLength;
-    paddingbottom: PercentLength;
+    // paddingleft: PercentLength;
+    // paddingright: PercentLength;
+    // paddingtop: PercentLength;
+    // paddingbottom: PercentLength;
+    @percentLengthProperty({ nonPaintProp: true }) paddingLeft: PercentLength;
+    @percentLengthProperty({ nonPaintProp: true }) paddingRight: PercentLength;
+    @percentLengthProperty({ nonPaintProp: true }) paddingTop: PercentLength;
+    @percentLengthProperty({ nonPaintProp: true }) paddingBottom: PercentLength;
 
-    horizontalalignment: HorizontalAlignment;
-    verticalalignment: VerticalAlignment;
-    verticaltextalignment: VerticalTextAlignment;
-    backgroundcolor: Color | string | number;
-    text: string;
-    _paint: Paint;
-    _parent: WeakRef<CanvasLabel | Group>;
+    @stringProperty({ nonPaintProp: true }) horizontalAlignment: HorizontalAlignment;
+    @stringProperty({ nonPaintProp: true }) verticalAlignment: VerticalAlignment;
+    @stringProperty({ nonPaintProp: true }) verticalTextAlignment: VerticalTextAlignment;
+    @colorProperty({ nonPaintProp: true }) backgroundColor: Color;
+    @stringProperty({ nonPaintProp: true }) text: any;
+
+    constructor() {
+        super();
+        this.antiAlias = true;
+    }
+
+    // _paint: Paint;
+    // _parent: WeakRef<CanvasLabel | Group>;
     // rect: Rect = new Rect(0, 0, 0, 0);
 
-    _staticlayout: StaticLayout;
-    _startIndexInGroup = 0;
-    _endIndexInGroup = 0;
-    _native: any; // NSMutableAttributedString | android.text.Spannable
-    constructor() {
-        return new Proxy(this, {
-            set(target, key: string, value) {
-                if (key[0] === '_') {
-                    target[key] = value;
-                    return true;
-                }
-                const lkey = key.toLowerCase();
-
-                target._native = null;
-                target._staticlayout = null;
-                // console.log(`${key} set to ${value}`, !!target.paint, !!target._parent, !!target._parent &&  !!target._parent.get());
-                switch (lkey) {
-                    case 'fontsize':
-                        const newValue = parseFloat(value);
-                        target[lkey] = newValue;
-                        if (target._paint) {
-                            target._paint.textSize = newValue;
-                        }
-                        break;
-                    case 'paddingleft':
-                    case 'paddingright':
-                    case 'paddingbottom':
-                    case 'paddingtop':
-                    case 'width':
-                    case 'height':
-                        target[lkey] = PercentLength.parse(value);
-                        break;
-                    default:
-                        target[lkey] = value;
-                        break;
-
-                    // case 'text':
-                    //     target.staticlayout = null;
-                    //     break;
-                }
-                const parent = target._parent && target._parent.get();
-                if (parent) {
-                    parent.onChildChange(target);
-                }
-                return true;
-            },
-        });
+    notifyPropertyChange(propertyName: string, value: any, oldValue?: any) {
+        this._staticlayout = null;
+        this._native = null;
+        super.notifyPropertyChange(propertyName, value, oldValue);
     }
-    // @profile
+
+    _staticlayout: StaticLayout;
+    // _startIndexInGroup = 0;
+    // _endIndexInGroup = 0;
+    _native: any; // NSMutableAttributedString | android.text.Spannable
+    @profile
     createPaint(parent: CanvasLabel) {
         // const startTime = Date.now();
-        const paint = this._paint = new Paint();
+        const paint = (this._paint = new Paint());
         paint.setAntiAlias(true);
-        paint.color = this.color || parent.color;
-        let textSize = this.fontsize || parent.fontSize;
+        const color = this.color || parent.style.color;
+        if (color) {
+            paint.color = color;
+        }
+        let textSize = this.fontSize || parent.style.fontSize;
         if (typeof textSize === 'string') {
             textSize = parseFloat(textSize);
         }
-        paint.setTypeface(new Font(this.fontfamily || parent.fontFamily, textSize, this.fontstyle || parent.fontStyle, this.fontweight || parent.fontWeight));
-        switch (this.textdecoration || parent.textDecoration) {
+        const fontfamily = this.fontFamily || parent.style.fontFamily;
+        const fontstyle = this.fontStyle || parent.style.fontStyle;
+        const fontweight = this.fontWeight || parent.style.fontWeight;
+        const textdecoration = this.textDecoration || parent.style.textDecoration;
+        if (fontfamily || textSize || fontstyle || fontweight) {
+            paint.setTypeface(new Font(fontfamily, textSize, fontstyle, fontweight));
+        }
+        paint.setTextSize(textSize);
+        switch (textdecoration) {
             case 'none':
                 // (this.paint as any).setFlags(0);
                 break;
@@ -113,13 +102,13 @@ export abstract class Span {
             // (this.paint as any).setFlags(value);
             // break;
         }
-        paint.setTextSize(textSize);
         // this.needsMeasurement = true;
         // console.log('createPaint', Date.now() - startTime, 'ms');
     }
     // @profile
     abstract createNative(parent?: Group);
 
+    @profile
     getOrCreateNative(parent?: Group) {
         if (!this._native) {
             this.createNative(parent);
@@ -139,9 +128,8 @@ export abstract class Span {
         }
     }
     // needsMeasurement = false;
-    // @profile
+    @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
-        // console.log('drawOnCanvas');
         const text = this.getText();
         if (!text) {
             return;
@@ -153,11 +141,12 @@ export abstract class Span {
         let h = cH;
         const wPx = layout.toDevicePixels(w);
         const hPx = layout.toDevicePixels(h);
-        if (!this._paint) {
-            this.createPaint(parent);
-        }
+        // if (!this._paint) {
+        //     this.createPaint(parent);
+        // }
+        // const paint = this.paint;
         let align: LayoutAlignment = LayoutAlignment.ALIGN_NORMAL;
-        switch (this.textalignment || parent.textAlignment) {
+        switch (this.textAlignment || parent.textAlignment) {
             case 'center':
                 align = LayoutAlignment.ALIGN_CENTER;
                 break;
@@ -166,59 +155,80 @@ export abstract class Span {
                 break;
         }
 
-        const verticalalignment = this.verticalalignment;
+        const verticalalignment = this.verticalAlignment;
         canvas.save();
         if (this.width) {
             w = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.width, wPx, wPx));
-            if (this.horizontalalignment === 'right') {
+            if (this.horizontalAlignment === 'right') {
                 canvas.translate(cW - w, 0);
-            } else if (this.horizontalalignment === 'center') {
-                canvas.translate(cW/2 - w/2, 0);
+            } else if (this.horizontalAlignment === 'center') {
+                canvas.translate(cW / 2 - w / 2, 0);
             }
         }
         if (this.height) {
             h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, hPx, hPx));
         }
-        if (this.paddingleft || parent.effectivePaddingLeft !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingleft, 0, wPx)) + parent.effectivePaddingLeft;
+        if (this.paddingLeft || parent.effectivePaddingLeft !== 0) {
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx)) + parent.effectivePaddingLeft;
             // console.log('paddingLeft', this.paddingleft, paddingLeft, parent.effectivePaddingLeft);
-            w -= decale;
+            if (!this.width) {
+                w -= decale;
+            }
             if (align !== LayoutAlignment.ALIGN_OPPOSITE) {
                 canvas.translate(decale, 0);
             }
         }
 
-        if (this.paddingright || parent.effectivePaddingRight !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingright, 0, wPx)) + parent.effectivePaddingRight;
-            w -= decale;
-            // dont translate here changing the width is enough
+        if (this.paddingRight || parent.effectivePaddingRight !== 0) {
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx)) + parent.effectivePaddingRight;
+            if (!this.width) {
+                // dont translate here changing the width is enough
+                w -= decale;
+            } else {
+                canvas.translate(-decale, 0);
+            }
         }
-        // console.log('drawOnCanvas', this.constructor.name, this.toString(), this.textalignment || parent.textalignment, align);
+        // console.log('drawOnCanvas', this.constructor.name, this.toString(), !!this._staticlayout, !!this._native);
         if (!this._staticlayout) {
             // const startTime2 = Date.now();
-            this._staticlayout = new StaticLayout(text, this._paint, w, align, 1, 0, false);
-            // console.log('_staticlayout', Date.now() - startTime2, 'ms');
+            // if (!this.fontFamily && parent.style.fontFamily) {
+
+            // }
+            const paint = this.paint;
+            if (!this.color && parent.style.color) {
+                paint.color = parent.style.color;
+            }
+            if (!this.fontSize && parent.style.fontSize) {
+                paint.textSize = parent.style.fontSize;
+            }
+            if (!this.fontFamily && parent.style.fontFamily) {
+                paint.setFontFamily(parent.style.fontFamily);
+            }
+            if (!this.fontWeight && parent.style.fontWeight) {
+                paint.setFontWeight(parent.style.fontWeight);
+            }
+            this._staticlayout = new StaticLayout(text, this.paint, w, align, 1, 0, false);
         }
         if (verticalalignment === 'bottom') {
             let height = this._staticlayout.getHeight();
-            if (this.paddingbottom || parent.effectivePaddingBottom !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingbottom, 0, wPx)) + parent.effectivePaddingBottom;
+            if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
+                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + parent.effectivePaddingBottom;
                 height += decale;
             }
             canvas.translate(0, h - height);
         } else if (verticalalignment === 'middle') {
             let height = this._staticlayout.getHeight();
-            if (this.paddingtop || parent.effectivePaddingTop !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingtop, 0, wPx)) + parent.effectivePaddingTop;
+            if (this.paddingTop || parent.effectivePaddingTop !== 0) {
+                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + parent.effectivePaddingTop;
                 height += decale;
             }
-            if (this.paddingbottom || parent.effectivePaddingBottom !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingbottom, 0, wPx)) + parent.effectivePaddingBottom;
+            if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
+                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + parent.effectivePaddingBottom;
                 height -= decale;
             }
             canvas.translate(0, h / 2 - height / 2);
-        } else if (this.paddingtop || parent.effectivePaddingTop !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingtop, 0, wPx)) + parent.effectivePaddingTop;
+        } else if (this.paddingTop || parent.effectivePaddingTop !== 0) {
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + parent.effectivePaddingTop;
             canvas.translate(0, decale);
         }
         // canvas.drawRect(0, 0, w, this._staticlayout.getHeight(), debugPaint);
@@ -230,20 +240,58 @@ export abstract class Span {
 export abstract class Group extends Span {
     fontSize: number;
     fontFamily: string;
-    spans: ObservableArray<Span> = new ObservableArray([]);
+    _spans: ObservableArray<Span>;
+    getOrCreateSpans() {
+        if (!this._spans) {
+            this._spans = new ObservableArray<Span>();
+            this._spans.addEventListener(ObservableArray.changeEvent, this.onShapesCollectionChanged, this);
+        }
+        return this._spans;
+    }
+    onShapePropertyChange() {
+        this.notifyPropertyChange('.', null, null);
+    }
+    private addPropertyChangeHandler(shape: Shape) {
+        // const style = shape.style;
+        shape.on(Observable.propertyChangeEvent, this.onShapePropertyChange, this);
+    }
+    private removePropertyChangeHandler(shape: Shape) {
+        shape.off(Observable.propertyChangeEvent, this.onShapePropertyChange, this);
+    }
+    private onShapesCollectionChanged(eventData: ChangedData<Shape>) {
+        if (eventData.addedCount > 0) {
+            for (let i = 0; i < eventData.addedCount; i++) {
+                const shape = (eventData.object as ObservableArray<Shape>).getItem(eventData.index + i);
+
+                // Then attach handlers - we skip the first nofitication because
+                // we raise change for the whole instance.
+                shape._parent = new WeakRef(this as any);
+                this.addPropertyChangeHandler(shape);
+            }
+        }
+
+        if (eventData.removed && eventData.removed.length > 0) {
+            for (let p = 0; p < eventData.removed.length; p++) {
+                const shape = eventData.removed[p];
+
+                // First remove handlers so that we don't listen for changes
+                // on inherited properties.
+                shape._parent = null;
+                this.removePropertyChangeHandler(shape);
+            }
+        }
+    }
     public _addChildFromBuilder(name: string, value: any): void {
         if (value instanceof Span) {
-            value._parent = new WeakRef(this);
-            this.spans.push(value);
+            value._parent = new WeakRef(this as any);
+            this.getOrCreateSpans().push(value);
         }
     }
     public _removeView(view: any) {
-        if (view instanceof Span) {
-            const index = this.spans.indexOf(view);
+        if (view instanceof Span && this._spans) {
+            const index = this._spans.indexOf(view);
             if (index !== -1) {
-                const removed = this.spans.splice(index, 1);
-                removed.forEach((s) => (s._parent = null));
-                this.redraw();
+                this._spans.splice(index, 1);
             }
             // } else {
             // super._removeView(view);
@@ -252,14 +300,16 @@ export abstract class Group extends Span {
     onChildChange(span: Span) {
         this.redraw();
     }
-    // @profile
     abstract createNative();
+
+
+    @profile
     getText() {
         return this.getOrCreateNative();
     }
 
     toString() {
-        return `[Group:${this.spans.length}]:` + JSON.stringify(this.spans.map((s) => s.text));
+        return `[Group:${this._spans.length}]:` + JSON.stringify(this._spans.map((s) => s.text));
     }
 }
 
@@ -277,46 +327,75 @@ export class CanvasLabel extends CanvasView {
     textAlignment: TextAlignment;
     // color: Color | string | number;
     textDecoration: TextDecoration;
-    spans: ObservableArray<Span> = new ObservableArray([]);
+    // spans: ObservableArray<Span> = new ObservableArray([]);
     // groups: ObservableArray<Group> = new ObservableArray([]);
-    constructor() {
-        super();
-        addWeakEventListener(this.spans, ObservableArray.changeEvent, this.requestLayout, this);
-    }
+    // constructor() {
+    // super();
+    // addWeakEventListener(this.spans, ObservableArray.changeEvent, this.requestLayout, this);
+    // }
     // initNativeView() {
     //     super.initNativeView();
     // }
     // disposeNativeView() {
     //     super.disposeNativeView();
     // }
-    onChildChange(span: Span) {
-        this.redraw();
-    }
-    public _addChildFromBuilder(name: string, value: any): void {
-        if (value instanceof Span) {
-            value._parent = new WeakRef(this);
-            this.spans.push(value);
-            // } else {
-            // super._addChildFromBuilder(name, value);
-        }
-    }
-    public _removeView(view: any) {
-        if (view instanceof Span) {
-            const index = this.spans.indexOf(view);
-            if (index !== -1) {
-                const removed = this.spans.splice(index, 1);
-                removed.forEach((s) => (s._parent = null));
-                this.redraw();
-            }
-            // } else {
-            // super._removeView(view);
-        }
-    }
+    // onChildChange(span: Span) {
+    //     this.redraw();
+    // }
+    // public _addChildFromBuilder(name: string, value: any): void {
+    //     if (value instanceof Span) {
+    //         value._parent = new WeakRef(this);
+    //         this.spans.push(value);
+    //     } else {
+    //         super._addChildFromBuilder(name, value);
+    //     }
+    // }
+
+    // public addShape(shape: Shape) {
+    // if (shape instanceof Span) {
+    // console.log('add span', this.style.color, shape.color);
+    // if (this.style.fontFamily && !shape.fontFamily) {
+    //     shape.fontFamily = this.style.fontFamily;
+    // }
+    // if (this.style.fontSize && !shape.fontSize) {
+    //     shape.fontSize = this.style.fontSize;
+    // }
+    // if (this.style.fontWeight && !shape.fontWeight) {
+    //     shape.fontWeight = this.style.fontWeight;
+    // }
+    // if (this.style.textAlignment && !shape.textAlignment) {
+    //     shape.textAlignment = this.style.textAlignment;
+    // }
+    // if (this.style.textDecoration && !shape.textDecoration) {
+    //     shape.textDecoration = this.style.textDecoration;
+    // }
+    // if (this.style.fontStyle && !shape.fontStyle) {
+    //     shape.fontStyle = this.style.fontStyle;
+    // }
+    // if (this.style.color && !shape.color) {
+    //     shape.color = this.style.color;
+    // }
+    // }
+    // super.addShape(shape);
+    // }
+    // public _removeView(view: any) {
+    //     if (view instanceof Span) {
+    //         const index = this.spans.indexOf(view);
+    //         if (index !== -1) {
+    //             const removed = this.spans.splice(index, 1);
+    //             removed.forEach((s) => (s._parent = null));
+    //             this.redraw();
+    //         }
+    //     } else {
+    //         super._removeView(view);
+    //     }
+    // }
     // @profile
-    protected onDraw(canvas: Canvas) {
-        // const startTime = Date.now();
-        // console.log('onDraw');
-        this.spans.forEach((s) => s.drawOnCanvas(canvas, this));
-        // console.log('onDraw', Date.now() - startTime, 'ms');
-    }
+    // protected onDraw(canvas: Canvas) {
+    //     super.onDraw(canvas);
+    //     // const startTime = Date.now();
+    //     // console.log('onDraw');
+    //     this.spans.forEach((s) => s.drawOnCanvas(canvas, this as an));
+    //     // console.log('onDraw', Date.now() - startTime, 'ms');
+    // }
 }

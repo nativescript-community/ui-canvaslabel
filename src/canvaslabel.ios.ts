@@ -6,17 +6,17 @@ export { CanvasLabel } from './canvaslabel.common';
 
 export function createSpannable(span: Span, parent?: Group): NSMutableAttributedString {
     const attrDict = {} as { key: string; value: any };
-    const fontFamily = span.fontfamily || (parent && parent.fontfamily);
-    const fontSize = span.fontsize || (parent && parent.fontsize);
-    const fontweight = span.fontweight || (parent && parent.fontweight) || 'normal';
-    const fontstyle = span.fontstyle || (parent && parent.fontstyle) || 'normal';
+    const fontFamily = span.fontFamily || (parent && parent.fontFamily);
+    const fontSize = span.fontSize || (parent && parent.fontSize);
+    const fontweight = span.fontWeight || (parent && parent.fontWeight) || 'normal';
+    const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
     const textcolor = span.color || (parent && parent.color);
-    const backgroundcolor = span.backgroundcolor || (parent && parent.backgroundcolor);
-    const textDecorations = span.textdecoration || (parent && parent.textdecoration);
-    const verticaltextalignment = span.verticaltextalignment || (parent && parent.verticaltextalignment);
+    const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
+    const textDecorations = span.textDecoration || (parent && parent.textDecoration);
+    const verticaltextalignment = span.verticalTextAlignment || (parent && parent.verticalTextAlignment);
 
     if (fontweight || fontstyle || fontFamily || fontSize) {
-        const font = new Font(fontFamily, fontSize, fontstyle, typeof span.fontweight === 'string' ? fontweight : ((fontweight + '') as any));
+        const font = new Font(fontFamily, fontSize, fontstyle, typeof span.fontWeight === 'string' ? fontweight : ((fontweight + '') as any));
         const iosFont = font.getUIFont(null);
         attrDict[NSFontAttributeName] = iosFont;
     }
@@ -59,7 +59,7 @@ export class Span extends SpanBase {
 export class Group extends GroupBase {
     createNative() {
         const ssb = NSMutableAttributedString.new();
-        this.spans.forEach((s) => {
+        this._spans.forEach((s) => {
             // s._startIndexInGroup = ssb.length;
             // s._endIndexInGroup = s.text ? s.text.length : 0;
             const native = s.getOrCreateNative(this);
