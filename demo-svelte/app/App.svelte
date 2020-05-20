@@ -65,6 +65,7 @@
                         <cspan id="texticon12" text={'\n' + item.texticon1} paddingRight="10" />
                     </cgroup>
                     <cspan id="text4" fontFamily="arial" text={item.text4} color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
+                    <cspan id="text4" text={item.icon2} color="lightgray" fontSize="14"  fontFamily={mdiFontFamily} textAlignment="right" paddingRight="20" paddingTop="4" verticalalignment="bottom" />
 
                 </canvaslabel>
                 <!-- <GridLayout backgroundColor="darkgray">
