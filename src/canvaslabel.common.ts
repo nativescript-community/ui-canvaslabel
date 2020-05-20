@@ -64,47 +64,47 @@ export abstract class Span extends Shape {
     // _startIndexInGroup = 0;
     // _endIndexInGroup = 0;
     _native: any; // NSMutableAttributedString | android.text.Spannable
-    @profile
-    createPaint(parent: CanvasLabel) {
-        // const startTime = Date.now();
-        const paint = (this._paint = new Paint());
-        paint.setAntiAlias(true);
-        const color = this.color || parent.style.color;
-        if (color) {
-            paint.color = color;
-        }
-        let textSize = this.fontSize || parent.style.fontSize;
-        if (typeof textSize === 'string') {
-            textSize = parseFloat(textSize);
-        }
-        const fontfamily = this.fontFamily || parent.style.fontFamily;
-        const fontstyle = this.fontStyle || parent.style.fontStyle;
-        const fontweight = this.fontWeight || parent.style.fontWeight;
-        const textdecoration = this.textDecoration || parent.style.textDecoration;
-        if (fontfamily || textSize || fontstyle || fontweight) {
-            paint.setTypeface(new Font(fontfamily, textSize, fontstyle, fontweight));
-        }
-        paint.setTextSize(textSize);
-        switch (textdecoration) {
-            case 'none':
-                // (this.paint as any).setFlags(0);
-                break;
-            case 'underline':
-                (paint as any).setFlags(android.graphics.Paint.UNDERLINE_TEXT_FLAG);
-                break;
-            case 'line-through':
-                (paint as any).setFlags(android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
-                break;
-            case 'underline line-through':
-                (paint as any).setFlags(android.graphics.Paint.UNDERLINE_TEXT_FLAG | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
-                break;
-            // default:
-            // (this.paint as any).setFlags(value);
-            // break;
-        }
-        // this.needsMeasurement = true;
-        // console.log('createPaint', Date.now() - startTime, 'ms');
-    }
+    // @profile
+    // createPaint(parent: CanvasLabel) {
+    //     // const startTime = Date.now();
+    //     const paint = (this._paint = new Paint());
+    //     paint.setAntiAlias(true);
+    //     const color = this.color || parent.style.color;
+    //     if (color) {
+    //         paint.color = color;
+    //     }
+    //     let textSize = this.fontSize || parent.style.fontSize;
+    //     if (typeof textSize === 'string') {
+    //         textSize = parseFloat(textSize);
+    //     }
+    //     const fontfamily = this.fontFamily || parent.style.fontFamily;
+    //     const fontstyle = this.fontStyle || parent.style.fontStyle;
+    //     const fontweight = this.fontWeight || parent.style.fontWeight;
+    //     const textdecoration = this.textDecoration || parent.style.textDecoration;
+    //     if (fontfamily || textSize || fontstyle || fontweight) {
+    //         paint.setTypeface(new Font(fontfamily, textSize, fontstyle, fontweight));
+    //     }
+    //     paint.setTextSize(textSize);
+    //     switch (textdecoration) {
+    //         case 'none':
+    //             // (this.paint as any).setFlags(0);
+    //             break;
+    //         case 'underline':
+    //             (paint as any).setFlags(android.graphics.Paint.UNDERLINE_TEXT_FLAG);
+    //             break;
+    //         case 'line-through':
+    //             (paint as any).setFlags(android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+    //             break;
+    //         case 'underline line-through':
+    //             (paint as any).setFlags(android.graphics.Paint.UNDERLINE_TEXT_FLAG | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+    //             break;
+    //         // default:
+    //         // (this.paint as any).setFlags(value);
+    //         // break;
+    //     }
+    //     // this.needsMeasurement = true;
+    //     // console.log('createPaint', Date.now() - startTime, 'ms');
+    // }
     // @profile
     abstract createNative(parent?: Group);
 
@@ -118,14 +118,30 @@ export abstract class Span extends Shape {
     getText() {
         return this.text;
     }
-    toString() {
-        return this.text;
-    }
     redraw() {
         const parent = this._parent && this._parent.get();
         if (parent) {
             parent.redraw();
         }
+    }
+    @profile
+    createStaticLayout(text, w, align, parent: CanvasLabel) {
+        // const startTime = Date.now();
+        const paint = this.paint;
+        if (!this.color && parent.style.color) {
+            paint.color = parent.style.color;
+        }
+        if (!this.fontSize && parent.style.fontSize) {
+            paint.textSize = parent.style.fontSize;
+        }
+        if (!this.fontFamily && parent.style.fontFamily) {
+            paint.setFontFamily(parent.style.fontFamily);
+        }
+        if (!this.fontWeight && parent.style.fontWeight) {
+            paint.setFontWeight(parent.style.fontWeight);
+        }
+        this._staticlayout = new StaticLayout(text, this.paint, w, align, 1, 0, false);
+        // this.log('create StaticLayout', Date.now() - startTime, 'ms');
     }
     // needsMeasurement = false;
     @profile
@@ -190,24 +206,7 @@ export abstract class Span extends Shape {
         }
         // console.log('drawOnCanvas', this.constructor.name, this.toString(), !!this._staticlayout, !!this._native);
         if (!this._staticlayout) {
-            // const startTime2 = Date.now();
-            // if (!this.fontFamily && parent.style.fontFamily) {
-
-            // }
-            const paint = this.paint;
-            if (!this.color && parent.style.color) {
-                paint.color = parent.style.color;
-            }
-            if (!this.fontSize && parent.style.fontSize) {
-                paint.textSize = parent.style.fontSize;
-            }
-            if (!this.fontFamily && parent.style.fontFamily) {
-                paint.setFontFamily(parent.style.fontFamily);
-            }
-            if (!this.fontWeight && parent.style.fontWeight) {
-                paint.setFontWeight(parent.style.fontWeight);
-            }
-            this._staticlayout = new StaticLayout(text, this.paint, w, align, 1, 0, false);
+            this.createStaticLayout(text, w, align, parent);
         }
         if (verticalalignment === 'bottom') {
             let height = this._staticlayout.getHeight();
@@ -301,7 +300,6 @@ export abstract class Group extends Span {
         this.redraw();
     }
     abstract createNative();
-
 
     @profile
     getText() {

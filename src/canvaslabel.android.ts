@@ -1,6 +1,7 @@
-import { Group as GroupBase, Span as SpanBase, VerticalTextAlignment } from './canvaslabel.common';
-import { Font, FontWeight } from '@nativescript/core/ui/styling/font';
+import { Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
+import { FontWeight } from '@nativescript/core/ui/styling/font';
 import { Color } from '@nativescript/core/color';
+import { profile } from '@nativescript/core/profiling';
 
 export { CanvasLabel } from './canvaslabel.common';
 
@@ -63,10 +64,13 @@ export function createSpannable(span: Span, parent?: Group) {
         ssb.append(text);
     }
 
-    const fontFamily = span.fontFamily || (parent && parent.fontFamily);
+    const paint = span.paint;
     const fontSize = span.fontSize || (parent && parent.fontSize);
     const fontweight = span.fontWeight || (parent && parent.fontWeight) || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
+    const fontFamily = span.fontFamily || (parent && parent.fontFamily);
+
+    paint.setFontFamily(fontFamily);
 
     const textcolor = span.color || (parent && parent.color);
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
@@ -84,9 +88,9 @@ export function createSpannable(span: Span, parent?: Group) {
     }
 
     if (fontFamily) {
-        const font = new Font(fontFamily, 0, italic ? 'italic' : 'normal', bold ? 'bold' : 'normal');
-        const typeface = font.getAndroidTypeface() || android.graphics.Typeface.create(fontFamily, 0);
-        const typefaceSpan: android.text.style.TypefaceSpan = new org.nativescript.widgets.CustomTypefaceSpan(fontFamily, typeface);
+        const font = paint.font.getAndroidTypeface();
+        // span.log('span typeface', fontFamily, font);
+        const typefaceSpan: android.text.style.TypefaceSpan = new org.nativescript.widgets.CustomTypefaceSpan(fontFamily, font);
         ssb.setSpan(typefaceSpan, 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticaltextalignment) {
@@ -121,15 +125,19 @@ export function createSpannable(span: Span, parent?: Group) {
 
 export class Span extends SpanBase {
     _ssb: android.text.SpannableStringBuilder;
+
+    @profile
     createNative(parent?: Group) {
         // const startTime = Date.now();
         this._native = this._ssb = createSpannable(this, parent);
-        // console.log('createNative', Date.now() - startTime, 'ms');
+        // this.log('createNative', Date.now() - startTime, 'ms');
     }
 }
 
 export class Group extends GroupBase {
     _ssb: android.text.SpannableStringBuilder;
+
+    @profile
     createNative() {
         // const startTime = Date.now();
         let ssb = this._ssb;
@@ -146,7 +154,7 @@ export class Group extends GroupBase {
                 ssb.append(native);
             }
         });
-        // console.log('Group createNative', Date.now() - startTime, 'ms');
+        // this.log('createNative', Date.now() - startTime, 'ms');
         this._native = ssb;
     }
     onChildChange(span: Span) {
