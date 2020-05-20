@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/farfromrefug/nativescript-canvaslabel/compare/v1.0.1...v1.0.2) (2020-05-20)
+
+
+### Bug Fixes
+
+* some perf improvements ([602bfd6](https://github.com/farfromrefug/nativescript-canvaslabel/commit/602bfd615abc12914c954f2d725785774a08b586))
+
+
+
+
+
 ## [1.0.1](https://github.com/farfromrefug/nativescript-canvaslabel/compare/v1.0.0...v1.0.1) (2020-05-19)
 
 
