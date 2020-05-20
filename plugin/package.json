@@ -29,6 +29,6 @@
     },
     "homepage": "https://github.com/farfromrefug/nativescript-canvaslabel#readme",
     "dependencies": {
-        "nativescript-canvas": "^3.0.0"
+        "nativescript-canvas": "^3.0.2"
     }
 }
