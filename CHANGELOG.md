@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/farfromrefug/nativescript-canvaslabel/compare/v1.0.4...v1.0.5) (2020-05-21)
+
+
+### Bug Fixes
+
+* esm using import for tree shaking ([52d27b1](https://github.com/farfromrefug/nativescript-canvaslabel/commit/52d27b13ca776759f57335cc2167e60e0c0a8b01))
+
+
+
+
+
 ## [1.0.4](https://github.com/farfromrefug/nativescript-canvaslabel/compare/v1.0.3...v1.0.4) (2020-05-21)
 
 **Note:** Version bump only for package nativescript-canvaslabel
