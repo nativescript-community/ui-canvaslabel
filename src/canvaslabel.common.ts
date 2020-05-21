@@ -1,9 +1,9 @@
-import { Align, Canvas, CanvasView, LayoutAlignment, Paint, Rect, StaticLayout, Style } from 'nativescript-canvas';
+import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from 'nativescript-canvas';
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
 import { layout } from '@nativescript/core/utils/utils';
-import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
 import { Color, HorizontalAlignment, Observable, PercentLength, TextAlignment, TextDecoration, VerticalAlignment } from '@nativescript/core/ui/text-base';
-import { Font, FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
+import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
+import { CSSType } from '@nativescript/core/ui/core/view';
 import { profile } from '@nativescript/core/profiling';
 import Shape, { colorProperty, percentLengthProperty, stringProperty } from 'nativescript-canvas/shapes/shape';
 
@@ -14,26 +14,15 @@ export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'c
 // debugPaint.color = 'red';
 
 export abstract class Span extends Shape {
-    // fontsize: number;
-    // fontfamily: string;
-    // fontstyle: FontStyle;
-    // fontweight: FontWeight;
     @stringProperty fontFamily: string;
     @stringProperty fontStyle: FontStyle;
     @stringProperty fontWeight: FontWeight;
     @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment;
-    // color: Color | string | number;
     @stringProperty({ nonPaintProp: true }) textDecoration: TextDecoration;
 
-    // width: PercentLength;
-    // height: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) width: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) height: PercentLength;
 
-    // paddingleft: PercentLength;
-    // paddingright: PercentLength;
-    // paddingtop: PercentLength;
-    // paddingbottom: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) paddingLeft: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) paddingRight: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) paddingTop: PercentLength;
@@ -50,10 +39,6 @@ export abstract class Span extends Shape {
         this.antiAlias = true;
     }
 
-    // _paint: Paint;
-    // _parent: WeakRef<CanvasLabel | Group>;
-    // rect: Rect = new Rect(0, 0, 0, 0);
-
     notifyPropertyChange(propertyName: string, value: any, oldValue?: any) {
         this._staticlayout = null;
         this._native = null;
@@ -64,51 +49,10 @@ export abstract class Span extends Shape {
     // _startIndexInGroup = 0;
     // _endIndexInGroup = 0;
     _native: any; // NSMutableAttributedString | android.text.Spannable
-    // @profile
-    // createPaint(parent: CanvasLabel) {
-    //     // const startTime = Date.now();
-    //     const paint = (this._paint = new Paint());
-    //     paint.setAntiAlias(true);
-    //     const color = this.color || parent.style.color;
-    //     if (color) {
-    //         paint.color = color;
-    //     }
-    //     let textSize = this.fontSize || parent.style.fontSize;
-    //     if (typeof textSize === 'string') {
-    //         textSize = parseFloat(textSize);
-    //     }
-    //     const fontfamily = this.fontFamily || parent.style.fontFamily;
-    //     const fontstyle = this.fontStyle || parent.style.fontStyle;
-    //     const fontweight = this.fontWeight || parent.style.fontWeight;
-    //     const textdecoration = this.textDecoration || parent.style.textDecoration;
-    //     if (fontfamily || textSize || fontstyle || fontweight) {
-    //         paint.setTypeface(new Font(fontfamily, textSize, fontstyle, fontweight));
-    //     }
-    //     paint.setTextSize(textSize);
-    //     switch (textdecoration) {
-    //         case 'none':
-    //             // (this.paint as any).setFlags(0);
-    //             break;
-    //         case 'underline':
-    //             (paint as any).setFlags(android.graphics.Paint.UNDERLINE_TEXT_FLAG);
-    //             break;
-    //         case 'line-through':
-    //             (paint as any).setFlags(android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
-    //             break;
-    //         case 'underline line-through':
-    //             (paint as any).setFlags(android.graphics.Paint.UNDERLINE_TEXT_FLAG | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
-    //             break;
-    //         // default:
-    //         // (this.paint as any).setFlags(value);
-    //         // break;
-    //     }
-    //     // this.needsMeasurement = true;
-    //     // console.log('createPaint', Date.now() - startTime, 'ms');
-    // }
-    // @profile
+
     abstract createNative(parent?: Group);
 
-    @profile
+    // @profile
     getOrCreateNative(parent?: Group) {
         if (!this._native) {
             this.createNative(parent);
@@ -124,7 +68,7 @@ export abstract class Span extends Shape {
             parent.redraw();
         }
     }
-    @profile
+    // @profile
     createStaticLayout(text, w, align, parent: CanvasLabel) {
         // const startTime = Date.now();
         const paint = this.paint;
@@ -317,6 +261,7 @@ declare module '@nativescript/core/ui/core/view' {
     }
 }
 
+@CSSType('CanvasLabel')
 export class CanvasLabel extends CanvasView {
     fontSize: number;
     fontFamily: string;
