@@ -2,6 +2,7 @@
     "name": "nativescript-canvaslabel",
     "version": "1.0.3",
     "main": "./canvaslabel.js",
+    "module": "./canvaslabel.mjs",
     "typings": "./canvaslabel.d.ts",
     "repository": {
         "type": "git",
