@@ -1,7 +1,7 @@
 import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from 'nativescript-canvas';
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
 import { layout } from '@nativescript/core/utils/utils';
-import { Color, HorizontalAlignment, Observable, PercentLength, TextAlignment, TextDecoration, VerticalAlignment } from '@nativescript/core/ui/text-base';
+import { Color, HorizontalAlignment, Length, Observable, PercentLength, TextAlignment, TextDecoration, TextTransform, VerticalAlignment, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { CSSType } from '@nativescript/core/ui/core/view';
 import { profile } from '@nativescript/core/profiling';
@@ -75,14 +75,15 @@ export abstract class Span extends Shape {
         if (!this.color && parent.style.color) {
             paint.color = parent.style.color;
         }
-        if (!this.fontSize && parent.style.fontSize) {
+
+        if (!this.fontSize && (parent.style.fontSize)  ) {
             paint.textSize = parent.style.fontSize;
         }
-        if (!this.fontFamily && parent.style.fontFamily) {
-            paint.setFontFamily(parent.style.fontFamily);
+        if (!this.fontFamily && (parent.style.fontFamily || parent.fontFamily)) {
+            paint.setFontFamily(parent.style.fontFamily || parent.fontFamily);
         }
-        if (!this.fontWeight && parent.style.fontWeight) {
-            paint.setFontWeight(parent.style.fontWeight);
+        if (!this.fontWeight && (parent.style.fontWeight || parent.fontWeight)) {
+            paint.setFontWeight(parent.style.fontWeight || parent.fontWeight);
         }
         this._staticlayout = new StaticLayout(text, this.paint, w, align, 1, 0, false);
         // this.log('create StaticLayout', Date.now() - startTime, 'ms');
@@ -106,7 +107,7 @@ export abstract class Span extends Shape {
         // }
         // const paint = this.paint;
         let align: LayoutAlignment = LayoutAlignment.ALIGN_NORMAL;
-        switch (this.textAlignment || parent.textAlignment) {
+        switch (this.textAlignment || parent.style.textAlignment) {
             case 'center':
                 align = LayoutAlignment.ALIGN_CENTER;
                 break;
@@ -129,8 +130,7 @@ export abstract class Span extends Shape {
             h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, hPx, hPx));
         }
         if (this.paddingLeft || parent.effectivePaddingLeft !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx)) + parent.effectivePaddingLeft;
-            // console.log('paddingLeft', this.paddingleft, paddingLeft, parent.effectivePaddingLeft);
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingLeft);
             if (!this.width) {
                 w -= decale;
             }
@@ -140,7 +140,7 @@ export abstract class Span extends Shape {
         }
 
         if (this.paddingRight || parent.effectivePaddingRight !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx)) + parent.effectivePaddingRight;
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingRight);
             if (!this.width) {
                 // dont translate here changing the width is enough
                 w -= decale;
@@ -155,23 +155,22 @@ export abstract class Span extends Shape {
         if (verticalalignment === 'bottom') {
             let height = this._staticlayout.getHeight();
             if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + parent.effectivePaddingBottom;
+                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
                 height += decale;
             }
             canvas.translate(0, h - height);
         } else if (verticalalignment === 'middle') {
-            let height = this._staticlayout.getHeight();
+            const height = this._staticlayout.getHeight();
+            let decale = 0;
             if (this.paddingTop || parent.effectivePaddingTop !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + parent.effectivePaddingTop;
-                height += decale;
+                decale += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
             }
             if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + parent.effectivePaddingBottom;
-                height -= decale;
+                decale -= layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
             }
-            canvas.translate(0, h / 2 - height / 2);
+            canvas.translate(0, h / 2 - height / 2 + decale);
         } else if (this.paddingTop || parent.effectivePaddingTop !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + parent.effectivePaddingTop;
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
             canvas.translate(0, decale);
         }
         // canvas.drawRect(0, 0, w, this._staticlayout.getHeight(), debugPaint);
@@ -263,82 +262,116 @@ declare module '@nativescript/core/ui/core/view' {
 
 @CSSType('CanvasLabel')
 export class CanvasLabel extends CanvasView {
-    fontSize: number;
-    fontFamily: string;
-    fontStyle: FontStyle;
-    fontWeight: FontWeight;
-    textAlignment: TextAlignment;
-    // color: Color | string | number;
-    textDecoration: TextDecoration;
-    // spans: ObservableArray<Span> = new ObservableArray([]);
-    // groups: ObservableArray<Group> = new ObservableArray([]);
-    // constructor() {
-    // super();
-    // addWeakEventListener(this.spans, ObservableArray.changeEvent, this.requestLayout, this);
-    // }
-    // initNativeView() {
-    //     super.initNativeView();
-    // }
-    // disposeNativeView() {
-    //     super.disposeNativeView();
-    // }
-    // onChildChange(span: Span) {
-    //     this.redraw();
-    // }
-    // public _addChildFromBuilder(name: string, value: any): void {
-    //     if (value instanceof Span) {
-    //         value._parent = new WeakRef(this);
-    //         this.spans.push(value);
-    //     } else {
-    //         super._addChildFromBuilder(name, value);
-    //     }
-    // }
+    // fontSize: number;
+    // fontFamily: string;
+    // fontStyle: FontStyle;
+    // fontWeight: FontWeight;
+    // textAlignment: TextAlignment;
+    // textDecoration: TextDecoration;
 
-    // public addShape(shape: Shape) {
-    // if (shape instanceof Span) {
-    // console.log('add span', this.style.color, shape.color);
-    // if (this.style.fontFamily && !shape.fontFamily) {
-    //     shape.fontFamily = this.style.fontFamily;
-    // }
-    // if (this.style.fontSize && !shape.fontSize) {
-    //     shape.fontSize = this.style.fontSize;
-    // }
-    // if (this.style.fontWeight && !shape.fontWeight) {
-    //     shape.fontWeight = this.style.fontWeight;
-    // }
-    // if (this.style.textAlignment && !shape.textAlignment) {
-    //     shape.textAlignment = this.style.textAlignment;
-    // }
-    // if (this.style.textDecoration && !shape.textDecoration) {
-    //     shape.textDecoration = this.style.textDecoration;
-    // }
-    // if (this.style.fontStyle && !shape.fontStyle) {
-    //     shape.fontStyle = this.style.fontStyle;
-    // }
-    // if (this.style.color && !shape.color) {
-    //     shape.color = this.style.color;
-    // }
-    // }
-    // super.addShape(shape);
-    // }
-    // public _removeView(view: any) {
-    //     if (view instanceof Span) {
-    //         const index = this.spans.indexOf(view);
-    //         if (index !== -1) {
-    //             const removed = this.spans.splice(index, 1);
-    //             removed.forEach((s) => (s._parent = null));
-    //             this.redraw();
-    //         }
-    //     } else {
-    //         super._removeView(view);
-    //     }
-    // }
-    // @profile
-    // protected onDraw(canvas: Canvas) {
-    //     super.onDraw(canvas);
-    //     // const startTime = Date.now();
-    //     // console.log('onDraw');
-    //     this.spans.forEach((s) => s.drawOnCanvas(canvas, this as an));
-    //     // console.log('onDraw', Date.now() - startTime, 'ms');
-    // }
+    get fontFamily(): string {
+        return this.style.fontFamily;
+    }
+    set fontFamily(value: string) {
+        this.style.fontFamily = value;
+    }
+
+    get fontSize(): number {
+        return this.style.fontSize;
+    }
+    set fontSize(value: number) {
+        this.style.fontSize = value;
+    }
+
+    get fontStyle(): FontStyle {
+        return this.style.fontStyle;
+    }
+    set fontStyle(value: FontStyle) {
+        this.style.fontStyle = value;
+    }
+
+    get fontWeight(): FontWeight {
+        return this.style.fontWeight;
+    }
+    set fontWeight(value: FontWeight) {
+        this.style.fontWeight = value;
+    }
+
+    get letterSpacing(): number {
+        return this.style.letterSpacing;
+    }
+    set letterSpacing(value: number) {
+        this.style.letterSpacing = value;
+    }
+
+    get lineHeight(): number {
+        return this.style.lineHeight;
+    }
+    set lineHeight(value: number) {
+        this.style.lineHeight = value;
+    }
+
+    get textAlignment(): TextAlignment {
+        return this.style.textAlignment;
+    }
+    set textAlignment(value: TextAlignment) {
+        this.style.textAlignment = value;
+    }
+
+    get textDecoration(): TextDecoration {
+        return this.style.textDecoration;
+    }
+    set textDecoration(value: TextDecoration) {
+        this.style.textDecoration = value;
+    }
+
+    get textTransform(): TextTransform {
+        return this.style.textTransform;
+    }
+    set textTransform(value: TextTransform) {
+        this.style.textTransform = value;
+    }
+
+    get whiteSpace(): WhiteSpace {
+        return this.style.whiteSpace;
+    }
+    set whiteSpace(value: WhiteSpace) {
+        this.style.whiteSpace = value;
+    }
+
+    get padding(): string | Length {
+        return this.style.padding;
+    }
+    set padding(value: string | Length) {
+        this.style.padding = value;
+    }
+
+    get paddingTop(): Length {
+        return this.style.paddingTop;
+    }
+    set paddingTop(value: Length) {
+        this.style.paddingTop = value;
+    }
+
+    get paddingRight(): Length {
+        return this.style.paddingRight;
+    }
+    set paddingRight(value: Length) {
+        this.style.paddingRight = value;
+    }
+
+    get paddingBottom(): Length {
+        return this.style.paddingBottom;
+    }
+    set paddingBottom(value: Length) {
+        this.style.paddingBottom = value;
+    }
+
+    get paddingLeft(): Length {
+        return this.style.paddingLeft;
+    }
+    set paddingLeft(value: Length) {
+        this.style.paddingLeft = value;
+    }
+
 }
