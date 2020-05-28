@@ -45,10 +45,19 @@ export function createSpannable(span: Span, parent?: Group): NSMutableAttributed
         }
     }
     let text = span.text;
-    if (text.indexOf('\n') !== -1) {
-        text = text.replace(/\\n/g, '\u{2029}');
+    if (!(text instanceof NSAttributedString)) {
+        if (!(typeof text === 'string')) {
+            text = text.toString();
+        }
+        if (text.indexOf('\n') !== -1) {
+            text = text.replace(/\\n/g, '\u{2029}');
+        }
+        return NSMutableAttributedString.alloc().initWithStringAttributes(text, attrDict as any);
+    } else {
+        const result = NSMutableAttributedString.alloc().initWithAttributedString(text);
+        result.setAttributesRange(attrDict as any, { location: 0, length: text.length });
+        return result;
     }
-    return NSMutableAttributedString.alloc().initWithStringAttributes(text, attrDict as any);
 }
 
 export class Span extends SpanBase {

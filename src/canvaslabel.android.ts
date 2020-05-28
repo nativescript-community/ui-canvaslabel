@@ -48,14 +48,18 @@ export function createSpannable(span: Span, parent?: Group) {
     if (!text) {
         return null;
     }
-
-    if (text.indexOf('\n') !== -1) {
-        if (!lineSeparator) {
-            lineSeparator = java.lang.System.getProperty('line.separator');
+    if (!(text instanceof android.text.Spannable)) {
+        if (!(typeof text === 'string')) {
+            text = text.toString();
         }
-        text = text.replace(/\\n/g, lineSeparator);
+        if (text.indexOf('\n') !== -1) {
+            if (!lineSeparator) {
+                lineSeparator = java.lang.System.getProperty('line.separator');
+            }
+            text = text.replace(/\\n/g, lineSeparator);
+        }
     }
-    const length = text.length;
+
     let ssb = span._ssb;
     if (!ssb) {
         span._ssb = ssb = new android.text.SpannableStringBuilder(text);
@@ -63,6 +67,7 @@ export function createSpannable(span: Span, parent?: Group) {
         ssb.clear();
         ssb.append(text);
     }
+    const length = typeof text.length === 'function' ? text.length() : text.length;
 
     const paint = span.paint;
     const fontSize = span.fontSize || (parent && parent.fontSize);
