@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/farfromrefug/nativescript-canvaslabel/compare/v1.0.9...v1.0.10) (2020-07-22)
+
+
+### Bug Fixes
+
+* **android:** disable hardware for now as the rendering is not good ([84d705f](https://github.com/farfromrefug/nativescript-canvaslabel/commit/84d705f6bd169b1278a7d82b1571f5b1f331a2a6))
+* some font fixes ([5b06826](https://github.com/farfromrefug/nativescript-canvaslabel/commit/5b068266c5e91f17c886cecd4fccfc85bdc5a49e))
+
+
+
+
+
 ## [1.0.9](https://github.com/farfromrefug/nativescript-canvaslabel/compare/v1.0.8...v1.0.9) (2020-05-30)
 
 
