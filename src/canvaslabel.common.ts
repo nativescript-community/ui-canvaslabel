@@ -1,7 +1,10 @@
 import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from 'nativescript-canvas';
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
 import { layout } from '@nativescript/core/utils/utils';
-import { Color, HorizontalAlignment, Length, Observable, PercentLength, TextAlignment, TextDecoration, TextTransform, VerticalAlignment, WhiteSpace } from '@nativescript/core/ui/text-base';
+import { HorizontalAlignment, TextAlignment, TextDecoration, TextTransform, VerticalAlignment, WhiteSpace } from '@nativescript/core/ui/text-base';
+import { Length, PercentLength } from '@nativescript/core/ui/styling/style-properties';
+import { Observable } from '@nativescript/core/data/observable';
+import { Color } from '@nativescript/core/color';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { CSSType } from '@nativescript/core/ui/core/view';
 import { profile } from '@nativescript/core/profiling';
@@ -14,9 +17,9 @@ export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'c
 // debugPaint.color = 'red';
 
 export abstract class Span extends Shape {
-    @stringProperty fontFamily: string;
-    @stringProperty fontStyle: FontStyle;
-    @stringProperty fontWeight: FontWeight;
+    @stringProperty({ nonPaintProp: true }) fontFamily: string;
+    @stringProperty({ nonPaintProp: true }) fontStyle: FontStyle;
+    @stringProperty({ nonPaintProp: true }) fontWeight: FontWeight;
     @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment;
     @stringProperty({ nonPaintProp: true }) textDecoration: TextDecoration;
 
@@ -36,7 +39,7 @@ export abstract class Span extends Shape {
 
     constructor() {
         super();
-        this.antiAlias = true;
+        this.paint.setAntiAlias(true);
     }
 
     notifyPropertyChange(propertyName: string, value: any, oldValue?: any) {
@@ -76,7 +79,7 @@ export abstract class Span extends Shape {
             paint.color = parent.style.color;
         }
 
-        if (!this.fontSize && (parent.style.fontSize)  ) {
+        if (!this.fontSize && parent.style.fontSize) {
             paint.textSize = parent.style.fontSize;
         }
         if (!this.fontFamily && (parent.style.fontFamily || parent.fontFamily)) {
@@ -85,17 +88,20 @@ export abstract class Span extends Shape {
         if (!this.fontWeight && (parent.style.fontWeight || parent.fontWeight)) {
             paint.setFontWeight(parent.style.fontWeight || parent.fontWeight);
         }
-        this._staticlayout = new StaticLayout(text, this.paint, w, align, 1, 0, false);
-        // this.log('create StaticLayout', Date.now() - startTime, 'ms');
+        if (!this.fontStyle && (parent.style.fontStyle || parent.fontStyle)) {
+            paint.setFontStyle(parent.style.fontStyle || parent.fontStyle);
+        }
+        this._staticlayout = new StaticLayout(text, paint, w, align, 1, 0, true);
+        // this.log('create StaticLayout', text, paint.fontStyle, paint.fontWeight, paint.fontFamily, Date.now() - startTime, 'ms');
     }
     // needsMeasurement = false;
-    @profile
+    // @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
         const text = this.getText();
         if (!text) {
             return;
         }
-        const startTime = Date.now();
+        // const startTime = Date.now();
         const cW = canvas.getWidth();
         const cH = canvas.getHeight();
         let w = cW;
@@ -373,5 +379,4 @@ export class CanvasLabel extends CanvasView {
     set paddingLeft(value: Length) {
         this.style.paddingLeft = value;
     }
-
 }
