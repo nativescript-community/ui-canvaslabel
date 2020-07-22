@@ -3,50 +3,52 @@
         <StackLayout>
             <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index">
                 <v-template>
-                    <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray" margin="4">
-                        <CGroup id="group1"  fontSize="18" verticalAlignment="middle" paddingLeft="20" fontStyle="italic">
-                            <CSpan id="text1" :text="item.text1" fontWeight="bold"/>
-                            <CSpan id="text2" :text="'\n' + item.text2" color="#ccc" fontSize="16"  fontStyle="normal"/>
-                            <CSpan id="text3" :text="item.text2" color="#eee"  fontFamily="Lato-Regular" fontSize="16"  fontStyle="normal"/>
-                        </CGroup>
-                        <Line id="line" :antiAlias="true" color="yellow" startX="10%" startY="34%" stopX="90%" stopY="90%" strokeCap="round" strokeJoin="round" strokeWidth="4" dash="1 10 0" />
-                        <CGroup id="group2" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
-                            <CSpan id="icon1" :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
-                            <CSpan id="texticon1" :text="' ' + item.texticon1" verticalTextAlignment="center" />
-                            <CSpan id="icon2" :text="'   ' + item.icon2" fontSize="20" color="red" :fontFamily="mdiFontFamily" />
-                            <CSpan id="texticon2" :text="' ' + item.texticon2" verticalTextAlignment="center" />
-                            <CSpan id="icon3" :text="'   ' + item.icon3" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" />
-                            <CSpan id="icon3" :text="' ' + item.icon3" verticalTextAlignment="center" />
-                        </CGroup>
+                    <GridLayout>
+                        <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray" margin="4" hardwareAccelerated="false">
+                            <CGroup id="group1" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic">
+                                <CSpan id="text1" :text="item.text1" fontWeight="bold" />
+                                <CSpan id="text2" :text="'\n' + item.text2" color="#ccc" fontSize="16" fontStyle="normal" />
+                                <CSpan id="text3" :text="item.text2" color="#eee" fontFamily="Lato-Regular" fontSize="16" fontStyle="normal" />
+                            </CGroup>
+                            <Line id="line" :antiAlias="true" color="yellow" startX="10%" startY="34%" stopX="90%" stopY="90%" strokeCap="round" strokeJoin="round" strokeWidth="4" dash="1 10 0" />
+                            <CGroup id="group2" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
+                                <CSpan id="icon1" :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
+                                <CSpan id="texticon1" :text="' ' + item.texticon1" verticalTextAlignment="center" />
+                                <CSpan id="icon2" :text="'   ' + item.icon2" fontSize="20" color="red" :fontFamily="mdiFontFamily" />
+                                <CSpan id="texticon2" :text="' ' + item.texticon2" verticalTextAlignment="center" />
+                                <CSpan id="icon3" :text="'   ' + item.icon3" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" />
+                                <CSpan id="icon3" :text="' ' + item.icon3" verticalTextAlignment="center" />
+                            </CGroup>
 
-                        <CGroup id="group3" fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60">
-                            <CSpan id="icon12" :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
-                            <CSpan id="texticon12" :text="'\n' + item.texticon1" paddingRight="10" />
-                        </CGroup>
-                        <CSpan id="text4" fontFamily="arial" :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
-                        
-                    </CanvasLabel>
-                    <!-- <GridLayout backgroundColor="darkgray">
-                        <label fontSize="18" verticalAlignment="middle" paddingLeft="20"  whiteSpace="true">
-                            <span :text="item.text1" fontWeight="bold" />
-                            <span :text="'\n' + item.text2" color="#ccc" fontSize="16" />
-                        </label>
+                            <CGroup id="group3" fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60">
+                                <CSpan id="icon12" :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
+                                <CSpan id="texticon12" :text="'\n' + item.texticon1" paddingRight="10" />
+                            </CGroup>
+                            <CSpan id="text4" fontFamily="arial" :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
+                        </CanvasLabel>
+                        <GridLayout  margin="4" opacity="0.5">
+                            <Label color="blue" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic" textWrap>
+                                <Span :text="item.text1" fontWeight="bold" />
+                                <Span :text="'\n' + item.text2" color="#ccc" fontSize="16" fontStyle="normal" />
+                                <Span :text="item.text2" color="#eee" fontFamily="Lato-Regular" fontSize="16" fontStyle="normal" />
+                            </Label>
+                            <Label color="white" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1" textWrap>
+                                <Span :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
+                                <Span :text="' ' + item.texticon1" verticalTextAlignment="center" />
+                                <Span :text="'   ' + item.icon2" fontSize="20" color="red" :fontFamily="mdiFontFamily" />
+                                <Span :text="' ' + item.texticon2" verticalTextAlignment="center" />
+                                <Span :text="'   ' + item.icon3" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" />
+                                <Span :text="' ' + item.icon3" verticalTextAlignment="center" />
+                            </Label>
 
-                        <label fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
-                            <span :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
-                            <span :text="' ' + item.texticon1" verticalTextAlignment="center" />
-                            <span :text="'   ' + item.icon2" fontSize="20" color="red" :fontFamily="mdiFontFamily" />
-                            <span :text="' ' + item.texticon2" verticalTextAlignment="center" />
-                            <span :text="'   ' + item.icon3" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" />
-                            <span :text="' ' + item.texticon3" verticalTextAlignment="center" />
-                        </label>
-
-                        <label fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60" whiteSpace="true">
-                            <span :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
-                            <span :text="'\n' + item.texticon1" paddingRight="10" />
-                        </label>
-                        <label :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
-                    </GridLayout> -->
+                            <Label fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60" textWrap>
+                                <span :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
+                                <Span :text="'\n' + item.texticon1" paddingRight="10" />
+                            </Label>
+                            <Label fontFamily="arial" :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4"  textWrap/>
+                        </GridLayout>
+                       
+                    </GridLayout>
                 </v-template>
             </CollectionView>
         </StackLayout>

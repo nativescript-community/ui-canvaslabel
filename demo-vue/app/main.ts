@@ -1,9 +1,10 @@
 import Vue from 'nativescript-vue';
 import { isAndroid } from '@nativescript/core/platform';
 
-import { enableIOSDTCoreText } from 'nativescript-htmllabel';
+import { Label as HTMLLabel, enableIOSDTCoreText } from 'nativescript-htmllabel';
 // this will trigger Font overrides and other improvements
 enableIOSDTCoreText();
+Vue.registerElement('HTMLLabel', () => HTMLLabel);
 
 
 import CollectionView from 'nativescript-collectionview/vue';

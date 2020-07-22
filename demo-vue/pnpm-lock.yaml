@@ -7653,7 +7653,7 @@ specifiers:
   cross-var: ^1.1.0
   css-loader: ^3.5.3
   fsevents: 2.1.3
-  nativescript-canvas: ^2.1.28
+  nativescript-canvas: ^3.0.0
   nativescript-canvaslabel: 'file:../plugin'
   nativescript-collectionview: 2.0.22
   nativescript-dev-webpack: ^1.5.1
