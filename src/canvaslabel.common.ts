@@ -3,8 +3,8 @@ import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { HorizontalAlignment, VerticalAlignment } from '@nativescript/core/ui/styling/style-properties';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
-import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from 'nativescript-canvas';
-import Shape, { colorProperty, percentLengthProperty, stringProperty } from 'nativescript-canvas/shapes/shape';
+import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from '@nativescript-community/ui-canvas';
+import Shape, { colorProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
 
 export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'center';
 
@@ -205,7 +205,7 @@ export abstract class Group extends Span {
     private onShapesCollectionChanged(eventData: ChangedData<Shape>) {
         if (eventData.addedCount > 0) {
             for (let i = 0; i < eventData.addedCount; i++) {
-                const shape = (eventData.object as ObservableArray<Shape>).getItem(eventData.index + i);
+                const shape = (eventData.object as any).getItem(eventData.index + i);
 
                 // Then attach handlers - we skip the first nofitication because
                 // we raise change for the whole instance.
