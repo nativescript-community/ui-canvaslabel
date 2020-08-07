@@ -1,7 +1,6 @@
-import { Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
+import { Color, profile } from '@nativescript/core';
 import { FontWeight } from '@nativescript/core/ui/styling/font';
-import { Color } from '@nativescript/core/color';
-import { profile } from '@nativescript/core/profiling';
+import { Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
 
 export { CanvasLabel } from './canvaslabel.common';
 

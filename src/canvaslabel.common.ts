@@ -1,13 +1,9 @@
-import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from 'nativescript-canvas';
-import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
-import { layout } from '@nativescript/core/utils/utils';
-import { HorizontalAlignment, TextAlignment, TextDecoration, TextTransform, VerticalAlignment, WhiteSpace } from '@nativescript/core/ui/text-base';
-import { Length, PercentLength } from '@nativescript/core/ui/styling/style-properties';
-import { Observable } from '@nativescript/core/data/observable';
-import { Color } from '@nativescript/core/color';
+import { CSSType, ChangedData, Color, Length, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
-import { CSSType } from '@nativescript/core/ui/core/view';
-import { profile } from '@nativescript/core/profiling';
+import { HorizontalAlignment, VerticalAlignment } from '@nativescript/core/ui/styling/style-properties';
+import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
+import { layout } from '@nativescript/core/utils/utils';
+import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from 'nativescript-canvas';
 import Shape, { colorProperty, percentLengthProperty, stringProperty } from 'nativescript-canvas/shapes/shape';
 
 export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'center';

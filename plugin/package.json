@@ -1,5 +1,5 @@
 {
-    "name": "nativescript-canvaslabel",
+    "name": "@nativescript-community/ui-canvaslabel",
     "version": "1.0.10",
     "main": "./canvaslabel",
     "sideEffects": false,
@@ -30,6 +30,6 @@
     },
     "homepage": "https://github.com/farfromrefug/nativescript-canvaslabel#readme",
     "dependencies": {
-        "nativescript-canvas": "^3.0.10"
+        "@nativescript-community/ui-canvas": "^4.0.1"
     }
 }

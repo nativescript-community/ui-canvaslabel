@@ -1,6 +1,6 @@
 import { Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
 import { Font } from '@nativescript/core/ui/styling/font';
-import { Color } from '@nativescript/core/color';
+import { Color } from '@nativescript/core';
 
 export { CanvasLabel } from './canvaslabel.common';
 
