@@ -2,7 +2,7 @@
     "description": "NativeScript CanvasLabel Demo",
     "license": "SEE LICENSE IN LICENSE.md",
     "readme": "README.md",
-    "repository": "http://www.github.com/farfromrefug/nativescript-canvaslabel.git",
+    "repository": "http://www.github.com/@nativescript-community/ui-canvaslabel.git",
     "nativescript": {
         "id": "org.nativescript.demovuecanvaslabel",
         "tns-android": {
@@ -16,7 +16,7 @@
         "@mdi/font": "4.9.95",
         "@nativescript/core": "^6.5.1",
         "nativescript-canvas": "^3.0.8",
-        "nativescript-canvaslabel": "file:../plugin",
+        "@nativescript-community/ui-canvaslabel": "file:../plugin",
         "nativescript-collectionview": "2.0.22",
         "nativescript-htmllabel": "^1.0.32",
         "nativescript-vue": "2.6.1"

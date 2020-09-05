@@ -21,7 +21,7 @@
     "@mdi/font": "4.9.95",
     "@nativescript/core": "~6.5.1",
     "nativescript-canvas": "^3.0.0",
-    "nativescript-canvaslabel": "file:../plugin",
+    "@nativescript-community/ui-canvaslabel": "file:../plugin",
     "nativescript-collectionview": "2.0.22",
     "nativescript-htmllabel": "^1.0.32",
     "svelte-native": "~0.8.4"

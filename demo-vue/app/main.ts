@@ -9,7 +9,7 @@ Vue.registerElement('HTMLLabel', () => HTMLLabel);
 
 import CollectionView from 'nativescript-collectionview/vue';
 Vue.use(CollectionView);
-import CanvasLabel from 'nativescript-canvaslabel/vue';
+import CanvasLabel from '@nativescript-community/ui-canvaslabel/vue';
 Vue.use(CanvasLabel);
 import Canvas from 'nativescript-canvas/vue';
 Vue.use(Canvas);

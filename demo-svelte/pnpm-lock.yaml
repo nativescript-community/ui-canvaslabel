@@ -2,7 +2,7 @@ dependencies:
   '@mdi/font': 4.9.95
   '@nativescript/core': 6.5.1
   nativescript-canvas: 3.0.0
-  nativescript-canvaslabel: 'link:../plugin'
+  @nativescript-community/ui-canvaslabel: 'link:../plugin'
   nativescript-collectionview: 2.0.22
   nativescript-htmllabel: 1.0.32
   svelte-native: 0.8.4_34bcecc8fe2aa26236120caddf40366d
@@ -5105,7 +5105,7 @@ specifiers:
   '@nativescript/core': ~6.5.1
   fsevents: 2.1.3
   nativescript-canvas: ^3.0.0
-  nativescript-canvaslabel: 'file:../plugin'
+  @nativescript-community/ui-canvaslabel: 'file:../plugin'
   nativescript-collectionview: 2.0.22
   nativescript-dev-webpack: ~1.5.1
   nativescript-htmllabel: ^1.0.32

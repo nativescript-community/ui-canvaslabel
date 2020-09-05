@@ -6,7 +6,7 @@
     "typings": "./canvaslabel.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/farfromrefug/nativescript-canvaslabel.git"
+        "url": "git+https://github.com/@nativescript-community/ui-canvaslabel.git"
     },
     "nativescript": {
         "platforms": {
@@ -26,10 +26,10 @@
     },
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/farfromrefug/nativescript-canvaslabel/issues"
+        "url": "https://github.com/@nativescript-community/ui-canvaslabel/issues"
     },
-    "homepage": "https://github.com/farfromrefug/nativescript-canvaslabel#readme",
+    "homepage": "https://github.com/@nativescript-community/ui-canvaslabel#readme",
     "dependencies": {
-        "@nativescript-community/ui-canvas": "^4.0.1"
+        "@nativescript-community/ui-canvas": "^4.0.4"
     }
 }

@@ -79,8 +79,8 @@ module.exports = env => {
         const srcFullPath = resolve(projectRoot, '..', 'src');
         alias = Object.assign(alias, {
             '#': srcFullPath,
-            'nativescript-canvaslabel$': '#/canvaslabel.' + platform,
-            'nativescript-canvaslabel/vue$': '#/vue/index'
+            '@nativescript-community/ui-canvaslabel$': '#/canvaslabel.' + platform,
+            '@nativescript-community/ui-canvaslabel/vue$': '#/vue/index'
         });
     }
 

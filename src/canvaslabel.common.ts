@@ -71,22 +71,21 @@ export abstract class Span extends Shape {
     createStaticLayout(text, w, align, parent: CanvasLabel) {
         // const startTime = Date.now();
         const paint = this.paint;
-        if (!this.color && parent.style.color) {
-            paint.color = parent.style.color;
-        }
-
-        if (!this.fontSize && parent.style.fontSize) {
-            paint.textSize = parent.style.fontSize;
-        }
-        if (!this.fontFamily && (parent.style.fontFamily || parent.fontFamily)) {
-            paint.setFontFamily(parent.style.fontFamily || parent.fontFamily);
-        }
-        if (!this.fontWeight && (parent.style.fontWeight || parent.fontWeight)) {
-            paint.setFontWeight(parent.style.fontWeight || parent.fontWeight);
-        }
-        if (!this.fontStyle && (parent.style.fontStyle || parent.fontStyle)) {
-            paint.setFontStyle(parent.style.fontStyle || parent.fontStyle);
-        }
+        // if (!this.color && parent.style.color) {
+        paint.color = this.color || parent.style.color;
+        // }
+        // if (!this.fontSize && parent.style.fontSize) {
+        paint.textSize = this.fontSize || parent.style.fontSize;
+        // }
+        // if (!this.fontFamily && (parent.style.fontFamily || parent.fontFamily)) {
+        paint.setFontFamily(this.fontFamily || parent.style.fontFamily || parent.fontFamily);
+        // }
+        // if (!this.fontWeight && (parent.style.fontWeight || parent.fontWeight)) {
+        paint.setFontWeight(this.fontWeight || parent.style.fontWeight || parent.fontWeight);
+        // }
+        // if (!this.fontStyle && (parent.style.fontStyle || parent.fontStyle)) {
+        paint.setFontStyle(this.fontStyle || parent.style.fontStyle || parent.fontStyle);
+        // }
         this._staticlayout = new StaticLayout(text, paint, w, align, 1, 0, true);
         // this.log('create StaticLayout', text, paint.fontStyle, paint.fontWeight, paint.fontFamily, Date.now() - startTime, 'ms');
     }

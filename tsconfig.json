@@ -24,8 +24,8 @@
         "paths": {
             "tns-core-modules": ["./node_modules/@nativescript/core"],
             "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
-            "nativescript-canvaslabel": ["src/canvaslabel"],
-            "nativescript-canvaslabel/*": ["src/*"],
+            "@nativescript-community/ui-canvaslabel": ["src/canvaslabel"],
+            "@nativescript-community/ui-canvaslabel/*": ["src/*"],
             "*": ["node_modules/*"]
         },
         "plugins": [{ "transform": "./node_modules/@nativescript/webpack/transformers/ns-transform-native-classes.js", "type": "raw" }]

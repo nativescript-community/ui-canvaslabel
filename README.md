@@ -1,7 +1,7 @@
 # NativeScript Label widget
-[![npm downloads](https://img.shields.io/npm/dm/nativescript-canvaslabel.svg)](https://www.npmjs.com/package/nativescript-canvaslabel)
-[![npm downloads](https://img.shields.io/npm/dt/nativescript-canvaslabel.svg)](https://www.npmjs.com/package/nativescript-canvaslabel)
-[![npm](https://img.shields.io/npm/v/nativescript-canvaslabel.svg)](https://www.npmjs.com/package/nativescript-canvaslabel)
+[![npm downloads](https://img.shields.io/npm/dm/@nativescript-community/ui-canvaslabel.svg)](https://www.npmjs.com/package/@nativescript-community/ui-canvaslabel)
+[![npm downloads](https://img.shields.io/npm/dt/@nativescript-community/ui-canvaslabel.svg)](https://www.npmjs.com/package/@nativescript-community/ui-canvaslabel)
+[![npm](https://img.shields.io/npm/v/@nativescript-community/ui-canvaslabel.svg)](https://www.npmjs.com/package/@nativescript-community/ui-canvaslabel)
 
 A NativeScript Label widget. This widget takes a different approch from other label components. It is based on `nativescript-canvas` and allows drawing
 multiple labels within one single widget.
@@ -10,9 +10,9 @@ It allows extreme complexity and customization.
 ## Installation
 Run the following command from the root of your project:
 
-`tns plugin add nativescript-canvaslabel`
+`tns plugin add @nativescript-community/ui-canvaslabel`
 
-This command automatically installs the necessary files, as well as stores nativescript-canvaslabel as a dependency in your project's package.json file.
+This command automatically installs the necessary files, as well as stores @nativescript-community/ui-canvaslabel as a dependency in your project's package.json file.
 
 ## Configuration
 It works almost like a normal label.
