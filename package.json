@@ -37,7 +37,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/@nativescript-community/ui-canvaslabel.git"
+        "url": "git+https://github.com/nativescript-community/ui-canvaslabel.git"
     },
     "author": {
         "name": "Martin Guillon",
@@ -45,9 +45,9 @@
     },
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/@nativescript-community/ui-canvaslabel/issues"
+        "url": "https://github.com/nativescript-community/ui-canvaslabel/issues"
     },
-    "homepage": "https://github.com/@nativescript-community/ui-canvaslabel#readme",
+    "homepage": "https://github.com/nativescript-community/ui-canvaslabel#readme",
     "commitlint": {
         "extends": [
             "@commitlint/config-conventional"
