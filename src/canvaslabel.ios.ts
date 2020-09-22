@@ -45,6 +45,9 @@ export function createSpannable(span: Span, parent?: Group): NSMutableAttributed
         }
     }
     let text = span.text;
+    if (!text) {
+        return null;
+    }
     if (!(text instanceof NSAttributedString)) {
         if (!(typeof text === 'string')) {
             text = text.toString();
