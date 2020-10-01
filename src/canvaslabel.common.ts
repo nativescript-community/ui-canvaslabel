@@ -28,7 +28,7 @@ export abstract class Span extends Shape {
     @percentLengthProperty({ nonPaintProp: true }) paddingBottom: PercentLength;
 
     @stringProperty({ nonPaintProp: true }) horizontalAlignment: HorizontalAlignment;
-    @stringProperty({ nonPaintProp: true }) verticalAlignment: VerticalAlignment;
+    @stringProperty({ nonPaintProp: true }) verticalAlignment: VerticalAlignment & 'center';
     @stringProperty({ nonPaintProp: true }) verticalTextAlignment: VerticalTextAlignment;
     @colorProperty({ nonPaintProp: true }) backgroundColor: Color;
     @stringProperty({ nonPaintProp: true }) text: any;
@@ -160,7 +160,7 @@ export abstract class Span extends Shape {
                 height += decale;
             }
             canvas.translate(0, h - height);
-        } else if (verticalalignment === 'middle') {
+        } else if (verticalalignment === 'middle' || verticalalignment === 'center') {
             const height = this._staticlayout.getHeight();
             let decale = 0;
             if (this.paddingTop || parent.effectivePaddingTop !== 0) {
@@ -181,8 +181,38 @@ export abstract class Span extends Shape {
     }
 }
 export abstract class Group extends Span {
-    fontSize: number;
-    fontFamily: string;
+    _fontSize: number;
+    _fontFamily: string;
+    _fontWeight: FontWeight;
+
+    set fontFamily(value) {
+        this._fontFamily = value;
+    }
+    get fontFamily() {
+        const parent = this._parent && this._parent.get();
+        return this._fontFamily || (parent && parent.style.fontFamily);
+    }
+
+    set fontSize(value) {
+        this._fontSize = value;
+    }
+    get fontSize() {
+        const parent = this._parent && this._parent.get();
+        return this._fontSize || (parent && parent.style.fontSize);
+    }
+    set fontWeight(value: FontWeight) {
+        this._fontWeight = value;
+    }
+    get fontWeight(): FontWeight {
+        const parent = this._parent && this._parent.get();
+        if (this._fontWeight) {
+            return this._fontWeight;
+        }
+        if (parent) {
+            return parent.style.fontWeight;
+        }
+        return null;
+    }
     _spans: ObservableArray<Span>;
     getOrCreateSpans() {
         if (!this._spans) {
@@ -226,7 +256,6 @@ export abstract class Group extends Span {
     }
     public _addChildFromBuilder(name: string, value: any): void {
         if (value instanceof Span) {
-            value._parent = new WeakRef(this as any);
             this.getOrCreateSpans().push(value);
         }
     }
