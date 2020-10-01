@@ -17,7 +17,7 @@ export function createSpannable(span: Span, parent?: Group): NSMutableAttributed
 
     if (fontweight || fontstyle || fontFamily || fontSize) {
         const font = new Font(fontFamily, fontSize, fontstyle, typeof span.fontWeight === 'string' ? fontweight : ((fontweight + '') as any));
-        const iosFont = font.getUIFont(null);
+        const iosFont = font.getUIFont(UIFont.systemFontOfSize(fontSize));
         attrDict[NSFontAttributeName] = iosFont;
     }
     if (verticaltextalignment) {
