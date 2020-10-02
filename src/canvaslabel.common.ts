@@ -4,7 +4,7 @@ import { HorizontalAlignment, VerticalAlignment } from '@nativescript/core/ui/st
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
 import { Canvas, CanvasView, LayoutAlignment, StaticLayout } from '@nativescript-community/ui-canvas';
-import Shape, { colorProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
+import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
 
 export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'center';
 
@@ -13,6 +13,7 @@ export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'c
 // debugPaint.color = 'red';
 
 export abstract class Span extends Shape {
+    @numberProperty({ nonPaintProp: true }) fontSize: number;
     @stringProperty({ nonPaintProp: true }) fontFamily: string;
     @stringProperty({ nonPaintProp: true }) fontStyle: FontStyle;
     @stringProperty({ nonPaintProp: true }) fontWeight: FontWeight;
@@ -27,7 +28,7 @@ export abstract class Span extends Shape {
     @percentLengthProperty({ nonPaintProp: true }) paddingTop: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) paddingBottom: PercentLength;
 
-    @stringProperty({ nonPaintProp: true }) horizontalAlignment: HorizontalAlignment;
+    @stringProperty({ nonPaintProp: true }) horizontalAlignment: HorizontalAlignment & 'middle';
     @stringProperty({ nonPaintProp: true }) verticalAlignment: VerticalAlignment & 'center';
     @stringProperty({ nonPaintProp: true }) verticalTextAlignment: VerticalTextAlignment;
     @colorProperty({ nonPaintProp: true }) backgroundColor: Color;
@@ -99,10 +100,13 @@ export abstract class Span extends Shape {
         // const startTime = Date.now();
         const cW = canvas.getWidth();
         const cH = canvas.getHeight();
-        let w = cW;
-        let h = cH;
+        const w = cW;
+        const h = cH;
         const wPx = layout.toDevicePixels(w);
         const hPx = layout.toDevicePixels(h);
+
+        let mWidth = w;
+        let mHeight = w;
         // if (!this._paint) {
         //     this.createPaint(parent);
         // }
@@ -120,59 +124,93 @@ export abstract class Span extends Shape {
         const verticalalignment = this.verticalAlignment;
         canvas.save();
         if (this.width) {
-            w = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.width, wPx, wPx));
-            if (this.horizontalAlignment === 'right') {
-                canvas.translate(cW - w, 0);
-            } else if (this.horizontalAlignment === 'center') {
-                canvas.translate(cW / 2 - w / 2, 0);
-            }
+            mWidth = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.width, wPx, wPx));
         }
+
         if (this.height) {
-            h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, hPx, hPx));
+            mHeight = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, hPx, hPx));
         }
         if (this.paddingLeft || parent.effectivePaddingLeft !== 0) {
             const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingLeft);
             if (!this.width) {
-                w -= decale;
+                mWidth -= decale;
             }
-            if (align !== LayoutAlignment.ALIGN_OPPOSITE) {
-                canvas.translate(decale, 0);
-            }
+            canvas.translate(decale, 0);
         }
 
         if (this.paddingRight || parent.effectivePaddingRight !== 0) {
             const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingRight);
             if (!this.width) {
-                // dont translate here changing the width is enough
-                w -= decale;
-            } else {
-                canvas.translate(-decale, 0);
+                mWidth -= decale;
             }
+            canvas.translate(-decale, 0);
+        }
+        if (this.paddingTop || parent.effectivePaddingTop !== 0) {
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
+            if (!this.height) {
+                mHeight -= decale;
+            }
+            canvas.translate(0, decale);
+        }
+
+        if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
+            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
+            if (!this.height) {
+                mHeight -= decale;
+            }
+            canvas.translate(0, -decale);
         }
         // console.log('drawOnCanvas', this.constructor.name, this.toString(), !!this._staticlayout, !!this._native);
         if (!this._staticlayout) {
-            this.createStaticLayout(text, w, align, parent);
+            this.createStaticLayout(text, mWidth, align, parent);
         }
-        if (verticalalignment === 'bottom') {
-            let height = this._staticlayout.getHeight();
-            if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
-                const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
-                height += decale;
+
+        if (this.horizontalAlignment === 'right') {
+            const width = this.width ? mWidth : this._staticlayout.getWidth();
+            // if (this.paddingRight || parent.effectivePaddingRight !== 0) {
+            //     const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingRight);
+            //     width += decale;
+            // }
+            canvas.translate(w - width, 0);
+        } else if (this.horizontalAlignment === 'middle' || this.horizontalAlignment === 'center') {
+            // const width = this.width ? mWidth : this._staticlayout.getWidth();
+            // const decale = 0;
+            // if (this.paddingLeft || parent.effectivePaddingLeft !== 0) {
+            //     decale += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingLeft);
+            // }
+            // if (this.paddingRight || parent.effectivePaddingRight !== 0) {
+            //     decale -= layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingRight);
+            // }
+            // console.log('horizontalAlignment', w, cW, width, this);
+
+            // if no width then  we can translate.
+            // otherwise it is full width
+            if (this.width) {
+                canvas.translate(w / 2 - mWidth / 2, 0);
+
             }
+        }
+
+        if (verticalalignment === 'bottom') {
+            const height = this.height ? mHeight : this._staticlayout.getHeight();
+            // if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
+            //     const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
+            //     height += decale;
+            // }
             canvas.translate(0, h - height);
         } else if (verticalalignment === 'middle' || verticalalignment === 'center') {
-            const height = this._staticlayout.getHeight();
-            let decale = 0;
-            if (this.paddingTop || parent.effectivePaddingTop !== 0) {
-                decale += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
-            }
-            if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
-                decale -= layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
-            }
-            canvas.translate(0, h / 2 - height / 2 + decale);
+            const height = this.height ? mHeight : this._staticlayout.getHeight();
+            // let decale = 0;
+            // if (this.paddingTop || parent.effectivePaddingTop !== 0) {
+            //     decale += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
+            // }
+            // if (this.paddingBottom || parent.effectivePaddingBottom !== 0) {
+            //     decale -= layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingBottom);
+            // }
+            canvas.translate(0, h / 2 - height / 2);
         } else if (this.paddingTop || parent.effectivePaddingTop !== 0) {
-            const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
-            canvas.translate(0, decale);
+            // const decale = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx)) + layout.toDeviceIndependentPixels(parent.effectivePaddingTop);
+            // canvas.translate(0, decale);
         }
         // canvas.drawRect(0, 0, w, this._staticlayout.getHeight(), debugPaint);
         this._staticlayout.draw(canvas as any);
@@ -181,32 +219,32 @@ export abstract class Span extends Shape {
     }
 }
 export abstract class Group extends Span {
-    _fontSize: number;
-    _fontFamily: string;
-    _fontWeight: FontWeight;
+    __fontSize: number;
+    __fontFamily: string;
+    __fontWeight: FontWeight;
 
-    set fontFamily(value) {
-        this._fontFamily = value;
+    set _fontFamily(value) {
+        this.__fontFamily = value;
     }
-    get fontFamily() {
+    get _fontFamily() {
         const parent = this._parent && this._parent.get();
-        return this._fontFamily || (parent && parent.style.fontFamily);
+        return this.__fontFamily || (parent && parent.style.fontFamily);
     }
 
-    set fontSize(value) {
-        this._fontSize = value;
+    set _fontSize(value) {
+        this.__fontSize = value;
     }
-    get fontSize() {
+    get _fontSize() {
         const parent = this._parent && this._parent.get();
-        return this._fontSize || (parent && parent.style.fontSize);
+        return this.__fontSize || (parent && parent.style.fontSize);
     }
-    set fontWeight(value: FontWeight) {
-        this._fontWeight = value;
+    set _fontWeight(value: FontWeight) {
+        this.__fontWeight = value;
     }
-    get fontWeight(): FontWeight {
+    get _fontWeight(): FontWeight {
         const parent = this._parent && this._parent.get();
-        if (this._fontWeight) {
-            return this._fontWeight;
+        if (this.__fontWeight) {
+            return this.__fontWeight;
         }
         if (parent) {
             return parent.style.fontWeight;
