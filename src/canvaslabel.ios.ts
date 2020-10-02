@@ -10,7 +10,7 @@ export function createSpannable(span: Span, parent?: Group): NSMutableAttributed
     const fontSize = span.fontSize || (parent && parent.fontSize);
     const fontweight = span.fontWeight || (parent && parent.fontWeight) || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
-    const textcolor = span.color || (parent && parent.color);
+    const textcolor = span.color;
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
     const verticaltextalignment = span.verticalTextAlignment || (parent && parent.verticalTextAlignment);
