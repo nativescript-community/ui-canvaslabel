@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.17](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.16...v1.0.17) (2020-10-02)
+
+
+### Bug Fixes
+
+* span dont set color if set on parent ([1ce4aa7](https://github.com/nativescript-community/ui-canvaslabel/commit/1ce4aa718a0670bff463781f5a9d3e43e12fd56b))
+
+
+
+
+
 ## [1.0.16](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.15...v1.0.16) (2020-10-02)
 
 
