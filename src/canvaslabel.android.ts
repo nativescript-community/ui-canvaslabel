@@ -10,6 +10,7 @@ function isBold(fontWeight: FontWeight): boolean {
 
 type BaselineAdjustedSpan = new (fontSize, align: string, maxFontSize) => android.text.style.MetricAffectingSpan;
 
+// eslint-disable-next-line no-redeclare
 let BaselineAdjustedSpan: BaselineAdjustedSpan;
 function initializeBaselineAdjustedSpan(): void {
     if (BaselineAdjustedSpan) {
@@ -41,7 +42,7 @@ function initializeBaselineAdjustedSpan(): void {
         }
     }
 
-    BaselineAdjustedSpan = BaselineAdjustedSpanImpl;
+    BaselineAdjustedSpan = BaselineAdjustedSpanImpl as any;
 }
 
 let lineSeparator;
