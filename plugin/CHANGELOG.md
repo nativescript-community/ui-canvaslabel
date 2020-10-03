@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.18](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.17...v1.0.18) (2020-10-03)
+
+
+### Bug Fixes
+
+* rewrote vertical text alignment ([5129c53](https://github.com/nativescript-community/ui-canvaslabel/commit/5129c53f8f6da597d031c1e9bfa1a0db8ab44e53))
+
+
+
+
+
 ## [1.0.17](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.16...v1.0.17) (2020-10-02)
 
 **Note:** Version bump only for package @nativescript-community/ui-canvaslabel
