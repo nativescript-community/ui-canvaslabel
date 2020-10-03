@@ -197,15 +197,12 @@ export abstract class Span extends Shape {
         let paddingTop = parent.effectivePaddingTop + layout.toDeviceIndependentPixels(parent.effectiveBorderTopWidth);
         let paddingBottom = parent.effectivePaddingBottom + layout.toDeviceIndependentPixels(parent.effectiveBorderBottomWidth);
         if (this.paddingTop) {
-            paddingTop += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, wPx - paddingTop - paddingBottom));
+            paddingTop += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, hPx - paddingTop - paddingBottom));
         }
         if (this.paddingBottom) {
-            paddingBottom += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, wPx - paddingTop - paddingBottom));
+            paddingBottom += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, hPx - paddingTop - paddingBottom));
         }
-        // if (!this._paint) {
-        //     this.createPaint(parent);
-        // }
-        // const paint = this.paint;
+
         let align: LayoutAlignment = LayoutAlignment.ALIGN_NORMAL;
         switch (this.textAlignment || parent.style.textAlignment) {
             case 'center':
@@ -217,26 +214,27 @@ export abstract class Span extends Shape {
         }
 
         const verticalalignment = this.verticalAlignment;
-        canvas.save();
+        let deltaX = 0,
+            deltaY = 0;
         if (this.width) {
-            w = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.width, wPx, wPx));
+            w = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.width, 0, wPx - paddingLeft - paddingRight));
             if (this.horizontalAlignment === 'right') {
-                canvas.translate(cW - w, 0);
+                deltaX += cW - w;
             } else if (this.horizontalAlignment === 'center') {
-                canvas.translate(cW / 2 - w / 2, 0);
+                deltaX += cW / 2 - w / 2;
             } else if (this.width) {
-                canvas.translate(w / 2, 0);
+                deltaX += w / 2;
             }
         }
         if (this.height) {
-            h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, hPx, hPx));
+            h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, 0, hPx - paddingTop - paddingBottom));
         }
         if (paddingLeft !== 0) {
             if (!this.width) {
                 w -= paddingLeft;
             }
             if (align !== LayoutAlignment.ALIGN_OPPOSITE) {
-                canvas.translate(paddingLeft, 0);
+                deltaX += paddingLeft;
             }
         }
 
@@ -245,23 +243,30 @@ export abstract class Span extends Shape {
                 // dont translate here changing the width is enough
                 w -= paddingRight;
             } else {
-                canvas.translate(-paddingRight, 0);
+                deltaX += -paddingRight;
             }
         }
         if (!this._staticlayout) {
             this.createStaticLayout(text, w, align, parent);
         }
+        let _staticHeight;
+        const getStaticHeight = () => {
+            if (!_staticHeight) {
+                _staticHeight = this._staticlayout.getHeight();
+            }
+            return _staticHeight;
+        };
         if (verticalalignment === 'bottom') {
-            let height = this._staticlayout.getHeight();
+            let height = getStaticHeight();
             if (paddingBottom !== 0) {
                 height += paddingBottom;
             }
             if (this.height) {
                 height += (h - height) / 2;
             }
-            canvas.translate(0, cH - height);
+            deltaY += cH - height;
         } else if (verticalalignment === 'middle' || verticalalignment === 'center') {
-            const height = this._staticlayout.getHeight();
+            const height = getStaticHeight();
             let decale = 0;
             if (paddingTop !== 0) {
                 decale += paddingTop;
@@ -269,15 +274,20 @@ export abstract class Span extends Shape {
             if (paddingBottom !== 0) {
                 decale -= paddingBottom;
             }
-            canvas.translate(0, cH / 2 - height / 2 + decale);
+            deltaY += cH / 2 - height / 2 + decale;
         } else {
             if (paddingTop !== 0) {
-                canvas.translate(0, paddingTop);
+                deltaY += paddingTop;
             }
             if (this.height) {
-                const height = this._staticlayout.getHeight();
-                canvas.translate(0, (h - height) / 2);
+                const height = getStaticHeight();
+                deltaY += (h - height) / 2;
             }
+        }
+        const needsTranslate = deltaX > 0 || deltaY > 0;
+        if (needsTranslate) {
+            canvas.save();
+            canvas.translate(deltaX, deltaY);
         }
         const spanParent = this._parent && this._parent.get();
         if (!(spanParent instanceof Group)) {
@@ -287,8 +297,8 @@ export abstract class Span extends Shape {
                 paint = paint || new Paint();
                 paint.color = backgroundcolor;
                 const borderRadius = this.borderRadius;
-                const top = this.height ? -this._staticlayout.getHeight() / 2 : 0;
-                const bottom = top + (this.height ? h : this._staticlayout.getHeight());
+                const top = this.height ? -getStaticHeight() / 2 : 0;
+                const bottom = top + (this.height ? h : getStaticHeight());
                 if (borderRadius > 0) {
                     canvas.drawRoundRect(0, top, this._staticlayout.getWidth(), bottom, borderRadius, borderRadius, paint);
                 } else {
@@ -297,7 +307,9 @@ export abstract class Span extends Shape {
             }
         }
         this._staticlayout.draw(canvas as any);
-        canvas.restore();
+        if (needsTranslate) {
+            canvas.restore();
+        }
     }
 }
 export abstract class Group extends Span {
