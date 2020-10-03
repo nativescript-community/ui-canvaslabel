@@ -4,13 +4,17 @@
             <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index">
                 <v-template>
                     <GridLayout>
-                        <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray" margin="4" hardwareAccelerated="false">
+                        <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray" margin="4" hardwareAccelerated="false" borderRightWidth="20" borderRightColor="white">
+                            <Rectangle left="-20" width="20" height="100%" color="red" horizontalAlignment="right" />
                             <CGroup id="group1" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic">
                                 <CSpan id="text1" :text="item.text1" fontWeight="bold" />
                                 <CSpan id="text2" :text="'\n' + item.text2" color="#ccc" fontSize="16" fontStyle="normal" />
                                 <CSpan id="text3" :text="item.text2" color="#eee" fontFamily="Lato-Regular" fontSize="16" fontStyle="normal" />
                             </CGroup>
                             <Line id="line" :antiAlias="true" color="yellow" startX="10%" startY="34%" stopX="90%" stopY="90%" strokeCap="round" strokeJoin="round" strokeWidth="4" dash="1 10 0" />
+                            <CGroup backgroundColor="yellow"  verticalTextAlignment="top" textAlignment="right">
+                            <CSpan text="TOTO" fontSize="20" color="green"/>
+                            </CGroup>
                             <CGroup id="group2" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
                                 <CSpan id="icon1" :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
                                 <CSpan id="texticon1" :text="' ' + item.texticon1" verticalTextAlignment="center" />
@@ -20,13 +24,27 @@
                                 <CSpan id="icon3" :text="' ' + item.icon3" verticalTextAlignment="center" />
                             </CGroup>
 
+                            
+
                             <CGroup id="group3" fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60">
                                 <CSpan id="icon12" :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
                                 <CSpan id="texticon12" :text="'\n' + item.texticon1" paddingRight="10" />
                             </CGroup>
-                            <CSpan id="text4" fontFamily="arial" :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
+                            <CSpan id="text4" fontFamily="arial" :text="item.text4" color="red" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
+                            <CGroup id="group1" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1" color="white" verticalTextAlignment="top">
+                                <CSpan id="span1" text="test1" margin="2" backgroundColor="green" borderRadius="4" verticalTextAlignment="super"/>
+                                <CSpan id="span2" text="testtest2" backgroundColor="red" borderRadius="4" fontSize="24" />
+                                <CGroup id="group2" backgroundColor="green" borderRadius="4">
+                                    <CSpan id="span3" text="mdi-access-point" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" />
+                                    <CSpan id="span4" text="test2" margin="2" />
+                                </CGroup>
+                            </CGroup>
+                            <CGroup id="group3" fontSize="12" verticalAlignment="top" paddingLeft="20" paddingBottom="1" color="white" verticalTextAlignment="middle">
+                            </CGroup>
+                                <CSpan fontSize="20"  text="test1" margin="2" backgroundColor="green" borderRadius="10" />
+                                <CSpan width="44" height="44" horizontalAlignment="right" verticalAlignment="bottom" textAlignment="center" verticalTextAlignment="center" text="mdi-access-point" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" backgroundColor="blue" borderRadius="4" shadow="0 1 4 red"/>
                         </CanvasLabel>
-                        <GridLayout  margin="4" opacity="0.5">
+                        <GridLayout margin="4" opacity="0.5" borderRightWidth="20" borderRightColor="white">
                             <Label color="blue" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic" textWrap>
                                 <Span :text="item.text1" fontWeight="bold" />
                                 <Span :text="'\n' + item.text2" color="#ccc" fontSize="16" fontStyle="normal" />
@@ -45,9 +63,8 @@
                                 <span :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
                                 <Span :text="'\n' + item.texticon1" paddingRight="10" />
                             </Label>
-                            <Label fontFamily="arial" :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4"  textWrap/>
+                            <HTMLLabel fontFamily="arial" :text="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
                         </GridLayout>
-                       
                     </GridLayout>
                 </v-template>
             </CollectionView>
@@ -69,7 +86,7 @@ const icons = [
     'mdi-arrow-right-bold-circle-outline',
     'mdi-crosshairs-gps',
     'mdi-jabber',
-    'mdi-onepassword'
+    'mdi-onepassword',
 ];
 
 const randomLanguage = ['javascript', 'typescript', 'go', 'c++'];
@@ -87,13 +104,13 @@ export default {
             text1: `test asd g ${i}`,
             text2: 'asddg',
             text3: `icon ${i}`,
-            text4: i % 3 === 0 ? 'test' : ''
+            text4: i % 3 === 0 ? 'test' : '',
         }));
         // console.log('items', JSON.stringify(items));
 
         return {
             mdiFontFamily: mdiFontFamily,
-            itemList: items
+            itemList: items,
         };
     },
     methods: {
@@ -102,11 +119,11 @@ export default {
         },
         logEvent(e) {
             console.log('logEvent', e.eventName, e.extraData);
-        }
+        },
         // itemIdGenerator(item, i) {
         //   return item.index;
         // }
-    }
+    },
 };
 </script>
 

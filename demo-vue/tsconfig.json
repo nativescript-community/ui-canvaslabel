@@ -2,7 +2,7 @@
     "extends": "../tsconfig",
     "compilerOptions": {
         "module": "esnext",
-        "target": "es6",
+        "target": "es2017",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noEmitHelpers": true,
@@ -10,16 +10,23 @@
         "lib": [
             "es6",
             "dom",
-            "es2015.iterable"
+            "es2015.iterable",
+            "es2017"
         ],
         "baseUrl": ".",
         "paths": {
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
+            "tns-core-modules": [
+                "./node_modules/@nativescript/core"
+            ],
+            "tns-core-modules/*": [
+                "./node_modules/@nativescript/core/*"
+            ],
             "~/*": [
                 "app/*"
             ]
-        }
+        },
+        "moduleResolution": "node",
+        "removeComments": false
     },
     "include": [
         "**/*"

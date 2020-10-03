@@ -8,7 +8,7 @@ import { svelteNative } from 'svelte-native';
 import { registerNativeViewElement } from 'svelte-native/dom';
 import App from './App.svelte';
 
-import { enableIOSDTCoreText } from 'nativescript-htmllabel';
+import { enableIOSDTCoreText } from '@nativescript-community/ui-label';
 enableIOSDTCoreText();
 registerNativeViewElement('line', () => require('nativescript-canvas/shapes/line').default);
 registerNativeViewElement('canvaslabel', () => require('@nativescript-community/ui-canvaslabel').CanvasLabel);

@@ -3,7 +3,7 @@ import { View } from '@nativescript/core/ui/core/view';
 import { ViewBase } from '@nativescript/core/ui/core/view-base';
 import { NativeViewElementNode, TemplateElement, ViewNode, createElement, logger, registerElement } from 'svelte-native/dom';
 import { flush } from 'svelte/internal';
-import { CollectionView } from 'nativescript-collectionview';
+import { CollectionView } from '@nativescript-community/ui-collectionview';
 import { profile } from '@nativescript/core/profiling';
 
 declare module '@nativescript/core/ui/core/view-base' {

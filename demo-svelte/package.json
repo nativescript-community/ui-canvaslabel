@@ -22,8 +22,8 @@
     "@nativescript/core": "~6.5.1",
     "nativescript-canvas": "^3.0.0",
     "@nativescript-community/ui-canvaslabel": "file:../plugin",
-    "nativescript-collectionview": "2.0.22",
-    "nativescript-htmllabel": "^1.0.32",
+    "@nativescript-community/ui-collectionview": "2.0.22",
+    "@nativescript-community/ui-label": "^1.0.32",
     "svelte-native": "~0.8.4"
   },
   "devDependencies": {
