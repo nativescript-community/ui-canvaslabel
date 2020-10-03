@@ -5,15 +5,13 @@ import android.graphics.Typeface;
 import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.text.TextPaint;
-import android.text.style.ReplacementSpan;
+import android.text.style.MetricAffectingSpan;
 import java.lang.CharSequence;
 
-/**
- * Created by hhristov on 2/27/17.
- */
+import android.util.Log;
 
 @SuppressLint("ParcelCreator")
-public class VerticalCenterSpan extends ReplacementSpan {
+public class VerticalCenterSpan extends MetricAffectingSpan {
     private String verticaltextalignment;
 
     public VerticalCenterSpan(String verticaltextalignment) {
@@ -22,41 +20,48 @@ public class VerticalCenterSpan extends ReplacementSpan {
     }
 
     @Override
-    public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
-
-        // if (fm != null) {
-
-        //     int space = paint.getFontMetricsInt(fm);
-
-        //     fm.ascent -= space;
-        //     fm.top -= space;
-
-        // }
-
-        return Math.round(paint.measureText(text, start, end));
-
+    public void updateDrawState(android.text.TextPaint paint) {
+        updateState(paint);
     }
-    @Override
-    public void draw(Canvas canvas,
-        CharSequence text, int start, int end,
-        float x, int top, int y, int bottom,
-        Paint paint) {
 
-        
-        int h = bottom - top;
-        Paint.FontMetricsInt fm = paint.getFontMetricsInt();
-        int space = fm.ascent - fm.descent + fm.leading;
-        // canvas.drawText(text.subSequence(start, end).toString(), x, y, paint);
-        switch (this.verticaltextalignment) {
+    @Override
+    public void updateMeasureState(android.text.TextPaint paint) {
+        updateState(paint);
+    }
+
+    public void updateState(android.text.TextPaint paint) {
+        final Paint.FontMetrics metrics = paint.getFontMetrics();
+        final float textSize = paint.getTextSize();
+        Log.d("JS",
+                "updateState " + verticaltextalignment + " textSize " + textSize + " metrics.bottom " + metrics.bottom
+                        + " metrics.top " + metrics.top + " metrics.ascent " + metrics.ascent + " metrics.descent "
+                        + metrics.descent + " paint.baselineShift " + paint.baselineShift);
+        switch (verticaltextalignment) {
             case "top":
-                canvas.drawText(text.subSequence(start, end).toString(), x, y - h - space, paint);
+                paint.baselineShift = (int) (-textSize - metrics.bottom - metrics.top);
                 break;
-            case "center":
+            case "bottom":
+                paint.baselineShift = (int) (metrics.bottom);
+                break;
+            case "text-top":
+                paint.baselineShift = (int) (-textSize - metrics.descent - metrics.ascent);
+                break;
+            case "text-bottom":
+                paint.baselineShift = (int) (metrics.bottom - metrics.descent);
+                break;
             case "middle":
-                canvas.drawText(text.subSequence(start, end).toString(), x, y - h / 2 - space / 2, paint);
+            case "center":
+                Log.d("JS",
+                        "baselineShift middle " + (int) ((metrics.descent - metrics.ascent) / 2.0 - metrics.descent));
+
+                paint.baselineShift = (int) ((metrics.descent - metrics.ascent) / 2.0 - metrics.descent) * 2;
                 break;
-            default:
-                canvas.drawText(text.subSequence(start, end).toString(), x, y, paint);
+            case "super":
+                paint.baselineShift = (int) (-textSize * 0.4);
+            case "sub":
+                paint.baselineShift = (int) ((metrics.descent - metrics.ascent) * 0.4);
+                break;
         }
+
     }
 }

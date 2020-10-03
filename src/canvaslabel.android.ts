@@ -1,6 +1,6 @@
 import { Color, profile } from '@nativescript/core';
 import { FontWeight } from '@nativescript/core/ui/styling/font';
-import { Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
+import { Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 
 export { CanvasLabel } from './canvaslabel.common';
 
@@ -8,41 +8,44 @@ function isBold(fontWeight: FontWeight): boolean {
     return fontWeight === 'bold' || fontWeight === '700' || fontWeight === '800' || fontWeight === '900';
 }
 
-// class VerticalCenterSpan extends android.text.style.ReplacementSpan {
-//     constructor(private verticaltextalignment: VerticalTextAlignment) {
-//         super();
-//         return global.__native(this);
-//     }
-//     public getSize(p: android.graphics.Paint, text: string, start: number, end: number, fm: android.graphics.Paint.FontMetricsInt) {
-//         // if (fm != null) {
-//         //     const space = p.getFontMetricsInt(fm);
+type BaselineAdjustedSpan = new (fontSize, align: string, maxFontSize) => android.text.style.MetricAffectingSpan;
 
-//         //     fm.ascent -= space;
-//         //     fm.top -= space;
-//         // }
+let BaselineAdjustedSpan: BaselineAdjustedSpan;
+function initializeBaselineAdjustedSpan(): void {
+    if (BaselineAdjustedSpan) {
+        return;
+    }
+    @NativeClass
+    class BaselineAdjustedSpanImpl extends android.text.style.CharacterStyle {
+        align: string = 'baseline';
+        maxFontSize: number;
 
-//         return Math.round(p.measureText(text, start, end));
-//     }
-//     draw(canvas: android.graphics.Canvas, text: any, start: number, end: number, x: number, top: number, y: number, bottom: number, paint: android.graphics.Paint) {
-//         const h = bottom - top;
-//         const fm = paint.getFontMetricsInt();
-//         const space = fm.ascent - fm.descent + fm.leading;
-//         switch (this.verticaltextalignment) {
-//             case 'top':
-//                 canvas.drawText(text.subSequence(start, end).toString(), x, y - h - space, paint);
-//                 break;
-//             case 'center':
-//             case 'middle':
-//                 canvas.drawText(text.subSequence(start, end).toString(), x, y - h / 2 - space / 2, paint);
-//                 break;
-//             default:
-//                 canvas.drawText(text.subSequence(start, end).toString(), x, y, paint);
-//         }
-//     }
-// }
+        constructor(private fontSize, align: string, maxFontSize) {
+            super();
+
+            this.align = align;
+            this.maxFontSize = maxFontSize;
+        }
+
+        updateDrawState(paint: android.text.TextPaint) {
+            this.updateState(paint);
+        }
+
+        updateState(paint: android.text.TextPaint) {
+            const fontSize = this.fontSize;
+            paint.setTextSize(fontSize);
+            const metrics = paint.getFontMetrics();
+            const result = computeBaseLineOffset(this.align, metrics.ascent, metrics.descent, metrics.bottom, metrics.top, fontSize, this.maxFontSize);
+
+            paint.baselineShift = result;
+        }
+    }
+
+    BaselineAdjustedSpan = BaselineAdjustedSpanImpl;
+}
 
 let lineSeparator;
-export function createSpannable(span: Span, parent?: Group) {
+export function createSpannable(span: Span, parent?: Group, maxFontSize?: number) {
     let text = span.text;
     if (!text) {
         return null;
@@ -69,17 +72,17 @@ export function createSpannable(span: Span, parent?: Group) {
     const length = typeof text.length === 'function' ? text.length() : text.length;
 
     const paint = span.paint;
-    const fontSize = span.fontSize || (parent && parent.fontSize);
-    const fontweight = span.fontWeight || (parent && parent.fontWeight) || 'normal';
+    const fontSize = span.fontSize;
+    const fontweight = span.fontWeight || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
-    const fontFamily = span.fontFamily || (parent && parent.fontFamily);
+    const fontFamily = span.fontFamily;
 
     paint.setFontFamily(fontFamily);
 
-    const textcolor = span.color ;
+    const textcolor = span.color;
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
-    const verticaltextalignment = span.verticalTextAlignment || (parent && parent.verticalTextAlignment);
+    const verticaltextalignment = span.verticalTextAlignment;
 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
@@ -97,8 +100,9 @@ export function createSpannable(span: Span, parent?: Group) {
         const typefaceSpan: android.text.style.TypefaceSpan = new org.nativescript.widgets.CustomTypefaceSpan(fontFamily, font);
         ssb.setSpan(typefaceSpan, 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
-    if (verticaltextalignment) {
-        ssb.setSpan(new (com as any).nativescript.canvaslabel.VerticalCenterSpan(verticaltextalignment), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    if (verticaltextalignment && verticaltextalignment !== 'initial') {
+        initializeBaselineAdjustedSpan();
+        ssb.setSpan(new BaselineAdjustedSpan(fontSize, verticaltextalignment, maxFontSize), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
     }
     if (fontSize) {
         ssb.setSpan(new android.text.style.AbsoluteSizeSpan(fontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -131,10 +135,8 @@ export class Span extends SpanBase {
     _ssb: android.text.SpannableStringBuilder;
 
     @profile
-    createNative(parent?: Group) {
-        // const startTime = Date.now();
-        this._native = this._ssb = createSpannable(this, parent);
-        // this.log('createNative', Date.now() - startTime, 'ms');
+    createNative(parent?: Group, maxFontSize?: number) {
+        this._native = this._ssb = createSpannable(this, parent, maxFontSize);
     }
 }
 
@@ -142,7 +144,7 @@ export class Group extends GroupBase {
     _ssb: android.text.SpannableStringBuilder;
 
     @profile
-    createNative() {
+    createNative(parent?: Group, maxFontSize?: number) {
         // const startTime = Date.now();
         let ssb = this._ssb;
         if (!ssb) {
@@ -150,24 +152,21 @@ export class Group extends GroupBase {
         } else {
             ssb.clear();
         }
+        if (maxFontSize === undefined) {
+            // top group let s get max font Size
+            maxFontSize = this.getMaxFontSize();
+        }
         this._spans.forEach((s) => {
-            // s._startIndexInGroup = ssb.length();
-            // s._endIndexInGroup = s._startIndexInGroup + (s.text ? s.text.length: 0);
-            const native = s.getOrCreateNative(this);
+            const native = (s as Span).getOrCreateNative(this, maxFontSize);
             if (native) {
                 ssb.append(native);
             }
         });
-        // this.log('createNative', Date.now() - startTime, 'ms');
         this._native = ssb;
     }
     onChildChange(span: Span) {
         this._native = null;
         this._staticlayout = null;
         super.onChildChange(span);
-        // if (this._native) {
-        //     (this._native as android.text.SpannableStringBuilder).replace(span._startIndexInGroup, span._endIndexInGroup, span.getOrCreateNative(this));
-        // }
-        // span._endIndexInGroup = span._startIndexInGroup + (span.text ? span.text.length: 0);
     }
 }

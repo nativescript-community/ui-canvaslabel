@@ -1,27 +1,39 @@
-import { Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
+import { Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 import { Font } from '@nativescript/core/ui/styling/font';
 import { Color } from '@nativescript/core';
 
 export { CanvasLabel } from './canvaslabel.common';
 
-export function createSpannable(span: Span, parent?: Group): NSMutableAttributedString {
+export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMutableAttributedString {
+    let text = span.text;
+    if (!text) {
+        return null;
+    }
     const attrDict = {} as { key: string; value: any };
-    const fontFamily = span.fontFamily || (parent && parent.fontFamily);
-    const fontSize = span.fontSize || (parent && parent.fontSize);
-    const fontweight = span.fontWeight || (parent && parent.fontWeight) || 'normal';
+    const fontFamily = span.fontFamily;
+    const fontSize = span.fontSize;
+    const fontweight = span.fontWeight || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
     const textcolor = span.color;
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
-    const verticaltextalignment = span.verticalTextAlignment || (parent && parent.verticalTextAlignment);
-
+    const verticaltextalignment = span.verticalTextAlignment;
+    let iosFont: UIFont;
     if (fontweight || fontstyle || fontFamily || fontSize) {
         const font = new Font(fontFamily, fontSize, fontstyle, typeof span.fontWeight === 'string' ? fontweight : ((fontweight + '') as any));
-        const iosFont = font.getUIFont(UIFont.systemFontOfSize(fontSize));
+        iosFont = font.getUIFont(UIFont.systemFontOfSize(fontSize));
         attrDict[NSFontAttributeName] = iosFont;
     }
-    if (verticaltextalignment) {
-        attrDict['verticalTextAligment'] = verticaltextalignment;
+    if (verticaltextalignment && iosFont) {
+        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(
+            verticaltextalignment,
+            -iosFont.ascender,
+            -iosFont.descender,
+            -iosFont.ascender,
+            -iosFont.descender,
+            fontSize,
+            maxFontSize
+        );
     }
     if (textcolor) {
         const color = textcolor instanceof Color ? textcolor : new Color(textcolor as any);
@@ -44,10 +56,6 @@ export function createSpannable(span: Span, parent?: Group): NSMutableAttributed
             attrDict[NSStrikethroughStyleAttributeName] = strikethrough;
         }
     }
-    let text = span.text;
-    if (!text) {
-        return null;
-    }
     if (!(text instanceof NSAttributedString)) {
         if (!(typeof text === 'string')) {
             text = text.toString();
@@ -64,17 +72,22 @@ export function createSpannable(span: Span, parent?: Group): NSMutableAttributed
 }
 
 export class Span extends SpanBase {
-    createNative(parent?: Group) {
-        this._native = createSpannable(this, parent);
+    createNative(parent?: Group, maxFontSize?: number) {
+        this._native = createSpannable(this, parent, maxFontSize);
     }
 }
 export class Group extends GroupBase {
-    createNative() {
+    createNative(parent?: Group, maxFontSize?: number) {
         const ssb = NSMutableAttributedString.new();
+
+        if (maxFontSize === undefined) {
+            // top group let s get max font Size
+            maxFontSize = this.getMaxFontSize();
+        }
         this._spans.forEach((s) => {
             // s._startIndexInGroup = ssb.length;
             // s._endIndexInGroup = s.text ? s.text.length : 0;
-            const native = s.getOrCreateNative(this);
+            const native = s.getOrCreateNative(this, maxFontSize);
             if (native) {
                 ssb.appendAttributedString(native);
             }
