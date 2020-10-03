@@ -7,3 +7,4 @@ hooks/
 tsconfig.json
 !*.d.ts
 .smooth-releaserc
+*.jar
