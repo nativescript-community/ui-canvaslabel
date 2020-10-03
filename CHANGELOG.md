@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.20](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.19...v1.0.20) (2020-10-03)
+
+
+### Bug Fixes
+
+* another padding fix ([68a3014](https://github.com/nativescript-community/ui-canvaslabel/commit/68a3014856ac9916de82357e627644601ad143e5))
+
+
+
+
+
 ## [1.0.19](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.18...v1.0.19) (2020-10-03)
 
 
