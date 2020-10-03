@@ -12,8 +12,8 @@
                                 <CSpan id="text3" :text="item.text2" color="#eee" fontFamily="Lato-Regular" fontSize="16" fontStyle="normal" />
                             </CGroup>
                             <Line id="line" :antiAlias="true" color="yellow" startX="10%" startY="34%" stopX="90%" stopY="90%" strokeCap="round" strokeJoin="round" strokeWidth="4" dash="1 10 0" />
-                            <CGroup backgroundColor="yellow"  verticalTextAlignment="top" textAlignment="right">
-                            <CSpan text="TOTO" fontSize="20" color="green"/>
+                            <CGroup backgroundColor="yellow" verticalTextAlignment="top" textAlignment="right">
+                                <CSpan text="TOTO" fontSize="20" color="green" />
                             </CGroup>
                             <CGroup id="group2" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
                                 <CSpan id="icon1" :text="item.icon1" fontSize="20" color="green" :fontFamily="mdiFontFamily" />
@@ -24,25 +24,35 @@
                                 <CSpan id="icon3" :text="' ' + item.icon3" verticalTextAlignment="center" />
                             </CGroup>
 
-                            
-
                             <CGroup id="group3" fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60">
                                 <CSpan id="icon12" :text="item.icon1" fontSize="14" :fontFamily="mdiFontFamily" />
                                 <CSpan id="texticon12" :text="'\n' + item.texticon1" paddingRight="10" />
                             </CGroup>
                             <CSpan id="text4" fontFamily="arial" :text="item.text4" color="red" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4" />
                             <CGroup id="group1" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1" color="white" verticalTextAlignment="top">
-                                <CSpan id="span1" text="test1" margin="2" backgroundColor="green" borderRadius="4" verticalTextAlignment="super"/>
+                                <CSpan id="span1" text="test1" margin="2" backgroundColor="green" borderRadius="4" verticalTextAlignment="super" />
                                 <CSpan id="span2" text="testtest2" backgroundColor="red" borderRadius="4" fontSize="24" />
                                 <CGroup id="group2" backgroundColor="green" borderRadius="4">
                                     <CSpan id="span3" text="mdi-access-point" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" />
                                     <CSpan id="span4" text="test2" margin="2" />
                                 </CGroup>
                             </CGroup>
-                            <CGroup id="group3" fontSize="12" verticalAlignment="top" paddingLeft="20" paddingBottom="1" color="white" verticalTextAlignment="middle">
-                            </CGroup>
-                                <CSpan fontSize="20"  text="test1" margin="2" backgroundColor="green" borderRadius="10" />
-                                <CSpan width="44" height="44" horizontalAlignment="right" verticalAlignment="bottom" textAlignment="center" verticalTextAlignment="center" text="mdi-access-point" fontSize="20" color="yellow" :fontFamily="mdiFontFamily" backgroundColor="blue" borderRadius="4" shadow="0 1 4 red"/>
+                            <CSpan fontSize="20" text="test1" margin="2" backgroundColor="green" borderRadius="10" />
+                            <CSpan
+                                width="44"
+                                height="44"
+                                horizontalAlignment="right"
+                                verticalAlignment="bottom"
+                                textAlignment="center"
+                                verticalTextAlignment="center"
+                                text="mdi-access-point"
+                                fontSize="20"
+                                color="yellow"
+                                :fontFamily="mdiFontFamily"
+                                backgroundColor="blue"
+                                borderRadius="4"
+                                shadow="0 1 4 red"
+                            />
                         </CanvasLabel>
                         <GridLayout margin="4" opacity="0.5" borderRightWidth="20" borderRightColor="white">
                             <Label color="blue" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic" textWrap>
