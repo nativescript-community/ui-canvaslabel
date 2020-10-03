@@ -186,16 +186,16 @@ export abstract class Span extends Shape {
         const wPx = layout.toDevicePixels(w);
         const hPx = layout.toDevicePixels(h);
 
-        let paddingLeft = parent.effectivePaddingLeft + layout.toDeviceIndependentPixels(parent.effectiveBorderLeftWidth);
-        let paddingRight = parent.effectivePaddingRight + layout.toDeviceIndependentPixels(parent.effectiveBorderRightWidth);
+        let paddingLeft = layout.toDeviceIndependentPixels(parent.effectivePaddingLeft) + layout.toDeviceIndependentPixels(parent.effectiveBorderLeftWidth);
+        let paddingRight = layout.toDeviceIndependentPixels(parent.effectivePaddingRight) + layout.toDeviceIndependentPixels(parent.effectiveBorderRightWidth);
         if (this.paddingLeft) {
             paddingLeft += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx - paddingLeft - paddingRight));
         }
         if (this.paddingRight) {
             paddingRight += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx - paddingLeft - paddingRight));
         }
-        let paddingTop = parent.effectivePaddingTop + layout.toDeviceIndependentPixels(parent.effectiveBorderTopWidth);
-        let paddingBottom = parent.effectivePaddingBottom + layout.toDeviceIndependentPixels(parent.effectiveBorderBottomWidth);
+        let paddingTop = layout.toDeviceIndependentPixels(parent.effectivePaddingTop) + layout.toDeviceIndependentPixels(parent.effectiveBorderTopWidth);
+        let paddingBottom = layout.toDeviceIndependentPixels(parent.effectivePaddingBottom) + layout.toDeviceIndependentPixels(parent.effectiveBorderBottomWidth);
         if (this.paddingTop) {
             paddingTop += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, hPx - paddingTop - paddingBottom));
         }
@@ -223,26 +223,24 @@ export abstract class Span extends Shape {
             } else if (this.horizontalAlignment === 'center') {
                 deltaX += cW / 2 - w / 2;
             } else if (this.width) {
-                deltaX += w / 2;
+                // deltaX += w / 2;
             }
         }
         if (this.height) {
             h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, 0, hPx - paddingTop - paddingBottom));
         }
-        if (paddingLeft !== 0) {
+        if (paddingLeft !== 0 && align !== LayoutAlignment.ALIGN_OPPOSITE && this.horizontalAlignment !== 'right') {
             if (!this.width) {
                 w -= paddingLeft;
             }
-            if (align !== LayoutAlignment.ALIGN_OPPOSITE) {
-                deltaX += paddingLeft;
-            }
+            deltaX += paddingLeft;
         }
 
         if (paddingRight !== 0) {
             if (!this.width) {
                 // dont translate here changing the width is enough
                 w -= paddingRight;
-            } else {
+            } else if ( align === LayoutAlignment.ALIGN_OPPOSITE || this.horizontalAlignment !== 'right') {
                 deltaX += -paddingRight;
             }
         }
