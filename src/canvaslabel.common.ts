@@ -53,7 +53,7 @@ export abstract class Span extends Shape {
     @stringProperty({ nonPaintProp: true }) fontFamily: string;
     @stringProperty({ nonPaintProp: true }) fontStyle: FontStyle;
     @stringProperty({ nonPaintProp: true }) fontWeight: FontWeight;
-    @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment;
+    @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment & 'middle';
     @stringProperty({ nonPaintProp: true }) textDecoration: TextDecoration;
 
     @percentLengthProperty({ nonPaintProp: true }) width: PercentLength;
@@ -67,6 +67,8 @@ export abstract class Span extends Shape {
     @stringProperty({ nonPaintProp: true }) verticalTextAlignment: VerticalTextAlignment;
     @colorProperty({ nonPaintProp: true }) backgroundColor: Color;
     @numberProperty({ nonPaintProp: true }) borderRadius: number;
+    @numberProperty({ nonPaintProp: true }) letterSpacing: number;
+    @numberProperty({ nonPaintProp: true }) lineHeight: number;
     @stringProperty({ nonPaintProp: true }) text: any;
 
     __fontSize: number;

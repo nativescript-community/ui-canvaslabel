@@ -84,6 +84,8 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?: number
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const verticaltextalignment = span.verticalTextAlignment;
+    const letterSpacing = span.letterSpacing || (parent && parent.letterSpacing);
+    const lineHeight = span.lineHeight || (parent && parent.lineHeight);
 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
@@ -97,7 +99,6 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?: number
 
     if (fontFamily) {
         const font = paint.font.getAndroidTypeface();
-        // span.log('span typeface', fontFamily, font);
         const typefaceSpan: android.text.style.TypefaceSpan = new org.nativescript.widgets.CustomTypefaceSpan(fontFamily, font);
         ssb.setSpan(typefaceSpan, 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
@@ -107,6 +108,14 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?: number
     }
     if (fontSize) {
         ssb.setSpan(new android.text.style.AbsoluteSizeSpan(fontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    if (letterSpacing) {
+        ssb.setSpan(new android.text.style.ScaleXSpan((letterSpacing + 1) / 10), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    if (lineHeight !== undefined) {
+        ssb.setSpan(new (com as any).nativescript.canvaslabel.HeightSpan(lineHeight), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     if (textcolor) {

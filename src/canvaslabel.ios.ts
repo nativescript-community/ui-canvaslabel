@@ -17,6 +17,9 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
     const textcolor = span.color;
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
+    const letterSpacing = span.letterSpacing || (parent && parent.letterSpacing);
+    const lineHeight = span.lineHeight || (parent && parent.lineHeight);
+    const textAlignment = span.textAlignment || (parent && parent.textAlignment);
     const verticaltextalignment = span.verticalTextAlignment;
     let iosFont: UIFont;
     if (fontweight || fontstyle || fontFamily || fontSize) {
@@ -25,15 +28,7 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
         attrDict[NSFontAttributeName] = iosFont;
     }
     if (verticaltextalignment && iosFont) {
-        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(
-            verticaltextalignment,
-            -iosFont.ascender,
-            -iosFont.descender,
-            -iosFont.ascender,
-            -iosFont.descender,
-            fontSize,
-            maxFontSize
-        );
+        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -iosFont.ascender, -iosFont.descender, -iosFont.ascender, -iosFont.descender, fontSize, maxFontSize);
     }
     if (textcolor) {
         const color = textcolor instanceof Color ? textcolor : new Color(textcolor as any);
@@ -43,6 +38,31 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
     if (backgroundcolor) {
         const color = backgroundcolor instanceof Color ? backgroundcolor : new Color(backgroundcolor as any);
         attrDict[NSBackgroundColorAttributeName] = color.ios;
+    }
+    if (letterSpacing) {
+        attrDict[NSKernAttributeName] = letterSpacing * iosFont.pointSize;
+    }
+
+    let paragraphStyle;
+    if (lineHeight !== undefined) {
+        paragraphStyle = NSMutableParagraphStyle.alloc().init();
+        console.log('textAlignment', textAlignment);
+        switch (textAlignment) {
+            case 'middle':
+            case 'center':
+                paragraphStyle.alignment = NSTextAlignment.Center;
+                break;
+            case 'right':
+                paragraphStyle.alignment = NSTextAlignment.Right;
+                break;
+            default:
+                paragraphStyle.alignment = NSTextAlignment.Left;
+                break;
+        }
+        paragraphStyle.minimumLineHeight = lineHeight;
+    }
+    if (paragraphStyle) {
+        attrDict[NSParagraphStyleAttributeName] = paragraphStyle;
     }
 
     if (textDecorations) {
