@@ -30,6 +30,6 @@
     },
     "homepage": "https://github.com/nativescript-community/ui-canvaslabel#readme",
     "dependencies": {
-        "@nativescript-community/ui-canvas": "^4.0.19"
+        "@nativescript-community/ui-canvas": "^4.0.20"
     }
 }
