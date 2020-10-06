@@ -36,8 +36,8 @@ function initializeBaselineAdjustedSpan(): void {
             const fontSize = this.fontSize;
             paint.setTextSize(fontSize);
             const metrics = paint.getFontMetrics();
-            const result = computeBaseLineOffset(this.align, metrics.ascent, metrics.descent, metrics.bottom, metrics.top, fontSize, this.maxFontSize);
-
+            let result = computeBaseLineOffset(this.align, metrics.ascent, metrics.descent, metrics.bottom, metrics.top, fontSize, this.maxFontSize);
+            result += metrics.bottom;
             paint.baselineShift = result;
         }
     }
