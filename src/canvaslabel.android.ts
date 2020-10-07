@@ -79,6 +79,8 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?: number
     const fontFamily = span.fontFamily;
 
     paint.setFontFamily(fontFamily);
+    paint.setFontWeight(fontweight);
+    paint.setFontStyle(fontstyle);
 
     const textcolor = span.color;
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
