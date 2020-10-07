@@ -3,7 +3,7 @@ import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { HorizontalAlignment, VerticalAlignment } from '@nativescript/core/ui/styling/style-properties';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
-import { Canvas, CanvasView, LayoutAlignment, Paint, StaticLayout } from '@nativescript-community/ui-canvas';
+import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
 
 export function computeBaseLineOffset(align, fontAscent, fontDescent, fontBottom, fontTop, fontSize, maxFontSize) {
@@ -300,7 +300,8 @@ export abstract class Span extends Shape {
                 const top = this.height ? -getStaticHeight() / 2 : 0;
                 const bottom = top + (this.height ? h : getStaticHeight());
                 if (borderRadius > 0) {
-                    canvas.drawRoundRect(0, top, this._staticlayout.getWidth(), bottom, borderRadius, borderRadius, paint);
+                    console.log('drawRoundRect', borderRadius);
+                    canvas.drawRoundRect(new RectF(0, top, this._staticlayout.getWidth(), bottom), borderRadius, borderRadius, paint);
                 } else {
                     canvas.drawRect(0, top, this._staticlayout.getWidth(), bottom, paint);
                 }
