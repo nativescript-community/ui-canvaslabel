@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.22](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.21...v1.0.22) (2020-10-07)
+
+
+### Bug Fixes
+
+* android fix for different SDKs ([aa7851a](https://github.com/nativescript-community/ui-canvaslabel/commit/aa7851aac9391b403fd0e4e8924cd2ac8d4ab031))
+* android working on older SDK version ([32d4911](https://github.com/nativescript-community/ui-canvaslabel/commit/32d4911d44156f0013f57b16481b7650701c8bc6))
+* ensure paint sets font weight and style ([f83cf3a](https://github.com/nativescript-community/ui-canvaslabel/commit/f83cf3a001aa623be8efb07ed58664db5bffa243))
+
+
+
+
+
 ## [1.0.21](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.20...v1.0.21) (2020-10-06)
 
 
