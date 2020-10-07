@@ -89,17 +89,19 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?: number
 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
-    if (bold && italic) {
-        ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    } else if (bold) {
-        ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    } else if (italic) {
-        ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    if (android.os.Build.VERSION.SDK_INT < 28) {
+        if (bold && italic) {
+            ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else if (bold) {
+            ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else if (italic) {
+            ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
     }
 
     if (fontFamily) {
         const font = paint.font.getAndroidTypeface();
-        const typefaceSpan: android.text.style.TypefaceSpan = new org.nativescript.widgets.CustomTypefaceSpan(fontFamily, font);
+        const typefaceSpan: android.text.style.TypefaceSpan = new (com as any).nativescript.canvaslabel.CustomTypefaceSpan(fontFamily, font);
         ssb.setSpan(typefaceSpan, 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial') {
