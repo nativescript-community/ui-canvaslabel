@@ -300,7 +300,6 @@ export abstract class Span extends Shape {
                 const top = this.height ? -getStaticHeight() / 2 : 0;
                 const bottom = top + (this.height ? h : getStaticHeight());
                 if (borderRadius > 0) {
-                    console.log('drawRoundRect', borderRadius);
                     canvas.drawRoundRect(new RectF(0, top, this._staticlayout.getWidth(), bottom), borderRadius, borderRadius, paint);
                 } else {
                     canvas.drawRect(0, top, this._staticlayout.getWidth(), bottom, paint);
