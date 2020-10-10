@@ -415,7 +415,6 @@ export class CanvasLabel extends CanvasView {
         // disable hardware drawing by default
         // android badly renders texts with it
         this.hardwareAccelerated = false;
-        console.log('CanvasLabel');
     }
     // fontSize: number;
     // fontFamily: string;
