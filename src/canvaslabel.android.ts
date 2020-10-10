@@ -46,7 +46,7 @@ function initializeBaselineAdjustedSpan(): void {
 }
 
 let lineSeparator;
-export function createSpannable(span: Span, parent?: Group, maxFontSize?: number) {
+export const createSpannable = profile('createSpannable', function (span: Span, parent?: Group, maxFontSize?: number) {
     let text = span.text;
     if (!text) {
         return null;
@@ -143,7 +143,7 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?: number
         }
     }
     return ssb;
-}
+});
 
 export class Span extends SpanBase {
     _ssb: android.text.SpannableStringBuilder;
