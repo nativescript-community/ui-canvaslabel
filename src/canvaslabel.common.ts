@@ -1,10 +1,10 @@
-import { CSSType, ChangedData, Color, Length, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
-import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
-import { HorizontalAlignment, VerticalAlignment } from '@nativescript/core/ui/styling/style-properties';
-import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
-import { layout } from '@nativescript/core/utils/utils';
+import { cssProperty } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
+import { CSSType, ChangedData, Color, Length, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
+import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
+import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
+import { layout } from '@nativescript/core/utils/utils';
 
 export function computeBaseLineOffset(align, fontAscent, fontDescent, fontBottom, fontTop, fontSize, maxFontSize) {
     let result = 0;
@@ -134,9 +134,12 @@ export abstract class Span extends Shape {
         this.paint.setAntiAlias(true);
     }
 
-    notifyPropertyChange(propertyName: string, value: any, oldValue?: any) {
+    reset() {
         this._staticlayout = null;
         this._native = null;
+    }
+    notifyPropertyChange(propertyName: string, value: any, oldValue?: any) {
+        this.reset();
         super.notifyPropertyChange(propertyName, value, oldValue);
     }
 
@@ -242,7 +245,7 @@ export abstract class Span extends Shape {
             if (!this.width) {
                 // dont translate here changing the width is enough
                 w -= paddingRight;
-            } else if ( align === LayoutAlignment.ALIGN_OPPOSITE || this.horizontalAlignment !== 'right') {
+            } else if (align === LayoutAlignment.ALIGN_OPPOSITE || this.horizontalAlignment !== 'right') {
                 deltaX += -paddingRight;
             }
         }
@@ -321,7 +324,10 @@ export abstract class Group extends Span {
         }
         return this._spans;
     }
-
+    reset() {
+        super.reset();
+        this._spans && this._spans.forEach((s) => s.reset());
+    }
     getMaxFontSize() {
         let max = this.__fontSize || 0;
         this._spans.forEach((s) => {
@@ -406,7 +412,10 @@ declare module '@nativescript/core/ui/core/view' {
 export class CanvasLabel extends CanvasView {
     constructor() {
         super();
+        // disable hardware drawing by default
+        // android badly renders texts with it
         this.hardwareAccelerated = false;
+        console.log('CanvasLabel');
     }
     // fontSize: number;
     // fontFamily: string;
@@ -414,109 +423,66 @@ export class CanvasLabel extends CanvasView {
     // fontWeight: FontWeight;
     // textAlignment: TextAlignment;
     // textDecoration: TextDecoration;
+    @cssProperty fontFamily: string;
+    @cssProperty fontSize: number;
+    @cssProperty fontStyle: FontStyle;
+    @cssProperty fontWeight: FontWeight;
+    @cssProperty letterSpacing: number;
+    @cssProperty lineHeight: number;
+    @cssProperty textAlignment: TextAlignment;
+    @cssProperty textDecoration: TextDecoration;
+    @cssProperty textTransform: TextTransform;
+    @cssProperty whiteSpace: WhiteSpace;
 
-    get fontFamily(): string {
-        return this.style.fontFamily;
-    }
-    set fontFamily(value: string) {
-        this.style.fontFamily = value;
-    }
-
-    get fontSize(): number {
-        return this.style.fontSize;
-    }
-    set fontSize(value: number) {
-        this.style.fontSize = value;
-    }
-
-    get fontStyle(): FontStyle {
-        return this.style.fontStyle;
-    }
-    set fontStyle(value: FontStyle) {
-        this.style.fontStyle = value;
+    handlePropertyChange() {
+        const shapes = this.shapes;
+        shapes && shapes.forEach((s) => s instanceof Span && s.reset());
     }
 
-    get fontWeight(): FontWeight {
-        return this.style.fontWeight;
-    }
-    set fontWeight(value: FontWeight) {
-        this.style.fontWeight = value;
+    set color(value) {
+        this.style.color = value;
+        this.handlePropertyChange();
     }
 
-    get letterSpacing(): number {
-        return this.style.letterSpacing;
-    }
-    set letterSpacing(value: number) {
-        this.style.letterSpacing = value;
-    }
+    // get whiteSpace(): WhiteSpace {
+    //     return this.style.whiteSpace;
+    // }
+    // set whiteSpace(value: WhiteSpace) {
+    //     this.style.whiteSpace = value;
+    // }
 
-    get lineHeight(): number {
-        return this.style.lineHeight;
-    }
-    set lineHeight(value: number) {
-        this.style.lineHeight = value;
-    }
+    // get padding(): string | Length {
+    //     return this.style.padding;
+    // }
+    // set padding(value: string | Length) {
+    //     this.style.padding = value;
+    // }
 
-    get textAlignment(): TextAlignment {
-        return this.style.textAlignment;
-    }
-    set textAlignment(value: TextAlignment) {
-        this.style.textAlignment = value;
-    }
+    // get paddingTop(): Length {
+    //     return this.style.paddingTop;
+    // }
+    // set paddingTop(value: Length) {
+    //     this.style.paddingTop = value;
+    // }
 
-    get textDecoration(): TextDecoration {
-        return this.style.textDecoration;
-    }
-    set textDecoration(value: TextDecoration) {
-        this.style.textDecoration = value;
-    }
+    // get paddingRight(): Length {
+    //     return this.style.paddingRight;
+    // }
+    // set paddingRight(value: Length) {
+    //     this.style.paddingRight = value;
+    // }
 
-    get textTransform(): TextTransform {
-        return this.style.textTransform;
-    }
-    set textTransform(value: TextTransform) {
-        this.style.textTransform = value;
-    }
+    // get paddingBottom(): Length {
+    //     return this.style.paddingBottom;
+    // }
+    // set paddingBottom(value: Length) {
+    //     this.style.paddingBottom = value;
+    // }
 
-    get whiteSpace(): WhiteSpace {
-        return this.style.whiteSpace;
-    }
-    set whiteSpace(value: WhiteSpace) {
-        this.style.whiteSpace = value;
-    }
-
-    get padding(): string | Length {
-        return this.style.padding;
-    }
-    set padding(value: string | Length) {
-        this.style.padding = value;
-    }
-
-    get paddingTop(): Length {
-        return this.style.paddingTop;
-    }
-    set paddingTop(value: Length) {
-        this.style.paddingTop = value;
-    }
-
-    get paddingRight(): Length {
-        return this.style.paddingRight;
-    }
-    set paddingRight(value: Length) {
-        this.style.paddingRight = value;
-    }
-
-    get paddingBottom(): Length {
-        return this.style.paddingBottom;
-    }
-    set paddingBottom(value: Length) {
-        this.style.paddingBottom = value;
-    }
-
-    get paddingLeft(): Length {
-        return this.style.paddingLeft;
-    }
-    set paddingLeft(value: Length) {
-        this.style.paddingLeft = value;
-    }
+    // get paddingLeft(): Length {
+    //     return this.style.paddingLeft;
+    // }
+    // set paddingLeft(value: Length) {
+    //     this.style.paddingLeft = value;
+    // }
 }
