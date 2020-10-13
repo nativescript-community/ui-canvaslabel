@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-canvaslabel",
-    "version": "1.0.23",
+    "version": "1.0.24",
     "main": "./canvaslabel",
     "sideEffects": false,
     "typings": "./canvaslabel.d.ts",
