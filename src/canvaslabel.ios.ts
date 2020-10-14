@@ -46,7 +46,6 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
     let paragraphStyle;
     if (lineHeight !== undefined) {
         paragraphStyle = NSMutableParagraphStyle.alloc().init();
-        console.log('textAlignment', textAlignment);
         switch (textAlignment) {
             case 'middle':
             case 'center':

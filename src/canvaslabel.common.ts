@@ -1,7 +1,7 @@
 import { cssProperty } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, Length, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
+import { CSSType, ChangedData, Color, Length, Observable, ObservableArray, PercentLength, paddingLeftProperty, profile } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
@@ -176,6 +176,7 @@ export abstract class Span extends Shape {
         paint.setFontStyle(this.fontStyle || parent.style.fontStyle || parent.fontStyle);
         this._staticlayout = new StaticLayout(text, paint, w, align, 1, 0, true);
     }
+
     // needsMeasurement = false;
     // @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
