@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.26](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.25...v1.0.26) (2020-10-15)
+
+
+### Features
+
+* span textTransform ([bb6381f](https://github.com/nativescript-community/ui-canvaslabel/commit/bb6381f21f7284e957fd1a5582f143b44d54707b))
+
+
+
+
+
 ## [1.0.25](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.24...v1.0.25) (2020-10-14)
 
 **Note:** Version bump only for package @nativescript-community/ui-canvaslabel
