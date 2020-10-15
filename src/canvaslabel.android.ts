@@ -1,4 +1,4 @@
-import { Color, profile } from '@nativescript/core';
+import { Color, getTransformedText, profile } from '@nativescript/core';
 import { FontWeight } from '@nativescript/core/ui/styling/font';
 import { Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 
@@ -36,8 +36,9 @@ function initializeBaselineAdjustedSpan(): void {
             const fontSize = this.fontSize;
             paint.setTextSize(fontSize);
             const metrics = paint.getFontMetrics();
-            let result = computeBaseLineOffset(this.align, metrics.ascent, metrics.descent, metrics.bottom, metrics.top, fontSize, this.maxFontSize);
-            result += metrics.bottom;
+            const result = computeBaseLineOffset(this.align, metrics.ascent, metrics.descent, metrics.bottom, metrics.top, fontSize, this.maxFontSize);
+            // TODO: when or why should we add bottom?
+            // result += metrics.bottom;
             paint.baselineShift = result;
         }
     }
@@ -61,6 +62,10 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
             }
             text = text.replace(/\\n/g, lineSeparator);
         }
+    }
+    const textTransform = span.textTransform || (parent && parent.textTransform);
+    if (textTransform) {
+        text = getTransformedText(text, textTransform);
     }
 
     let ssb = span._ssb;

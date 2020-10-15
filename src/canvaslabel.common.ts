@@ -6,6 +6,31 @@ import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
 
+
+function getCapitalizedString(str: string): string {
+    const words = str.split(' ');
+    const newWords = [];
+    for (let i = 0, length = words.length; i < length; i++) {
+        const word = words[i].toLowerCase();
+        newWords.push(word.substr(0, 1).toUpperCase() + word.substring(1));
+    }
+
+    return newWords.join(' ');
+}
+
+export function getTransformedText(text: string, textTransform: TextTransform): string {
+    switch (textTransform) {
+        case 'uppercase':
+            return text.toUpperCase();
+        case 'lowercase':
+            return text.toLowerCase();
+        case 'capitalize':
+            return getCapitalizedString(text);
+        case 'none':
+        default:
+            return text;
+    }
+}
 export function computeBaseLineOffset(align, fontAscent, fontDescent, fontBottom, fontTop, fontSize, maxFontSize) {
     let result = 0;
     switch (align) {
@@ -55,6 +80,7 @@ export abstract class Span extends Shape {
     @stringProperty({ nonPaintProp: true }) fontWeight: FontWeight;
     @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment & 'middle';
     @stringProperty({ nonPaintProp: true }) textDecoration: TextDecoration;
+    @stringProperty({ nonPaintProp: true }) textTransform: TextTransform;
 
     @percentLengthProperty({ nonPaintProp: true }) width: PercentLength;
     @percentLengthProperty({ nonPaintProp: true }) height: PercentLength;

@@ -1,6 +1,6 @@
 import { Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 import { Font } from '@nativescript/core/ui/styling/font';
-import { Color } from '@nativescript/core';
+import { Color, getTransformedText } from '@nativescript/core';
 
 export { CanvasLabel } from './canvaslabel.common';
 
@@ -81,6 +81,10 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
         }
         if (text.indexOf('\n') !== -1) {
             text = text.replace(/\\n/g, '\u{2029}');
+        }
+        const textTransform = span.textTransform || (parent && parent.textTransform);
+        if (textTransform) {
+            text = getTransformedText(text, textTransform);
         }
         return NSMutableAttributedString.alloc().initWithStringAttributes(text, attrDict as any);
     } else {
