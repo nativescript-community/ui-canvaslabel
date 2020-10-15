@@ -6,7 +6,6 @@ import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
 
-
 function getCapitalizedString(str: string): string {
     const words = str.split(' ');
     const newWords = [];
@@ -470,45 +469,38 @@ export class CanvasLabel extends CanvasView {
         this.handlePropertyChange();
     }
 
-    // get whiteSpace(): WhiteSpace {
-    //     return this.style.whiteSpace;
-    // }
-    // set whiteSpace(value: WhiteSpace) {
-    //     this.style.whiteSpace = value;
-    // }
+    get padding(): string | Length {
+        return this.style.padding;
+    }
+    set padding(value: string | Length) {
+        this.style.padding = value;
+    }
 
-    // get padding(): string | Length {
-    //     return this.style.padding;
-    // }
-    // set padding(value: string | Length) {
-    //     this.style.padding = value;
-    // }
+    get paddingTop(): Length {
+        return this.style.paddingTop;
+    }
+    set paddingTop(value: Length) {
+        this.style.paddingTop = value;
+    }
 
-    // get paddingTop(): Length {
-    //     return this.style.paddingTop;
-    // }
-    // set paddingTop(value: Length) {
-    //     this.style.paddingTop = value;
-    // }
+    get paddingRight(): Length {
+        return this.style.paddingRight;
+    }
+    set paddingRight(value: Length) {
+        this.style.paddingRight = value;
+    }
 
-    // get paddingRight(): Length {
-    //     return this.style.paddingRight;
-    // }
-    // set paddingRight(value: Length) {
-    //     this.style.paddingRight = value;
-    // }
+    get paddingBottom(): Length {
+        return this.style.paddingBottom;
+    }
+    set paddingBottom(value: Length) {
+        this.style.paddingBottom = value;
+    }
 
-    // get paddingBottom(): Length {
-    //     return this.style.paddingBottom;
-    // }
-    // set paddingBottom(value: Length) {
-    //     this.style.paddingBottom = value;
-    // }
-
-    // get paddingLeft(): Length {
-    //     return this.style.paddingLeft;
-    // }
-    // set paddingLeft(value: Length) {
-    //     this.style.paddingLeft = value;
-    // }
+    get paddingLeft(): Length {
+        return this.style.paddingLeft;
+    }
+    set paddingLeft(value: Length) {
+        this.style.paddingLeft = value;
+    }
 }
