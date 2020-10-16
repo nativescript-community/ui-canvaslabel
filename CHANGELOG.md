@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.28](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.27...v1.0.28) (2020-10-16)
+
+
+### Bug Fixes
+
+* android HWA enabled by default on >= 28 ([e29166a](https://github.com/nativescript-community/ui-canvaslabel/commit/e29166a7e109076193c9f9416e82e95c8c8f8d73))
+
+
+
+
+
 ## [1.0.27](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.26...v1.0.27) (2020-10-15)
 
 
