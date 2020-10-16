@@ -10,6 +10,13 @@ function isBold(fontWeight: FontWeight): boolean {
 
 type BaselineAdjustedSpan = new (fontSize, align: string, maxFontSize) => android.text.style.MetricAffectingSpan;
 
+let SDK_INT = -1;
+function getSDK() {
+    if (SDK_INT === -1) {
+        SDK_INT = android.os.Build.VERSION.SDK_INT;
+    }
+    return SDK_INT;
+}
 // eslint-disable-next-line no-redeclare
 let BaselineAdjustedSpan: BaselineAdjustedSpan;
 function initializeBaselineAdjustedSpan(): void {
@@ -96,7 +103,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
-    if (android.os.Build.VERSION.SDK_INT < 28) {
+    if (getSDK() < 28) {
         if (bold && italic) {
             ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else if (bold) {

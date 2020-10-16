@@ -438,9 +438,6 @@ declare module '@nativescript/core/ui/core/view' {
 export class CanvasLabel extends CanvasView {
     constructor() {
         super();
-        // disable hardware drawing by default
-        // android badly renders texts with it
-        this.hardwareAccelerated = false;
     }
     // fontSize: number;
     // fontFamily: string;
