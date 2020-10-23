@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.29](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.28...v1.0.29) (2020-10-23)
+
+
+### Bug Fixes
+
+* span tap support for android ([6eeb6d8](https://github.com/nativescript-community/ui-canvaslabel/commit/6eeb6d88d6caf5d80d3cd0b00d3a7443169a47d4))
+* support latest text comp ([da9301c](https://github.com/nativescript-community/ui-canvaslabel/commit/da9301c2faccfe6703acdc41f1574963b0b43512))
+* support latest text comp ([b72e0da](https://github.com/nativescript-community/ui-canvaslabel/commit/b72e0dab06bfe8665380a4981a11846b07f26813))
+
+
+
+
+
 ## [1.0.28](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.27...v1.0.28) (2020-10-16)
 
 
