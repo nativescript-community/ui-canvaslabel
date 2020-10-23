@@ -346,7 +346,9 @@ export abstract class Span extends Shape {
             canvas.restore();
         }
     }
+    toNativeString() {}
 }
+Span.prototype.toNativeString = NSPan.prototype.toNativeString;
 export abstract class Group extends Span {
     _spans: ObservableArray<Span>;
     getOrCreateSpans() {
