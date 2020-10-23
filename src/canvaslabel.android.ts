@@ -9,6 +9,7 @@ function isBold(fontWeight: FontWeight): boolean {
 }
 
 type BaselineAdjustedSpan = new (fontSize, align: string, maxFontSize) => android.text.style.MetricAffectingSpan;
+type ClickableSpan = new (owner: Span) => android.text.style.ClickableSpan;
 
 let SDK_INT = -1;
 function getSDK() {
@@ -17,9 +18,41 @@ function getSDK() {
     }
     return SDK_INT;
 }
+
+
+// eslint-disable-next-line no-redeclare
+let ClickableSpan: ClickableSpan;
+function initializeClickableSpan(): void {
+    if (ClickableSpan) {
+        return;
+    }
+
+    @NativeClass
+    class ClickableSpanImpl extends android.text.style.ClickableSpan {
+        owner: WeakRef<Span>;
+
+        constructor(owner: Span) {
+            super();
+            this.owner = new WeakRef(owner);
+
+            return global.__native(this);
+        }
+        onClick(view: android.view.View) {
+            const owner = this.owner.get();
+            if (owner) {
+                owner._emit(Span.linkTapEvent);
+            }
+        }
+        updateDrawState(tp: android.text.TextPaint) {
+            // don't style as link
+        }
+    }
+
+    ClickableSpan = ClickableSpanImpl;
+}
 // eslint-disable-next-line no-redeclare
 let BaselineAdjustedSpan: BaselineAdjustedSpan;
-function initializeBaselineAdjustedSpan(): void {
+function initializeBaselineAdjustedSpan() {
     if (BaselineAdjustedSpan) {
         return;
     }
@@ -153,6 +186,10 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         if (strikethrough) {
             ssb.setSpan(new android.text.style.StrikethroughSpan(), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+    }
+    if (span.hasListeners('linkTap')) {
+        initializeClickableSpan();
+        ssb.setSpan(new ClickableSpan(span), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
     }
     return ssb;
 });
