@@ -101,6 +101,12 @@ export abstract class Span extends Shape {
     __fontWeight: FontWeight;
     __verticalTextAlignment: any;
 
+    get style() {
+        return this;
+    }
+    toString() {
+        return `[CSpan: ${this.text}]`;
+    }
     set _fontFamily(value) {
         this.__fontFamily = value;
     }
