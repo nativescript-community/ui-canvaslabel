@@ -37,7 +37,9 @@
                                     <CSpan id="span4" text="test2" margin="2" />
                                 </CGroup>
                             </CGroup>
-                            <CSpan fontSize="20" text="test1" margin="2" backgroundColor="green" borderRadius="10" />
+                            <CGroup>
+                                <CSpan fontSize="20" text="test1" margin="2" color="red" backgroundColor="green" borderRadius="10" @linkTap="onLinkTapped('test1')" />
+                            </CGroup>
                             <CSpan
                                 width="44"
                                 height="44"
@@ -96,7 +98,7 @@ const icons = [
     'mdi-arrow-right-bold-circle-outline',
     'mdi-crosshairs-gps',
     'mdi-jabber',
-    'mdi-onepassword',
+    'mdi-onepassword'
 ];
 
 const randomLanguage = ['javascript', 'typescript', 'go', 'c++'];
@@ -114,26 +116,29 @@ export default {
             text1: `test asd g ${i}`,
             text2: 'asddg',
             text3: `icon ${i}`,
-            text4: i % 3 === 0 ? 'test' : '',
+            text4: i % 3 === 0 ? 'test' : ''
         }));
         // console.log('items', JSON.stringify(items));
 
         return {
             mdiFontFamily: mdiFontFamily,
-            itemList: items,
+            itemList: items
         };
     },
     methods: {
+        onLinkTapped(text) {
+            console.log('onLinkTapped', text);
+        },
         onItemTap({ index, item }) {
             console.log(`Tapped on ${index} ${item.title}`);
         },
         logEvent(e) {
             console.log('logEvent', e.eventName, e.extraData);
-        },
+        }
         // itemIdGenerator(item, i) {
         //   return item.index;
         // }
-    },
+    }
 };
 </script>
 

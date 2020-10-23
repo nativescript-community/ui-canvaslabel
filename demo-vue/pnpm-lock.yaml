@@ -1,17 +1,17 @@
 dependencies:
   '@mdi/font': 4.9.95
-  '@nativescript-community/ui-canvas': 'link:../../../../../usr/local/pnpm-global/node_modules/@nativescript-community/ui-canvas'
+  '@nativescript-community/ui-canvas': 4.0.30
   '@nativescript-community/ui-canvaslabel': 'link:../plugin'
-  '@nativescript-community/ui-collectionview': 4.0.1
-  '@nativescript-community/ui-label': 1.0.45
-  '@nativescript/core': 7.0.9
+  '@nativescript-community/ui-collectionview': 4.0.4
+  '@nativescript-community/ui-label': 1.0.52
+  '@nativescript/core': 7.0.12
   '@nativescript/webpack': 3.0.5_5bef26289a0d9b265b919ddb2259fc0d
   nativescript-vue: 2.8.1
 devDependencies:
   '@babel/core': 7.11.6
   '@babel/preset-env': 7.11.5_@babel+core@7.11.6
-  '@nativescript/android': 7.0.0
-  '@nativescript/ios': 7.0.0
+  '@nativescript/android': 7.0.1
+  '@nativescript/ios': 7.0.4
   '@nativescript/types': 7.0.4
   babel-loader: 8.1.0_@babel+core@7.11.6
   cross-var: 1.1.0
@@ -967,19 +967,29 @@ packages:
     dev: false
     resolution:
       integrity: sha512-m2sbAs+SMwRnWpkMriBxEulwuhmqRyh6X+hdOZlqSxYZUM2C2TaDnQ4gcilzdoAgru2XYnWViZ/xPuSDGgRXVw==
-  /@nativescript-community/ui-collectionview/4.0.1:
+  /@nativescript-community/text/1.3.4:
     dev: false
     resolution:
-      integrity: sha512-FXntcF58emHL7rLS//fGNZAfjhCRZUW08DtZM7dnoLz4xlprMF+RWPRoCDdnqWy/0DWogPWsl5IHWVRxoBwOJw==
-  /@nativescript-community/ui-label/1.0.45:
+      integrity: sha512-Ei0KEF9PO/QNtEaPC8zmhFMOsb1dCgIi/sZXVYDbJZeHT7khSEWhTjJG8g4Llefn19yRl2612sCAPB17ukIRkg==
+  /@nativescript-community/ui-canvas/4.0.30:
     dev: false
     resolution:
-      integrity: sha512-P0oEAABfGhc1lSvj+arnIBmQKCQDD+QEDWSdKOJOSfFTimwzs2SnE/TTdJqEIvNKoMkKvusRFqgkyLU6tWvMVA==
-  /@nativescript/android/7.0.0:
+      integrity: sha512-smg/83EeUo1RwdvgD4tjpfGFJeHBq07x0jeZqnxSS4Y9ic1Jg/zurmmA15LMPW02q6eqys77UnlkLSo0LNKDDA==
+  /@nativescript-community/ui-collectionview/4.0.4:
+    dev: false
+    resolution:
+      integrity: sha512-pkOw+Kxx/+UAntsMpn/iWnToDBU/XwNyhDl9iCJ3n5gDM+4Xn6O5JhFXmd+C7FHTqUUBc/5JODzmg1mR8SngCw==
+  /@nativescript-community/ui-label/1.0.52:
+    dependencies:
+      '@nativescript-community/text': 1.3.4
+    dev: false
+    resolution:
+      integrity: sha512-UkijqlZTEwlqsGtyZ3xYcjsXE9UT4u6F7U0ID/BSfMawd0WhrKwrvUzTSKv4ZCjauiqpq3XYqFq07+YrNIXbJA==
+  /@nativescript/android/7.0.1:
     dev: true
     resolution:
-      integrity: sha512-RplCS/0nteROpatMYZHXlyA1xp+9c0+sBBm5QxUy7MYaoY+iHdfboAv+J62XTI8aEmbNHDkBm7/eYFxgCbrdEA==
-  /@nativescript/core/7.0.9:
+      integrity: sha512-VsZCJ5zfZo0+/lFwKz+S7iFb7MA2jgACB7y8dNje3/cnZl+moKPNjFqitoEP0DY4gLz9LJNbFIIaUt84tMdUSQ==
+  /@nativescript/core/7.0.12:
     dependencies:
       '@nativescript/hook': 2.0.0
       css-tree: 1.0.0-alpha.39
@@ -988,7 +998,7 @@ packages:
     dev: false
     requiresBuild: true
     resolution:
-      integrity: sha512-PNnfkefuu8pVPmdTXMI8H7ZdQp4TqyzU8oQKoC2BcHw5EU8yfIfTCHfXtBl0GvrWMs7xb1gpa7qeP3nENKH5uw==
+      integrity: sha512-V71fq1TVJHf09JHs1Sf4eJgCykpMwTw6OMmaLDNuka++P2ON8FFB3+fC4o/j1uWAvkyckMuxLcpQTfIVWwLS8Q==
   /@nativescript/hook/2.0.0:
     dependencies:
       glob: 7.1.6
@@ -996,10 +1006,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-v3Hj3Zpd69sQJfFpDNXonV0EjO1a2OL4l48wlo1Ycsqk4r7RY822d/irFTjt0LllRG0OcdEGgfG6wKb0YgPyHw==
-  /@nativescript/ios/7.0.0:
+  /@nativescript/ios/7.0.4:
     dev: true
     resolution:
-      integrity: sha512-6Tv4WG7plnuzVhnJ16E9XJ5flJOzqb5Wmmgx6Tn1NMNXTNZuT6c7rfDBGDR/xexz0gZ8Sx3PULyeBdUCKa/LIg==
+      integrity: sha512-GYhJwBSzkpuy3Gyl0JTMRsTwND9p9thmv2eBgDvcbEot8jocPIR6MLq/XFzMzyTXOTanBMep0K75yFKwD6ay4g==
   /@nativescript/types-android/7.0.4:
     dev: true
     resolution:
@@ -7471,13 +7481,13 @@ specifiers:
   '@babel/core': ^7.11.6
   '@babel/preset-env': ^7.11.5
   '@mdi/font': 4.9.95
-  '@nativescript-community/ui-canvas': ^4.0.18
+  '@nativescript-community/ui-canvas': ^4.0.30
   '@nativescript-community/ui-canvaslabel': 'file:../plugin'
-  '@nativescript-community/ui-collectionview': 4.0.1
-  '@nativescript-community/ui-label': ^1.0.45
-  '@nativescript/android': 7.0.0
-  '@nativescript/core': 7.0.9
-  '@nativescript/ios': 7.0.0
+  '@nativescript-community/ui-collectionview': 4.0.4
+  '@nativescript-community/ui-label': ^1.0.52
+  '@nativescript/android': 7.0.1
+  '@nativescript/core': 7.0.12
+  '@nativescript/ios': 7.0.4
   '@nativescript/types': 7.0.4
   '@nativescript/webpack': 3.0.5
   babel-loader: ^8.1.0
