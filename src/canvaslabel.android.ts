@@ -1,8 +1,6 @@
 import { Color, getTransformedText, profile } from '@nativescript/core';
 import { FontWeight } from '@nativescript/core/ui/styling/font';
-import { Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
-
-export { CanvasLabel } from './canvaslabel.common';
+import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 
 function isBold(fontWeight: FontWeight): boolean {
     return fontWeight === 'bold' || fontWeight === '700' || fontWeight === '800' || fontWeight === '900';
@@ -187,7 +185,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
             ssb.setSpan(new android.text.style.StrikethroughSpan(), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
-    if (span.hasListeners('linkTap')) {
+    if (span._tappable) {
         initializeClickableSpan();
         ssb.setSpan(new ClickableSpan(span), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
     }
@@ -232,4 +230,8 @@ export class Group extends GroupBase {
         this._staticlayout = null;
         super.onChildChange(span);
     }
+}
+
+export class CanvasLabel extends CanvasLabelBase {
+
 }

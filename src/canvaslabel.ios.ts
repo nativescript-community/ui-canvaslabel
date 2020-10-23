@@ -1,8 +1,7 @@
-import { Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
-import { Font } from '@nativescript/core/ui/styling/font';
 import { Color, getTransformedText } from '@nativescript/core';
+import { Font } from '@nativescript/core/ui/styling/font';
+import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 
-export { CanvasLabel } from './canvaslabel.common';
 
 export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMutableAttributedString {
     let text = span.text;
@@ -30,6 +29,9 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
     if (verticaltextalignment && iosFont) {
         attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -iosFont.ascender, -iosFont.descender, -iosFont.ascender, -iosFont.descender, fontSize, maxFontSize);
     }
+    // if (span._tappable) {
+    //     attrDict[NSLinkAttributeName] = text;
+    // }
     if (textcolor) {
         const color = textcolor instanceof Color ? textcolor : new Color(textcolor as any);
         attrDict[NSForegroundColorAttributeName] = color.ios;
@@ -75,6 +77,7 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
             attrDict[NSStrikethroughStyleAttributeName] = strikethrough;
         }
     }
+
     if (!(text instanceof NSAttributedString)) {
         if (!(typeof text === 'string')) {
             text = text.toString();
@@ -128,4 +131,8 @@ export class Group extends GroupBase {
         // }
         // span._endIndexInGroup = span.text ? span.text.length : 0;
     }
+}
+
+export class CanvasLabel extends CanvasLabelBase {
+
 }

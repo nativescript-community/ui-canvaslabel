@@ -1,7 +1,7 @@
 import { cssProperty } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, Length, Span as NSPan, Observable, ObservableArray, PercentLength, paddingLeftProperty , profile} from '@nativescript/core';
+import { CSSType, ChangedData, Color, EventData, Length, Span as NSPan, Observable, ObservableArray, PercentLength , paddingLeftProperty, profile} from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
@@ -101,6 +101,27 @@ export abstract class Span extends Shape {
     __fontFamily: string;
     __fontWeight: FontWeight;
     __verticalTextAlignment: any;
+
+    addEventListener(arg: string, callback: (data: EventData) => void, thisArg?: any) {
+        super.addEventListener(arg, callback, thisArg);
+        if (arg === Span.linkTapEvent) {
+            this._setTappable(true);
+        }
+    }
+
+    removeEventListener(arg: string, callback?: any, thisArg?: any) {
+        super.removeEventListener(arg, callback, thisArg);
+        if (arg === Span.linkTapEvent) {
+            this._setTappable(this.hasListeners(Span.linkTapEvent));
+        }
+    }
+    _tappable = false;
+    private _setTappable(value: boolean): void {
+        if (this._tappable !== value) {
+            this._tappable = value;
+            this.notifyPropertyChange('tappable', value);
+        }
+    }
 
     get style() {
         return this;
