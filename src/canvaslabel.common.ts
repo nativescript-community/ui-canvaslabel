@@ -466,9 +466,6 @@ declare module '@nativescript/core/ui/core/view' {
 
 @CSSType('CanvasLabel')
 export class CanvasLabel extends CanvasView {
-    constructor() {
-        super();
-    }
     // fontSize: number;
     // fontFamily: string;
     // fontStyle: FontStyle;
