@@ -85,9 +85,10 @@ function initializeBaselineAdjustedSpan() {
 }
 
 let lineSeparator;
+let Style: typeof  android.text.style;
 export const createSpannable = profile('createSpannable', function (span: Span, parent?: Group, maxFontSize?: number) {
     let text = span.text;
-    if (!text) {
+    if (!text || span.visibility !== 'visible') {
         return null;
     }
     if (!(text instanceof android.text.Spannable)) {
@@ -132,16 +133,21 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     const letterSpacing = span.letterSpacing || (parent && parent.letterSpacing);
     const lineHeight = span.lineHeight || (parent && parent.lineHeight);
 
+    if (!Style) {
+        Style = android.text.style;
+    }
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
     if (getSDK() < 28) {
+
         if (bold && italic) {
-            ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else if (bold) {
-            ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.BOLD), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else if (italic) {
-            ssb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+
     }
 
     if (fontFamily) {
@@ -154,11 +160,11 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         ssb.setSpan(new BaselineAdjustedSpan(fontSize, verticaltextalignment, maxFontSize), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
     }
     if (fontSize) {
-        ssb.setSpan(new android.text.style.AbsoluteSizeSpan(fontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new Style.AbsoluteSizeSpan(fontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     if (letterSpacing) {
-        ssb.setSpan(new android.text.style.ScaleXSpan((letterSpacing + 1) / 10), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new Style.ScaleXSpan((letterSpacing + 1) / 10), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     if (lineHeight !== undefined) {
@@ -167,28 +173,28 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
 
     if (textcolor) {
         const color = textcolor instanceof Color ? textcolor : new Color(textcolor as any);
-        ssb.setSpan(new android.text.style.ForegroundColorSpan(color.android), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new Style.ForegroundColorSpan(color.android), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (backgroundcolor) {
         const color = backgroundcolor instanceof Color ? backgroundcolor : new Color(backgroundcolor as any);
-        ssb.setSpan(new android.text.style.BackgroundColorSpan(color.android), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new Style.BackgroundColorSpan(color.android), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     if (textDecorations) {
         const underline = textDecorations.indexOf('underline') !== -1;
         if (underline) {
-            ssb.setSpan(new android.text.style.UnderlineSpan(), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new Style.UnderlineSpan(), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         const strikethrough = textDecorations.indexOf('line-through') !== -1;
         if (strikethrough) {
-            ssb.setSpan(new android.text.style.StrikethroughSpan(), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new Style.StrikethroughSpan(), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
-    if (span._tappable) {
-        initializeClickableSpan();
-        ssb.setSpan(new ClickableSpan(span), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-    }
+    // if (span._tappable) {
+    //     initializeClickableSpan();
+    //     ssb.setSpan(new ClickableSpan(span), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    // }
     return ssb;
 });
 

@@ -5,7 +5,7 @@ import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, c
 
 export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMutableAttributedString {
     let text = span.text;
-    if (!text) {
+    if (!text || span.visibility !== 'visible') {
         return null;
     }
     const attrDict = {} as { key: string; value: any };
