@@ -2,7 +2,7 @@ dependencies:
   '@mdi/font': 4.9.95
   '@nativescript-community/ui-canvas': 4.0.30
   '@nativescript-community/ui-canvaslabel': 'link:../plugin'
-  '@nativescript-community/ui-collectionview': 4.0.4
+  '@nativescript-community/ui-collectionview': 'link:../../../../../usr/local/pnpm-global/node_modules/@nativescript-community/ui-collectionview'
   '@nativescript-community/ui-label': 1.0.52
   '@nativescript/core': 7.0.12
   '@nativescript/webpack': 3.0.5_5bef26289a0d9b265b919ddb2259fc0d
@@ -975,10 +975,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-smg/83EeUo1RwdvgD4tjpfGFJeHBq07x0jeZqnxSS4Y9ic1Jg/zurmmA15LMPW02q6eqys77UnlkLSo0LNKDDA==
-  /@nativescript-community/ui-collectionview/4.0.4:
-    dev: false
-    resolution:
-      integrity: sha512-pkOw+Kxx/+UAntsMpn/iWnToDBU/XwNyhDl9iCJ3n5gDM+4Xn6O5JhFXmd+C7FHTqUUBc/5JODzmg1mR8SngCw==
   /@nativescript-community/ui-label/1.0.52:
     dependencies:
       '@nativescript-community/text': 1.3.4
