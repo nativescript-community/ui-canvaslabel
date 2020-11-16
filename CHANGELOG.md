@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.32](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.31...v1.0.32) (2020-11-16)
+
+
+### Bug Fixes
+
+* support span visibility for spans in group ([6bf0d80](https://github.com/nativescript-community/ui-canvaslabel/commit/6bf0d80816ce3cabc9734469d4e607682577d0ec))
+
+
+
+
+
 ## [1.0.31](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.30...v1.0.31) (2020-11-02)
 
 **Note:** Version bump only for package @nativescript-community/ui-canvaslabel
