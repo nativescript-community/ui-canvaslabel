@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.33](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.32...v1.0.33) (2020-11-22)
+
+
+### Bug Fixes
+
+* fix for groups without span ([e805e2e](https://github.com/nativescript-community/ui-canvaslabel/commit/e805e2e45cf3dc355fff89341a80f3307ba413af))
+
+
+
+
+
 ## [1.0.32](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.31...v1.0.32) (2020-11-16)
 
 
