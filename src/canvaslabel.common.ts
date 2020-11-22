@@ -386,7 +386,7 @@ export abstract class Group extends Span {
     }
     getMaxFontSize() {
         let max = this.__fontSize || 0;
-        this._spans.forEach((s) => {
+        this._spans && this._spans.forEach((s) => {
             if (s instanceof Group) {
                 max = Math.max(max, s.getMaxFontSize());
             } else if (s.__fontSize) {

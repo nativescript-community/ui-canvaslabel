@@ -110,7 +110,7 @@ export class Group extends GroupBase {
             // top group let s get max font Size
             maxFontSize = this.getMaxFontSize();
         }
-        this._spans.forEach((s) => {
+        this._spans && this._spans.forEach((s) => {
             // s._startIndexInGroup = ssb.length;
             // s._endIndexInGroup = s.text ? s.text.length : 0;
             const native = s.getOrCreateNative(this, maxFontSize);

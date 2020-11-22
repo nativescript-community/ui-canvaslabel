@@ -223,7 +223,7 @@ export class Group extends GroupBase {
             // top group let s get max font Size
             maxFontSize = this.getMaxFontSize();
         }
-        this._spans.forEach((s) => {
+        this._spans && this._spans.forEach((s) => {
             const native = (s as Span).getOrCreateNative(this, maxFontSize);
             if (native) {
                 ssb.append(native);
