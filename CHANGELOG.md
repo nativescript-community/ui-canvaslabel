@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.36](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.35...v1.0.36) (2020-12-07)
+
+
+### Bug Fixes
+
+* use a cache for fonts and paint ([188ae6c](https://github.com/nativescript-community/ui-canvaslabel/commit/188ae6c044375f73e955f81dea9abe2669345314))
+
+
+
+
+
 ## [1.0.35](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.34...v1.0.35) (2020-11-23)
 
 **Note:** Version bump only for package @nativescript-community/ui-canvaslabel
