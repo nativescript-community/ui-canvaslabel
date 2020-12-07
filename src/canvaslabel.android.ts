@@ -1,6 +1,7 @@
+import { Paint } from '@nativescript-community/ui-canvas';
 import { Color, getTransformedText, profile } from '@nativescript/core';
 import { FontWeight } from '@nativescript/core/ui/styling/font';
-import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
+import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset, fontPaintCache } from './canvaslabel.common';
 
 function isBold(fontWeight: FontWeight): boolean {
     return fontWeight === 'bold' || fontWeight === '700' || fontWeight === '800' || fontWeight === '900';
@@ -8,6 +9,9 @@ function isBold(fontWeight: FontWeight): boolean {
 
 type BaselineAdjustedSpan = new (fontSize, align: string, maxFontSize) => android.text.style.MetricAffectingSpan;
 type ClickableSpan = new (owner: Span) => android.text.style.ClickableSpan;
+
+
+export const typefaceCache = {};
 
 let SDK_INT = -1;
 function getSDK() {
@@ -86,6 +90,7 @@ function initializeBaselineAdjustedSpan() {
 
 let lineSeparator;
 let Style: typeof  android.text.style;
+
 export const createSpannable = profile('createSpannable', function (span: Span, parent?: Group, maxFontSize?: number) {
     let text = span.text;
     if (!text || span.visibility !== 'visible') {
@@ -122,9 +127,6 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
     const fontFamily = span.fontFamily;
 
-    paint.setFontFamily(fontFamily);
-    paint.setFontWeight(fontweight);
-    paint.setFontStyle(fontstyle);
 
     const textcolor = span.color;
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
@@ -151,8 +153,21 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     }
 
     if (fontFamily) {
-        const font = paint.font.getAndroidTypeface();
-        const typefaceSpan: android.text.style.TypefaceSpan = new (com as any).nativescript.canvaslabel.CustomTypefaceSpan(fontFamily, font);
+        const fontCacheKey = fontFamily + fontweight + fontstyle;
+
+        let typeface = typefaceCache[fontCacheKey];
+        if (!typeface) {
+            let paint: Paint = fontPaintCache[fontCacheKey];
+            if (!paint) {
+                paint = span.paint;
+                paint.setFontFamily(fontFamily);
+                paint.setFontWeight(fontweight);
+                paint.setFontStyle(fontstyle);
+                fontPaintCache[fontCacheKey] = paint;
+            }
+            typeface = typefaceCache[fontCacheKey] = paint.getFont().getAndroidTypeface();
+        }
+        const typefaceSpan: android.text.style.TypefaceSpan = new (com as any).nativescript.canvaslabel.CustomTypefaceSpan(fontFamily, typeface);
         ssb.setSpan(typefaceSpan, 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial') {

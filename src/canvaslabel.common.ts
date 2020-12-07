@@ -6,6 +6,8 @@ import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
 
+export const fontPaintCache = {};
+
 function getCapitalizedString(str: string): string {
     const words = str.split(' ');
     const newWords = [];
@@ -126,9 +128,9 @@ export abstract class Span extends Shape {
     get style() {
         return this;
     }
-    toString() {
-        return `[CSpan: ${this.text}]`;
-    }
+    // toString() {
+    //     return `[CSpan: ${this.text}]`;
+    // }
     set _fontFamily(value) {
         this.__fontFamily = value;
     }
@@ -221,12 +223,23 @@ export abstract class Span extends Shape {
     }
     // @profile
     createStaticLayout(text, w, align, parent: CanvasLabel) {
-        const paint = this.paint;
+        const fontweight = this.fontWeight;
+        const fontstyle = this.fontStyle || parent.style.fontStyle || parent.fontStyle;
+        const fontFamily = this.fontFamily;
+        const fontCacheKey = fontFamily + fontweight + fontstyle;
+        let paint = fontPaintCache[fontCacheKey];
+        if (!paint) {
+            paint = this.paint;
+            paint.setFontFamily(fontFamily);
+            paint.setFontWeight(fontweight);
+            paint.setFontStyle(fontstyle);
+            fontPaintCache[fontCacheKey] = paint;
+        }
         paint.color = this.color || parent.style.color;
         paint.textSize = this.fontSize;
-        paint.setFontFamily(this.fontFamily);
-        paint.setFontWeight(this.fontWeight);
-        paint.setFontStyle(this.fontStyle || parent.style.fontStyle || parent.fontStyle);
+        // paint.setFontFamily(this.fontFamily);
+        // paint.setFontWeight(this.fontWeight);
+        // paint.setFontStyle(this.fontStyle || parent.style.fontStyle || parent.fontStyle);
         this._staticlayout = new StaticLayout(text, paint, w, align, 1, 0, true);
     }
 
