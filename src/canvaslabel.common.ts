@@ -226,15 +226,15 @@ export abstract class Span extends Shape {
         const fontweight = this.fontWeight;
         const fontstyle = this.fontStyle || parent.style.fontStyle || parent.fontStyle;
         const fontFamily = this.fontFamily;
-        const fontCacheKey = fontFamily + fontweight + fontstyle;
-        let paint = fontPaintCache[fontCacheKey];
-        if (!paint) {
-            paint = this.paint;
-            paint.setFontFamily(fontFamily);
-            paint.setFontWeight(fontweight);
-            paint.setFontStyle(fontstyle);
-            fontPaintCache[fontCacheKey] = paint;
-        }
+        // const fontCacheKey = fontFamily + fontweight + fontstyle;
+        // let paint = fontPaintCache[fontCacheKey];
+        // if (!paint) {
+        const paint = this.paint;
+        paint.setFontFamily(fontFamily);
+        paint.setFontWeight(fontweight);
+        paint.setFontStyle(fontstyle);
+        // fontPaintCache[fontCacheKey] = paint;
+        // }
         paint.color = this.color || parent.style.color;
         paint.textSize = this.fontSize;
         // paint.setFontFamily(this.fontFamily);
