@@ -117,11 +117,11 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         span._ssb = ssb = new android.text.SpannableStringBuilder(text);
     } else {
         ssb.clear();
+        ssb.clearSpans();
         ssb.append(text);
     }
     const length = typeof text.length === 'function' ? text.length() : text.length;
 
-    const paint = span.paint;
     const fontSize = span.fontSize;
     const fontweight = span.fontWeight || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
@@ -227,12 +227,12 @@ export class Group extends GroupBase {
 
     @profile
     createNative(parent?: Group, maxFontSize?: number) {
-        // const startTime = Date.now();
         let ssb = this._ssb;
         if (!ssb) {
             this._ssb = ssb = new android.text.SpannableStringBuilder();
         } else {
             ssb.clear();
+            ssb.clearSpans();
         }
         if (maxFontSize === undefined) {
             // top group let s get max font Size
