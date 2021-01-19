@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.38](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.37...v1.0.38) (2021-01-19)
+
+
+### Bug Fixes
+
+* **android:** reusing of SpannableStringBuilder fix ([20a2c46](https://github.com/nativescript-community/ui-canvaslabel/commit/20a2c46e6705d48a27a6c5022f1342835588f16d))
+
+
+
+
+
 ## [1.0.37](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.36...v1.0.37) (2020-12-09)
 
 
