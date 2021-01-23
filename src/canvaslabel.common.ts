@@ -312,7 +312,7 @@ export abstract class Span extends Shape {
             if (!this.width) {
                 // dont translate here changing the width is enough
                 w -= paddingRight;
-            } else if (align === LayoutAlignment.ALIGN_OPPOSITE || this.horizontalAlignment !== 'right') {
+            } else if (align === LayoutAlignment.ALIGN_OPPOSITE || this.horizontalAlignment === 'right') {
                 deltaX += -paddingRight;
             }
         }
