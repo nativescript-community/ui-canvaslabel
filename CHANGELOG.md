@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.39](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.38...v1.0.39) (2021-01-23)
+
+
+### Bug Fixes
+
+* **ios:** trying to get better lineHeight ([81f61a2](https://github.com/nativescript-community/ui-canvaslabel/commit/81f61a2802f56cb7929746f5e6052a55f2c794f9))
+* paddingRight not working with left horizontalAlignment ([97b47f8](https://github.com/nativescript-community/ui-canvaslabel/commit/97b47f8a5c4156ef9bc00d56497b0c9907da59ba))
+
+
+
+
+
 ## [1.0.38](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.37...v1.0.38) (2021-01-19)
 
 
