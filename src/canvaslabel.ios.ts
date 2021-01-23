@@ -61,6 +61,7 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
                 break;
         }
         paragraphStyle.minimumLineHeight = lineHeight;
+        paragraphStyle.maximumLineHeight = lineHeight;
     }
     if (paragraphStyle) {
         attrDict[NSParagraphStyleAttributeName] = paragraphStyle;
