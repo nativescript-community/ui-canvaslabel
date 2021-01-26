@@ -172,7 +172,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial') {
         initializeBaselineAdjustedSpan();
-        ssb.setSpan(new BaselineAdjustedSpan(fontSize, verticaltextalignment, maxFontSize), 0, length, android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        ssb.setSpan(new BaselineAdjustedSpan(fontSize, verticaltextalignment, maxFontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (fontSize) {
         ssb.setSpan(new Style.AbsoluteSizeSpan(fontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
