@@ -121,7 +121,7 @@ export abstract class Span extends Shape {
     private _setTappable(value: boolean): void {
         if (this._tappable !== value) {
             this._tappable = value;
-            this.notifyPropertyChange('tappable', value);
+            this.notifyPropertyChange('tappable', value, !value);
         }
     }
 
@@ -193,8 +193,10 @@ export abstract class Span extends Shape {
         this._staticlayout = null;
         this._native = null;
     }
-    notifyPropertyChange(propertyName: string, value: any, oldValue?: any) {
-        this.reset();
+    notifyPropertyChange(propertyName, value, oldValue) {
+        if (value !== oldValue && propertyName !== 'visibility' && propertyName.indexOf ('padding') === -1) {
+            this.reset();
+        }
         super.notifyPropertyChange(propertyName, value, oldValue);
     }
 
@@ -408,8 +410,10 @@ export abstract class Group extends Span {
         });
         return max;
     }
-    onShapePropertyChange() {
-        this.notifyPropertyChange('.', null, null);
+    onShapePropertyChange(event) {
+        if (event.oldValue !== event.newValue) {
+            this.notifyPropertyChange('.', null, null);
+        }
     }
     private addPropertyChangeHandler(shape: Shape) {
         // const style = shape.style;
