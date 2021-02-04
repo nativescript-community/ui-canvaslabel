@@ -194,7 +194,7 @@ export abstract class Span extends Shape {
         this._native = null;
     }
     notifyPropertyChange(propertyName, value, oldValue) {
-        if (value !== oldValue && propertyName !== 'visibility' && propertyName.indexOf ('padding') === -1) {
+        if (propertyName === '.' || (value !== oldValue && propertyName !== 'visibility' && propertyName.indexOf('padding') === -1)) {
             this.reset();
         }
         super.notifyPropertyChange(propertyName, value, oldValue);
@@ -411,7 +411,7 @@ export abstract class Group extends Span {
         return max;
     }
     onShapePropertyChange(event) {
-        if (event.oldValue !== event.newValue) {
+        if (event.oldValue !== event.value) {
             this.notifyPropertyChange('.', null, null);
         }
     }
