@@ -188,7 +188,9 @@ export abstract class Span extends Shape {
         this.handleAlignment = true;
         this.paint.setAntiAlias(true);
     }
-
+    resetLayout() {
+        this._staticlayout = null;
+    }
     reset() {
         this._staticlayout = null;
         this._native = null;
@@ -395,6 +397,10 @@ export abstract class Group extends Span {
         }
         return this._spans;
     }
+    resetLayout() {
+        super.resetLayout();
+        this._spans && this._spans.forEach((s) => s.resetLayout());
+    }
     reset() {
         super.reset();
         this._spans && this._spans.forEach((s) => s.reset());
@@ -503,6 +509,12 @@ export class CanvasLabel extends CanvasView {
     handlePropertyChange() {
         const shapes = this.shapes;
         shapes && shapes.forEach((s) => s instanceof Span && s.reset());
+    }
+
+    onSizeChanged(w, h, oldw, oldh) {
+        const shapes = this.shapes;
+        shapes && shapes.forEach((s) => s instanceof Span && s.resetLayout());
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     //@ts-ignore
