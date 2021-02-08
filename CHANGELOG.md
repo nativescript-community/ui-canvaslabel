@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.43](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.42...v1.0.43) (2021-02-08)
+
+
+### Bug Fixes
+
+* reset layouts on size change ([700adfa](https://github.com/nativescript-community/ui-canvaslabel/commit/700adfaa45c376a75848856b37a04f7d92d88d27))
+
+
+
+
+
 ## [1.0.42](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.41...v1.0.42) (2021-02-04)
 
 
