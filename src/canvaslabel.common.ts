@@ -380,7 +380,7 @@ export abstract class Span extends Shape {
                 }
             }
         }
-        this._staticlayout.draw(canvas as any);
+        this._staticlayout.draw(canvas);
         if (needsTranslate) {
             canvas.restore();
         }
