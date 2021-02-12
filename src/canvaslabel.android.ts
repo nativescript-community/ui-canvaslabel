@@ -52,41 +52,6 @@ function initializeClickableSpan(): void {
 
     ClickableSpan = ClickableSpanImpl;
 }
-// eslint-disable-next-line no-redeclare
-let BaselineAdjustedSpan: BaselineAdjustedSpan;
-function initializeBaselineAdjustedSpan() {
-    if (BaselineAdjustedSpan) {
-        return;
-    }
-    @NativeClass
-    class BaselineAdjustedSpanImpl extends android.text.style.CharacterStyle {
-        align: string = 'baseline';
-        maxFontSize: number;
-
-        constructor(private fontSize, align: string, maxFontSize) {
-            super();
-
-            this.align = align;
-            this.maxFontSize = maxFontSize;
-        }
-
-        updateDrawState(paint: android.text.TextPaint) {
-            this.updateState(paint);
-        }
-
-        updateState(paint: android.text.TextPaint) {
-            const fontSize = this.fontSize;
-            paint.setTextSize(fontSize);
-            const metrics = paint.getFontMetrics();
-            const result = computeBaseLineOffset(this.align, metrics.ascent, metrics.descent, metrics.bottom, metrics.top, fontSize, this.maxFontSize);
-            // TODO: when or why should we add bottom?
-            // result += metrics.bottom;
-            paint.baselineShift = result;
-        }
-    }
-
-    BaselineAdjustedSpan = BaselineAdjustedSpanImpl as any;
-}
 
 let lineSeparator;
 let Style: typeof  android.text.style;
@@ -141,7 +106,6 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     const bold = isBold(fontweight);
     const italic = fontstyle === 'italic';
     if (getSDK() < 28) {
-
         if (bold && italic) {
             ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else if (bold) {
@@ -149,7 +113,6 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         } else if (italic) {
             ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.ITALIC), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-
     }
 
     if (fontFamily) {
@@ -167,12 +130,11 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
             }
             typeface = typefaceCache[fontCacheKey] = paint.getFont().getAndroidTypeface();
         }
-        const typefaceSpan: android.text.style.TypefaceSpan = new (com as any).nativescript.canvaslabel.CustomTypefaceSpan(fontFamily, typeface);
+        const typefaceSpan = new com.nativescript.text.CustomTypefaceSpan(fontFamily, typeface);
         ssb.setSpan(typefaceSpan, 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial') {
-        initializeBaselineAdjustedSpan();
-        ssb.setSpan(new BaselineAdjustedSpan(fontSize, verticaltextalignment, maxFontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan(fontSize, verticaltextalignment, maxFontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (fontSize) {
         ssb.setSpan(new Style.AbsoluteSizeSpan(fontSize), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -183,7 +145,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     }
 
     if (lineHeight !== undefined) {
-        ssb.setSpan(new (com as any).nativescript.canvaslabel.HeightSpan(lineHeight), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new com.nativescript.text.HeightSpan(lineHeight), 0, length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     if (textcolor) {

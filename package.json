@@ -18,7 +18,7 @@
     "devDependencies": {
         "@commitlint/cli": "^11.0.0",
         "@commitlint/config-conventional": "^11.0.0",
-        "@nativescript-community/text": "^1.4.1",
+        "@nativescript-community/text": "^1.4.3",
         "@nativescript-community/ui-canvas": "^4.0.40",
         "@nativescript/core": "7.2.1",
         "@nativescript/types-android": "7.2.0",
