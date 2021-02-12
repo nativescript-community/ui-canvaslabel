@@ -32,10 +32,6 @@ public class VerticalCenterSpan extends MetricAffectingSpan {
     public void updateState(android.text.TextPaint paint) {
         final Paint.FontMetrics metrics = paint.getFontMetrics();
         final float textSize = paint.getTextSize();
-        Log.d("JS",
-                "updateState " + verticaltextalignment + " textSize " + textSize + " metrics.bottom " + metrics.bottom
-                        + " metrics.top " + metrics.top + " metrics.ascent " + metrics.ascent + " metrics.descent "
-                        + metrics.descent + " paint.baselineShift " + paint.baselineShift);
         switch (verticaltextalignment) {
             case "top":
                 paint.baselineShift = (int) (-textSize - metrics.bottom - metrics.top);
@@ -51,9 +47,6 @@ public class VerticalCenterSpan extends MetricAffectingSpan {
                 break;
             case "middle":
             case "center":
-                Log.d("JS",
-                        "baselineShift middle " + (int) ((metrics.descent - metrics.ascent) / 2.0 - metrics.descent));
-
                 paint.baselineShift = (int) ((metrics.descent - metrics.ascent) / 2.0 - metrics.descent) * 2;
                 break;
             case "super":
