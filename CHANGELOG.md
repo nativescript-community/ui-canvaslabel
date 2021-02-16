@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.47](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.46...v1.0.47) (2021-02-16)
+
+
+### Bug Fixes
+
+* group vertical text alignment when some span dont have fontSize ([a7121f1](https://github.com/nativescript-community/ui-canvaslabel/commit/a7121f14fdd9a0b960b490f04a24c816e3eb9a34))
+
+
+
+
+
 ## [1.0.46](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.45...v1.0.46) (2021-02-16)
 
 
