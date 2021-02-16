@@ -136,7 +136,6 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         const typefaceSpan = new com.nativescript.text.CustomTypefaceSpan(fontFamily, typeface);
         ssb.setSpan(typefaceSpan, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
-    console.log();
     if (verticaltextalignment && verticaltextalignment !== 'initial') {
         ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan((fontSize) as any, verticaltextalignment, (maxFontSize) as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
