@@ -3,7 +3,7 @@ import { Font } from '@nativescript/core/ui/styling/font';
 import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 
 
-export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMutableAttributedString {
+export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?): NSMutableAttributedString {
     let text = span.text;
     if (!text || span.visibility !== 'visible') {
         return null;
@@ -11,6 +11,7 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
     const attrDict = {} as { key: string; value: any };
     const fontFamily = span.fontFamily;
     const fontSize = span.fontSize;
+    const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize);
     const fontweight = span.fontWeight || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
     const textcolor = span.color;
@@ -26,8 +27,8 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
         iosFont = font.getUIFont(UIFont.systemFontOfSize(fontSize));
         attrDict[NSFontAttributeName] = iosFont;
     }
-    if (verticaltextalignment && iosFont) {
-        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -iosFont.ascender, -iosFont.descender, -iosFont.ascender, -iosFont.descender, fontSize, maxFontSize);
+    if (verticaltextalignment && verticaltextalignment !== 'initial'&& iosFont) {
+        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -iosFont.ascender, -iosFont.descender, -iosFont.ascender, -iosFont.descender, fontSize, realMaxFontSize);
     }
     // if (span._tappable) {
     //     attrDict[NSLinkAttributeName] = text;
@@ -99,12 +100,12 @@ export function createSpannable(span: Span, parent?: Group, maxFontSize?): NSMut
 }
 
 export class Span extends SpanBase {
-    createNative(parent?: Group, maxFontSize?: number) {
-        this._native = createSpannable(this, parent, maxFontSize);
+    createNative(parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?: number) {
+        this._native = createSpannable(this, parentCanvas, parent, maxFontSize);
     }
 }
 export class Group extends GroupBase {
-    createNative(parent?: Group, maxFontSize?: number) {
+    createNative(parentCanvas: CanvasLabelBase, parentGroup?: Group, maxFontSize?: number) {
         const ssb = NSMutableAttributedString.new();
 
         if (maxFontSize === undefined) {
@@ -114,7 +115,7 @@ export class Group extends GroupBase {
         this._spans && this._spans.forEach((s) => {
             // s._startIndexInGroup = ssb.length;
             // s._endIndexInGroup = s.text ? s.text.length : 0;
-            const native = s.getOrCreateNative(this, maxFontSize);
+            const native = s.getOrCreateNative(parentCanvas, this, maxFontSize);
             if (native) {
                 ssb.appendAttributedString(native);
             }

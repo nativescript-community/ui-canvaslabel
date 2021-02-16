@@ -207,16 +207,16 @@ export abstract class Span extends Shape {
     // _endIndexInGroup = 0;
     _native: any; // NSMutableAttributedString | android.text.Spannable
 
-    abstract createNative(parent?: Group, maxFontSize?: number);
+    abstract createNative(parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number);
 
     // @profile
-    getOrCreateNative(parent?: Group, maxFontSize?: number) {
+    getOrCreateNative(parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number) {
         if (!this._native) {
-            this.createNative(parent, maxFontSize);
+            this.createNative(parentCanvas, parent, maxFontSize);
         }
         return this._native;
     }
-    getText() {
+    getText(canvasLabel: CanvasLabel) {
         return this.text;
     }
     redraw() {
@@ -250,7 +250,7 @@ export abstract class Span extends Shape {
     // needsMeasurement = false;
     // @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
-        const text = this.getText();
+        const text = this.getText(parent);
         if (!text) {
             return;
         }
@@ -469,11 +469,11 @@ export abstract class Group extends Span {
     onChildChange(span: Span) {
         this.redraw();
     }
-    abstract createNative();
+    abstract createNative(parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number);
 
     @profile
-    getText() {
-        return this.getOrCreateNative();
+    getText(canvasLabel: CanvasLabel) {
+        return this.getOrCreateNative(canvasLabel);
     }
 
     // toString() {

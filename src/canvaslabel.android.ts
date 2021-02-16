@@ -57,7 +57,7 @@ let lineSeparator;
 let Style: typeof  android.text.style;
 let Spanned: typeof  android.text.Spanned;
 
-export const createSpannable = profile('createSpannable', function (span: Span, parent?: Group, maxFontSize?: number) {
+export const createSpannable = profile('createSpannable', function (span: Span, parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number) {
     let text = span.text;
     if (!text || span.visibility !== 'visible') {
         return null;
@@ -100,6 +100,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     const verticaltextalignment = span.verticalTextAlignment;
     const letterSpacing = span.letterSpacing || (parent && parent.letterSpacing);
     const lineHeight = span.lineHeight || (parent && parent.lineHeight);
+    const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize);
 
     if (!Style) {
         Style = android.text.style;
@@ -137,7 +138,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         ssb.setSpan(typefaceSpan, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial') {
-        ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan((fontSize) as any, verticaltextalignment, (maxFontSize) as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan((fontSize) as any, verticaltextalignment, (realMaxFontSize) as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (fontSize) {
         ssb.setSpan(new Style.AbsoluteSizeSpan(fontSize), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -182,8 +183,8 @@ export class Span extends SpanBase {
     _ssb: android.text.SpannableStringBuilder;
 
     @profile
-    createNative(parent?: Group, maxFontSize?: number) {
-        this._native = this._ssb = createSpannable(this, parent, maxFontSize);
+    createNative(parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?: number) {
+        this._native = this._ssb = createSpannable(this, parentCanvas, parent, maxFontSize);
     }
 }
 
@@ -191,7 +192,7 @@ export class Group extends GroupBase {
     _ssb: android.text.SpannableStringBuilder;
 
     @profile
-    createNative(parent?: Group, maxFontSize?: number) {
+    createNative(parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?: number) {
         let ssb = this._ssb;
         if (!ssb) {
             this._ssb = ssb = new android.text.SpannableStringBuilder();
@@ -204,7 +205,7 @@ export class Group extends GroupBase {
             maxFontSize = this.getMaxFontSize();
         }
         this._spans && this._spans.forEach((s) => {
-            const native = (s as Span).getOrCreateNative(this, maxFontSize);
+            const native = (s as Span).getOrCreateNative(parentCanvas, this, maxFontSize);
             if (native) {
                 ssb.append(native);
             }
