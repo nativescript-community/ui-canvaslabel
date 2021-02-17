@@ -1,7 +1,7 @@
 import { cssProperty } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, EventData, Length, Span as NSPan, Observable, ObservableArray, PercentLength , paddingLeftProperty, profile} from '@nativescript/core';
+import { CSSType, ChangedData, Color, EventData, Length, Span as NSPan, Observable, ObservableArray, PercentLength, paddingLeftProperty, profile } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
@@ -262,16 +262,16 @@ export abstract class Span extends Shape {
         const wPx = layout.toDevicePixels(w);
         const hPx = layout.toDevicePixels(h);
 
-        let paddingLeft = layout.toDeviceIndependentPixels(parent.effectivePaddingLeft) + layout.toDeviceIndependentPixels(parent.effectiveBorderLeftWidth);
-        let paddingRight = layout.toDeviceIndependentPixels(parent.effectivePaddingRight) + layout.toDeviceIndependentPixels(parent.effectiveBorderRightWidth);
+        let paddingLeft = layout.toDeviceIndependentPixels(parent.effectivePaddingLeft + parent.effectiveBorderLeftWidth);
+        let paddingRight = layout.toDeviceIndependentPixels(parent.effectivePaddingRight + parent.effectiveBorderRightWidth);
         if (this.paddingLeft) {
             paddingLeft += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx - paddingLeft - paddingRight));
         }
         if (this.paddingRight) {
             paddingRight += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx - paddingLeft - paddingRight));
         }
-        let paddingTop = layout.toDeviceIndependentPixels(parent.effectivePaddingTop) + layout.toDeviceIndependentPixels(parent.effectiveBorderTopWidth);
-        let paddingBottom = layout.toDeviceIndependentPixels(parent.effectivePaddingBottom) + layout.toDeviceIndependentPixels(parent.effectiveBorderBottomWidth);
+        let paddingTop = layout.toDeviceIndependentPixels(parent.effectivePaddingTop + parent.effectiveBorderTopWidth);
+        let paddingBottom = layout.toDeviceIndependentPixels(parent.effectivePaddingBottom + parent.effectiveBorderBottomWidth);
         if (this.paddingTop) {
             paddingTop += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, hPx - paddingTop - paddingBottom));
         }
@@ -407,13 +407,14 @@ export abstract class Group extends Span {
     }
     getMaxFontSize() {
         let max = this.__fontSize || 0;
-        this._spans && this._spans.forEach((s) => {
-            if (s instanceof Group) {
-                max = Math.max(max, s.getMaxFontSize());
-            } else if (s.__fontSize) {
-                max = Math.max(max, s.__fontSize);
-            }
-        });
+        this._spans &&
+            this._spans.forEach((s) => {
+                if (s instanceof Group) {
+                    max = Math.max(max, s.getMaxFontSize());
+                } else if (s.__fontSize) {
+                    max = Math.max(max, s.__fontSize);
+                }
+            });
         return max;
     }
     onShapePropertyChange(event) {
