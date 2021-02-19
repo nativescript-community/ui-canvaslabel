@@ -10,7 +10,6 @@ function isBold(fontWeight: FontWeight): boolean {
 type BaselineAdjustedSpan = new (fontSize, align: string, maxFontSize) => android.text.style.MetricAffectingSpan;
 type ClickableSpan = new (owner: Span) => android.text.style.ClickableSpan;
 
-
 export const typefaceCache = {};
 
 let SDK_INT = -1;
@@ -20,7 +19,6 @@ function getSDK() {
     }
     return SDK_INT;
 }
-
 
 // eslint-disable-next-line no-redeclare
 let ClickableSpan: ClickableSpan;
@@ -54,8 +52,8 @@ function initializeClickableSpan(): void {
 }
 
 let lineSeparator;
-let Style: typeof  android.text.style;
-let Spanned: typeof  android.text.Spanned;
+let Style: typeof android.text.style;
+let Spanned: typeof android.text.Spanned;
 
 export const createSpannable = profile('createSpannable', function (span: Span, parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number) {
     let text = span.text;
@@ -93,14 +91,13 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
     const fontFamily = span.fontFamily;
 
-
     const textcolor = span.color;
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const verticaltextalignment = span.verticalTextAlignment;
     const letterSpacing = span.letterSpacing || (parent && parent.letterSpacing);
     const lineHeight = span.lineHeight || (parent && parent.lineHeight);
-    const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize);
+    const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize || 0);
 
     if (!Style) {
         Style = android.text.style;
@@ -138,7 +135,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         ssb.setSpan(typefaceSpan, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial') {
-        ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan((fontSize) as any, verticaltextalignment, (realMaxFontSize) as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan(fontSize as any, verticaltextalignment, realMaxFontSize as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (fontSize) {
         ssb.setSpan(new Style.AbsoluteSizeSpan(fontSize), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -204,12 +201,13 @@ export class Group extends GroupBase {
             // top group let s get max font Size
             maxFontSize = this.getMaxFontSize();
         }
-        this._spans && this._spans.forEach((s) => {
-            const native = (s as Span).getOrCreateNative(parentCanvas, this, maxFontSize);
-            if (native) {
-                ssb.append(native);
-            }
-        });
+        this._spans &&
+            this._spans.forEach((s) => {
+                const native = (s as Span).getOrCreateNative(parentCanvas, this, maxFontSize);
+                if (native) {
+                    ssb.append(native);
+                }
+            });
         this._native = ssb;
     }
     onChildChange(span: Span) {
@@ -219,6 +217,4 @@ export class Group extends GroupBase {
     }
 }
 
-export class CanvasLabel extends CanvasLabelBase {
-
-}
+export class CanvasLabel extends CanvasLabelBase {}

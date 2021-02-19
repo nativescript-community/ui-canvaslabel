@@ -2,7 +2,6 @@ import { Color, getTransformedText } from '@nativescript/core';
 import { Font } from '@nativescript/core/ui/styling/font';
 import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
 
-
 export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?): NSMutableAttributedString {
     let text = span.text;
     if (!text || span.visibility !== 'visible') {
@@ -11,7 +10,7 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
     const attrDict = {} as { key: string; value: any };
     const fontFamily = span.fontFamily;
     const fontSize = span.fontSize;
-    const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize);
+    const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize || 0);
     const fontweight = span.fontWeight || 'normal';
     const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
     const textcolor = span.color;
@@ -27,8 +26,16 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
         iosFont = font.getUIFont(UIFont.systemFontOfSize(fontSize));
         attrDict[NSFontAttributeName] = iosFont;
     }
-    if (verticaltextalignment && verticaltextalignment !== 'initial'&& iosFont) {
-        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -iosFont.ascender, -iosFont.descender, -iosFont.ascender, -iosFont.descender, fontSize, realMaxFontSize);
+    if (verticaltextalignment && verticaltextalignment !== 'initial' && iosFont) {
+        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(
+            verticaltextalignment,
+            -iosFont.ascender,
+            -iosFont.descender,
+            -iosFont.ascender,
+            -iosFont.descender,
+            fontSize,
+            realMaxFontSize
+        );
     }
     // if (span._tappable) {
     //     attrDict[NSLinkAttributeName] = text;
@@ -112,14 +119,15 @@ export class Group extends GroupBase {
             // top group let s get max font Size
             maxFontSize = this.getMaxFontSize();
         }
-        this._spans && this._spans.forEach((s) => {
-            // s._startIndexInGroup = ssb.length;
-            // s._endIndexInGroup = s.text ? s.text.length : 0;
-            const native = s.getOrCreateNative(parentCanvas, this, maxFontSize);
-            if (native) {
-                ssb.appendAttributedString(native);
-            }
-        });
+        this._spans &&
+            this._spans.forEach((s) => {
+                // s._startIndexInGroup = ssb.length;
+                // s._endIndexInGroup = s.text ? s.text.length : 0;
+                const native = s.getOrCreateNative(parentCanvas, this, maxFontSize);
+                if (native) {
+                    ssb.appendAttributedString(native);
+                }
+            });
         // console.log('Group', 'createNative', ssb.toString());
         this._native = ssb;
     }
@@ -135,6 +143,4 @@ export class Group extends GroupBase {
     }
 }
 
-export class CanvasLabel extends CanvasLabelBase {
-
-}
+export class CanvasLabel extends CanvasLabelBase {}
