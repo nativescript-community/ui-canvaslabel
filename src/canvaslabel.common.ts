@@ -6,7 +6,9 @@ import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
 
-export const fontPaintCache = {};
+const toDpi = layout.toDeviceIndependentPixels;
+export const paintCache = {};
+export const paintFontCache = {};
 
 function getCapitalizedString(str: string): string {
     const words = str.split(' ');
@@ -226,30 +228,32 @@ export abstract class Span extends Shape {
             parent.redraw();
         }
     }
-    // @profile
+    @profile
     createStaticLayout(text, w, align, parent: CanvasLabel) {
         const fontweight = this.fontWeight;
         const fontstyle = this.fontStyle || parent.style.fontStyle || parent.fontStyle;
         const fontFamily = this.fontFamily;
-        // const fontCacheKey = fontFamily + fontweight + fontstyle;
-        // let paint = fontPaintCache[fontCacheKey];
-        // if (!paint) {
-        const paint = this.paint;
-        paint.setFontFamily(fontFamily);
-        paint.setFontWeight(fontweight);
-        paint.setFontStyle(fontstyle);
-        // fontPaintCache[fontCacheKey] = paint;
-        // }
-        paint.color = this.color || parent.style.color;
-        paint.textSize = this.fontSize;
-        // paint.setFontFamily(this.fontFamily);
-        // paint.setFontWeight(this.fontWeight);
-        // paint.setFontStyle(this.fontStyle || parent.style.fontStyle || parent.fontStyle);
-        this._staticlayout = new StaticLayout(text, paint, w, align, 1, 0, true);
+        const color = this.color || parent.style.color;
+        const fontSize = this.fontSize;
+        const fontKey = fontFamily + fontweight + fontstyle;
+        const cacheKey = fontKey + color + fontSize;
+        let cachedPaint = paintCache[cacheKey];
+        if (!cachedPaint) {
+            const paint = this.paint;
+            paint.setFontFamily(fontFamily);
+            paint.setFontWeight(fontweight);
+            paint.setFontStyle(fontstyle);
+            paint.color = color;
+            paint.textSize = fontSize;
+            cachedPaint = paintCache[cacheKey] = paint;
+            paintFontCache[fontKey] = paint;
+        }
+        this._staticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
+        return this._staticlayout;
     }
 
     // needsMeasurement = false;
-    // @profile
+    @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
         const text = this.getText(parent);
         if (!text) {
@@ -263,21 +267,21 @@ export abstract class Span extends Shape {
         const wPx = layout.toDevicePixels(w);
         const hPx = layout.toDevicePixels(h);
 
-        let paddingLeft = layout.toDeviceIndependentPixels(parent.effectivePaddingLeft + parent.effectiveBorderLeftWidth);
-        let paddingRight = layout.toDeviceIndependentPixels(parent.effectivePaddingRight + parent.effectiveBorderRightWidth);
+        let paddingLeft = toDpi(parent.effectivePaddingLeft + parent.effectiveBorderLeftWidth);
+        let paddingRight = toDpi(parent.effectivePaddingRight + parent.effectiveBorderRightWidth);
         if (this.paddingLeft) {
-            paddingLeft += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx - paddingLeft - paddingRight));
+            paddingLeft += toDpi(PercentLength.toDevicePixels(this.paddingLeft, 0, wPx - paddingLeft - paddingRight));
         }
         if (this.paddingRight) {
-            paddingRight += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingRight, 0, wPx - paddingLeft - paddingRight));
+            paddingRight += toDpi(PercentLength.toDevicePixels(this.paddingRight, 0, wPx - paddingLeft - paddingRight));
         }
-        let paddingTop = layout.toDeviceIndependentPixels(parent.effectivePaddingTop + parent.effectiveBorderTopWidth);
-        let paddingBottom = layout.toDeviceIndependentPixels(parent.effectivePaddingBottom + parent.effectiveBorderBottomWidth);
+        let paddingTop = toDpi(parent.effectivePaddingTop + parent.effectiveBorderTopWidth);
+        let paddingBottom = toDpi(parent.effectivePaddingBottom + parent.effectiveBorderBottomWidth);
         if (this.paddingTop) {
-            paddingTop += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingTop, 0, hPx - paddingTop - paddingBottom));
+            paddingTop += toDpi(PercentLength.toDevicePixels(this.paddingTop, 0, hPx - paddingTop - paddingBottom));
         }
         if (this.paddingBottom) {
-            paddingBottom += layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.paddingBottom, 0, hPx - paddingTop - paddingBottom));
+            paddingBottom += toDpi(PercentLength.toDevicePixels(this.paddingBottom, 0, hPx - paddingTop - paddingBottom));
         }
 
         let align: LayoutAlignment = LayoutAlignment.ALIGN_NORMAL;
@@ -294,7 +298,7 @@ export abstract class Span extends Shape {
         let deltaX = 0,
             deltaY = 0;
         if (this.width) {
-            w = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.width, 0, wPx - paddingLeft - paddingRight));
+            w = toDpi(PercentLength.toDevicePixels(this.width, 0, wPx - paddingLeft - paddingRight));
             if (this.horizontalAlignment === 'right') {
                 deltaX += cW - w;
             } else if (this.horizontalAlignment === 'center') {
@@ -304,7 +308,7 @@ export abstract class Span extends Shape {
             }
         }
         if (this.height) {
-            h = layout.toDeviceIndependentPixels(PercentLength.toDevicePixels(this.height, 0, hPx - paddingTop - paddingBottom));
+            h = toDpi(PercentLength.toDevicePixels(this.height, 0, hPx - paddingTop - paddingBottom));
         }
         if (paddingLeft !== 0 && align !== LayoutAlignment.ALIGN_OPPOSITE && this.horizontalAlignment !== 'right') {
             if (!this.width) {
@@ -321,13 +325,21 @@ export abstract class Span extends Shape {
                 deltaX += -paddingRight;
             }
         }
-        if (!this._staticlayout) {
-            this.createStaticLayout(text, w, align, parent);
+        let staticlayout = this._staticlayout;
+        if (!staticlayout) {
+            staticlayout = this.createStaticLayout(text, w, align, parent);
         }
+        let _staticWidth;
+        const getStaticWidth = () => {
+            if (!_staticWidth) {
+                _staticWidth = staticlayout.getWidth();
+            }
+            return _staticWidth;
+        };
         let _staticHeight;
         const getStaticHeight = () => {
             if (!_staticHeight) {
-                _staticHeight = this._staticlayout.getHeight();
+                _staticHeight = staticlayout.getHeight();
             }
             return _staticHeight;
         };
@@ -359,32 +371,27 @@ export abstract class Span extends Shape {
                 deltaY += (h - height) / 2;
             }
         }
-        const needsTranslate = deltaX > 0 || deltaY > 0;
-        if (needsTranslate) {
-            canvas.save();
+        if (deltaX > 0 || deltaY > 0) {
             canvas.translate(deltaX, deltaY);
         }
-        const spanParent = this._parent && this._parent.get();
-        if (!(spanParent instanceof Group)) {
-            let paint: Paint;
-            const backgroundcolor = this.backgroundColor;
-            if (backgroundcolor) {
-                paint = paint || new Paint();
+        const backgroundcolor = this.backgroundColor;
+        if (backgroundcolor) {
+            // check if we are a Span inside a Group
+            const spanParent = this._parent && this._parent.get();
+            if (!(spanParent instanceof Group)) {
+                const paint = new Paint();
                 paint.color = backgroundcolor;
                 const borderRadius = this.borderRadius;
                 const top = this.height ? -getStaticHeight() / 2 : 0;
                 const bottom = top + (this.height ? h : getStaticHeight());
                 if (borderRadius > 0) {
-                    canvas.drawRoundRect(new RectF(0, top, this._staticlayout.getWidth(), bottom), borderRadius, borderRadius, paint);
+                    canvas.drawRoundRect(new RectF(0, top, getStaticWidth(), bottom), borderRadius, borderRadius, paint);
                 } else {
-                    canvas.drawRect(0, top, this._staticlayout.getWidth(), bottom, paint);
+                    canvas.drawRect(0, top, getStaticWidth(), bottom, paint);
                 }
             }
         }
-        this._staticlayout.draw(canvas);
-        if (needsTranslate) {
-            canvas.restore();
-        }
+        staticlayout.draw(canvas);
     }
     toNativeString() {}
 }
@@ -453,6 +460,7 @@ export abstract class Group extends Span {
             }
         }
     }
+    @profile
     public _addChildFromBuilder(name: string, value: any): void {
         if (value instanceof Span) {
             this.getOrCreateSpans().push(value);
