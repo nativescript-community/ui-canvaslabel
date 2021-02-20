@@ -186,6 +186,7 @@ export abstract class Span extends Shape {
     constructor() {
         super();
         this.handleAlignment = true;
+        this['handlesFont'] = true;
         this.paint.setAntiAlias(true);
     }
     resetLayout() {
