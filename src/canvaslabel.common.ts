@@ -1,7 +1,7 @@
 import { cssProperty } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, EventData, Length, Span as NSPan, Observable, ObservableArray, PercentLength, paddingLeftProperty, profile } from '@nativescript/core';
+import { CSSType, ChangedData, Color, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
@@ -236,18 +236,18 @@ export abstract class Span extends Shape {
         const color = this.color || parent.style.color;
         const fontSize = this.fontSize;
         const fontKey = fontFamily + fontweight + fontstyle;
-        const cacheKey = fontKey + color + fontSize;
+        const cacheKey = fontKey + fontSize;
         let cachedPaint = paintCache[cacheKey];
         if (!cachedPaint) {
             const paint = this.paint;
             paint.setFontFamily(fontFamily);
             paint.setFontWeight(fontweight);
             paint.setFontStyle(fontstyle);
-            paint.color = color;
             paint.textSize = fontSize;
             cachedPaint = paintCache[cacheKey] = paint;
             paintFontCache[fontKey] = paint;
         }
+        cachedPaint.color = color;
         this._staticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
         return this._staticlayout;
     }
@@ -527,9 +527,7 @@ export class CanvasLabel extends CanvasView {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    //@ts-ignore
-    set color(value) {
-        this.style.color = value;
+    [NColorProperty.setNative](value) {
         this.handlePropertyChange();
     }
 
