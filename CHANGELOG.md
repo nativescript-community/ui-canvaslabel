@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.50](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.49...v1.0.50) (2021-02-25)
+
+
+### Bug Fixes
+
+* correctly handle color property change ([47fbf70](https://github.com/nativescript-community/ui-canvaslabel/commit/47fbf70412672c1ac717e21ede983961951ed096))
+
+
+
+
+
 ## [1.0.49](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.48...v1.0.49) (2021-02-20)
 
 
