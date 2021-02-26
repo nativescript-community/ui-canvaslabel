@@ -34,41 +34,6 @@ export function getTransformedText(text: string, textTransform: TextTransform): 
             return text;
     }
 }
-export function computeBaseLineOffset(align, fontAscent, fontDescent, fontBottom, fontTop, fontSize, maxFontSize) {
-    let result = 0;
-    switch (align) {
-        case 'top':
-            result = -maxFontSize - fontBottom - fontTop;
-            break;
-
-        case 'bottom':
-            result = fontBottom;
-            break;
-
-        case 'text-top':
-            result = -maxFontSize - fontDescent - fontAscent;
-            break;
-
-        case 'text-bottom':
-            result = fontBottom - fontDescent;
-            break;
-
-        case 'middle':
-        case 'center':
-            result = (fontAscent - fontDescent) / 2 - fontAscent - maxFontSize / 2;
-            break;
-
-        case 'super':
-            result = -(maxFontSize - fontSize);
-            break;
-
-        case 'sub':
-            result = 0;
-            break;
-    }
-    return result;
-}
-
 export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'center';
 
 // const debugPaint = new Paint();
