@@ -1,53 +1,58 @@
 {
-  "name": "@nativescript/template-blank-ng",
-  "main": "main.js",
-  "displayName": "Blank",
-  "templateType": "App template",
-  "version": "7.0.8",
-  "description": "NativeScript Application",
-  "author": "NativeScript Team <oss@nativescript.org>",
-  "license": "SEE LICENSE IN <your-license-filename>",
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "nstudio",
-    "nativescript",
-    "mobile",
-    "angular",
-    "{N}",
-    "tns",
-    "template",
-    "category-general"
-  ],
-  "repository": "<fill-your-repository-here>",
-  "homepage": "https://github.com/NativeScript/nativescript-app-templates",
-  "bugs": {
-    "url": "https://github.com/NativeScript/NativeScript/issues"
-  },
-  "dependencies": {
-    "@angular/animations": "~11.0.0",
-    "@angular/common": "~11.0.0",
-    "@angular/compiler": "~11.0.0",
-    "@angular/core": "~11.0.0",
-    "@angular/forms": "~11.0.0",
-    "@angular/platform-browser": "~11.0.0",
-    "@angular/platform-browser-dynamic": "~11.0.0",
-    "@angular/router": "~11.0.0",
-    "@nativescript/angular": "~11.0.0",
-    "@nativescript/core": "~7.1.0",
-    "@nativescript/theme": "~3.0.0",
-    "reflect-metadata": "~0.1.12",
-    "rxjs": "^6.6.0",
-    "zone.js": "~0.11.1"
-  },
-  "devDependencies": {
-    "@angular/compiler-cli": "~11.0.0",
-    "@nativescript/ios": "7.2.0",
-    "@nativescript/webpack": "~4.0.0",
-    "@ngtools/webpack": "~11.0.0",
-    "typescript": "~4.0.0"
-  },
-  "private": "true",
-  "readme": "NativeScript Application"
+    "name": "@nativescript/template-blank-ng",
+    "main": "main.js",
+    "displayName": "Blank",
+    "templateType": "App template",
+    "version": "7.0.8",
+    "description": "NativeScript Application",
+    "author": "NativeScript Team <oss@nativescript.org>",
+    "license": "SEE LICENSE IN <your-license-filename>",
+    "publishConfig": {
+        "access": "public"
+    },
+    "keywords": [
+        "nstudio",
+        "nativescript",
+        "mobile",
+        "angular",
+        "{N}",
+        "tns",
+        "template",
+        "category-general"
+    ],
+    "repository": "<fill-your-repository-here>",
+    "homepage": "https://github.com/NativeScript/nativescript-app-templates",
+    "bugs": {
+        "url": "https://github.com/NativeScript/NativeScript/issues"
+    },
+    "dependencies": {
+        "@angular/animations": "~11.0.0",
+        "@angular/common": "~11.0.0",
+        "@angular/compiler": "~11.0.0",
+        "@angular/core": "~11.0.0",
+        "@angular/forms": "~11.0.0",
+        "@angular/platform-browser": "~11.0.0",
+        "@angular/platform-browser-dynamic": "~11.0.0",
+        "@angular/router": "~11.0.0",
+        "@mdi/font": "^5.9.55",
+        "@nativescript-community/ui-canvas": "^4.0.49",
+        "@nativescript-community/ui-canvaslabel": "file:../plugin",
+        "@nativescript-community/ui-collectionview": "^4.0.24",
+        "@nativescript-community/ui-label": "^1.1.1",
+        "@nativescript/angular": "~11.0.0",
+        "@nativescript/core": "~7.1.0",
+        "@nativescript/theme": "~3.0.0",
+        "reflect-metadata": "~0.1.12",
+        "rxjs": "^6.6.0",
+        "zone.js": "~0.11.1"
+    },
+    "devDependencies": {
+        "@angular/compiler-cli": "~11.0.0",
+        "@nativescript/ios": "7.2.0",
+        "@nativescript/webpack": "~4.0.0",
+        "@ngtools/webpack": "~11.0.0",
+        "typescript": "~4.0.0"
+    },
+    "private": "true",
+    "readme": "NativeScript Application"
 }
