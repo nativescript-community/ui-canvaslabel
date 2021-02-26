@@ -1,6 +1,7 @@
 import { Color, getTransformedText } from '@nativescript/core';
 import { Font } from '@nativescript/core/ui/styling/font';
-import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, computeBaseLineOffset } from './canvaslabel.common';
+import { computeBaseLineOffset } from '@nativescript-community/text';
+import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
 
 export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?): NSMutableAttributedString {
     let text = span.text;
@@ -27,15 +28,9 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
         attrDict[NSFontAttributeName] = iosFont;
     }
     if (verticaltextalignment && verticaltextalignment !== 'initial' && iosFont) {
-        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(
-            verticaltextalignment,
-            -iosFont.ascender,
-            -iosFont.descender,
-            -iosFont.ascender,
-            -iosFont.descender,
-            fontSize,
-            realMaxFontSize
-        );
+        const ascent = CTFontGetAscent(iosFont);
+        const descent = CTFontGetDescent(iosFont);
+        attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -ascent, descent, -iosFont.descender, -iosFont.ascender, fontSize, realMaxFontSize);
     }
     // if (span._tappable) {
     //     attrDict[NSLinkAttributeName] = text;
