@@ -391,7 +391,7 @@ export abstract class Group extends Span {
         return max;
     }
     onShapePropertyChange(event) {
-        if (event.oldValue !== event.value) {
+        if (event.oldValue !== event.value || event.propertyName === '.') {
             this.notifyPropertyChange('.', null, null);
         }
     }
@@ -424,6 +424,8 @@ export abstract class Group extends Span {
                 this.removePropertyChangeHandler(shape);
             }
         }
+        // ensure we reset our natives
+        this.reset();
     }
     @profile
     public _addChildFromBuilder(name: string, value: any): void {
