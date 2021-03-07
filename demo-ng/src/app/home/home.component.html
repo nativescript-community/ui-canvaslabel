@@ -1,0 +1,64 @@
+<ActionBar>
+    <Label text="Home"></Label>
+</ActionBar>
+
+<StackLayout>
+    <CollectionView width="100%" height="50%" rowHeight="80" [items]="items" (itemTap)="onItemTap($event)">
+        <ng-template let-item="item">
+            <GridLayout margin="4" opacity="0.5" borderRightWidth="20" borderRightColor="white" backgroundColor="darkgray">
+                <Label color="blue" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic" textWrap="true">
+                    <FormattedString>
+                        <Span [text]="item.text1" fontWeight="bold"></Span>
+                        <Span [text]="'\n' + item.text2" color="#ccc" fontSize="16" fontStyle="normal"></Span>
+                        <Span [text]="item.text2" color="#eee" fontFamily="Lato-Regular" fontSize="16" fontStyle="normal"></Span>
+                    </FormattedString>
+                </Label>
+                <Label color="white" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1" textWrap="true"
+                    ><FormattedString>
+                        <Span [text]="item.icon1" fontSize="20" color="green" [fontFamily]="mdiFontFamily"></Span>
+                        <Span [text]="' ' + item.texticon1" verticalTextAlignment="center"></Span>
+                        <Span [text]="'   ' + item.icon2" fontSize="20" color="red" [fontFamily]="mdiFontFamily"></Span>
+                        <Span [text]="' ' + item.texticon2" verticalTextAlignment="center"></Span>
+                        <Span [text]="'   ' + item.icon3" fontSize="20" color="yellow" [fontFamily]="mdiFontFamily"></Span>
+                        <Span [text]="' ' + item.icon3" verticalTextAlignment="center"></Span>
+                    </FormattedString>
+                </Label>
+
+                <Label fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60" textWrap="true">
+                    <FormattedString>
+                        <span [text]="item.icon1" fontSize="14" [fontFamily]="mdiFontFamily"></span>
+                        <Span [text]="'\n' + item.texticon1" paddingRight="10"></Span>
+                    </FormattedString>
+                </Label>
+                <HTMLLabel fontFamily="arial" [text]="item.text4" color="lightgray" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4"></HTMLLabel>
+            </GridLayout>
+        </ng-template>
+    </CollectionView>
+    <CollectionView width="100%" height="50%" rowHeight="80" [items]="items" (itemTap)="onItemTap($event)">
+        <ng-template let-item="item">
+            <GridLayout>
+                <CanvasLabel id="canvaslabel" fontSize="10" color="white" backgroundColor="darkgray" margin="4" borderRightWidth="20" borderRightColor="white">
+                    <CGroup id="group1" fontSize="38" verticalAlignment="middle" paddingLeft="20" fontStyle="italic">
+                        <CSpan id="text1" [text]="item.text1" fontWeight="bold"></CSpan>
+                        <CSpan id="text2" [text]="'\n' + item.text2" color="#ccc" fontSize="16" fontStyle="normal"></CSpan>
+                        <CSpan id="text3" [text]="item.text2" color="#eee" fontFamily="Lato-Regular" fontSize="16" fontStyle="normal"></CSpan>
+                    </CGroup>
+                    <CGroup id="group2" fontSize="12" verticalAlignment="bottom" paddingLeft="20" paddingBottom="1">
+                        <CSpan id="icon1" [text]="item.icon1" fontSize="20" color="green" [fontFamily]="mdiFontFamily"></CSpan>
+                        <CSpan id="texticon1" [text]="' ' + item.texticon1" verticalTextAlignment="center"></CSpan>
+                        <CSpan id="icon2" [text]="'   ' + item.icon2" fontSize="20" color="red" [fontFamily]="mdiFontFamily"></CSpan>
+                        <CSpan id="texticon2" [text]="' ' + item.texticon2" verticalTextAlignment="center"></CSpan>
+                        <CSpan id="icon3" [text]="'   ' + item.icon3" fontSize="20" color="yellow" [fontFamily]="mdiFontFamily"></CSpan>
+                        <CSpan id="icon3" [text]="' ' + item.icon3" verticalTextAlignment="center"></CSpan>
+                    </CGroup>
+
+                    <CGroup id="group3" fontSize="12" verticalAlignment="middle" horizontalAlignment="center" textAlignment="right" paddingRight="20" color="brown" width="60">
+                        <CSpan id="icon12" [text]="item.icon1" fontSize="14" [fontFamily]="mdiFontFamily"></CSpan>
+                        <CSpan id="texticon12" [text]="'\n' + item.texticon1" paddingRight="10"></CSpan>
+                    </CGroup>
+                    <CSpan id="text4" fontFamily="arial" [text]="item.text4" color="red" fontSize="14" textAlignment="right" paddingRight="20" paddingTop="4"></CSpan>
+                </CanvasLabel>
+            </GridLayout>
+        </ng-template>
+    </CollectionView>
+</StackLayout>
