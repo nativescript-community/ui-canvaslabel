@@ -32,7 +32,7 @@
         "url": "https://github.com/nativescript-community/ui-canvaslabel"
     },
     "dependencies": {
-        "@nativescript-community/text": "^1.4.5",
-        "@nativescript-community/ui-canvas": "^4.0.48"
+        "@nativescript-community/text": "^1.4.6",
+        "@nativescript-community/ui-canvas": "^4.0.49"
     }
 }

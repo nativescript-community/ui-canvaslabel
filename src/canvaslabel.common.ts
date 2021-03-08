@@ -1,4 +1,4 @@
-import { cssProperty } from '@nativescript-community/text';
+import { cssProperty, init } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
 import { CSSType, ChangedData, Color, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
@@ -9,6 +9,9 @@ import { layout } from '@nativescript/core/utils/utils';
 const toDpi = layout.toDeviceIndependentPixels;
 export const paintCache = {};
 export const paintFontCache = {};
+
+// init text to ensure font overrides are called
+init();
 
 function getCapitalizedString(str: string): string {
     const words = str.split(' ');
