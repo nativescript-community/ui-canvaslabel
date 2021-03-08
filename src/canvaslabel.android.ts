@@ -2,19 +2,10 @@ import { Paint } from '@nativescript-community/ui-canvas';
 import { Color, getTransformedText, profile } from '@nativescript/core';
 import { FontWeight } from '@nativescript/core/ui/styling/font';
 import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, paintFontCache } from './canvaslabel.common';
+import { typefaceCache } from '@nativescript-community/text';
 
 function isBold(fontWeight: FontWeight): boolean {
     return fontWeight === 'bold' || fontWeight === '700' || fontWeight === '800' || fontWeight === '900';
-}
-
-export const typefaceCache = {};
-
-let SDK_INT = -1;
-function getSDK() {
-    if (SDK_INT === -1) {
-        SDK_INT = android.os.Build.VERSION.SDK_INT;
-    }
-    return SDK_INT;
 }
 
 let lineSeparator;
