@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.53](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.52...v1.0.53) (2021-03-08)
+
+
+### Bug Fixes
+
+* call text init to ensure font override are called ([0ea93ee](https://github.com/nativescript-community/ui-canvaslabel/commit/0ea93ee3347ab53fe565bd9dcf5855632012cdff))
+* use text font cache ([74d1e9c](https://github.com/nativescript-community/ui-canvaslabel/commit/74d1e9cf296cd442d0803c73afe93f05c59fb804))
+
+
+
+
+
 ## [1.0.52](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.51...v1.0.52) (2021-03-07)
 
 
