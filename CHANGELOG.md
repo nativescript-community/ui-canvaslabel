@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.55](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.54...v1.0.55) (2021-03-09)
+
+
+### Bug Fixes
+
+* missing center case ([2010437](https://github.com/nativescript-community/ui-canvaslabel/commit/2010437086fc57c0e399249c8bdc973aeab318a3))
+
+
+
+
+
 ## [1.0.54](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.53...v1.0.54) (2021-03-08)
 
 
