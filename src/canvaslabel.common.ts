@@ -329,7 +329,7 @@ export abstract class Span extends Shape {
             if (paddingBottom !== 0) {
                 decale -= paddingBottom;
             }
-            if (!this.verticalTextAlignment || this.verticalTextAlignment === 'middle') {
+            if (!this.verticalTextAlignment || this.verticalTextAlignment === 'middle' || this.verticalTextAlignment === 'center') {
                 deltaY += cH / 2 - height / 2 + decale;
             } else if (this.verticalTextAlignment === 'bottom') {
                 deltaY += cH / 2 - height + decale;
