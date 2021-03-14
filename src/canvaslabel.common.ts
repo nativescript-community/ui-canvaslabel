@@ -320,6 +320,13 @@ export abstract class Span extends Shape {
                 height += (h - height) / 2;
             }
             deltaY += cH - height;
+            if (this.verticalTextAlignment === 'middle' || this.verticalTextAlignment === 'center') {
+                const height = getStaticHeight();
+                deltaY += height / 2;
+            } else if (this.verticalTextAlignment === 'top') {
+                const height = getStaticHeight();
+                deltaY += height;
+            }
         } else if (verticalalignment === 'middle' || verticalalignment === 'center') {
             const height = getStaticHeight();
             let decale = 0;
@@ -344,6 +351,13 @@ export abstract class Span extends Shape {
             if (this.height) {
                 const height = getStaticHeight();
                 deltaY += (h - height) / 2;
+            }
+            if (this.verticalTextAlignment === 'middle' || this.verticalTextAlignment === 'center') {
+                const height = getStaticHeight();
+                deltaY -= height / 2;
+            } else if (this.verticalTextAlignment === 'bottom') {
+                const height = getStaticHeight();
+                deltaY -= height;
             }
         }
         if (deltaX > 0 || deltaY > 0) {
