@@ -1,5 +1,5 @@
 import { cssProperty, init } from '@nativescript-community/text';
-import { Canvas, CanvasView, LayoutAlignment, Paint, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
+import { Canvas, CanvasView, LayoutAlignment, Paint, PorterDuffXfermode, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
 import { CSSType, ChangedData, Color, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
@@ -68,6 +68,8 @@ export abstract class Span extends Shape {
     @numberProperty({ nonPaintProp: true }) letterSpacing: number;
     @numberProperty({ nonPaintProp: true }) lineHeight: number;
     @stringProperty({ nonPaintProp: true }) text: any;
+
+    @numberProperty({ nonPaintProp: true }) xfermode: PorterDuffXfermode;
 
     __fontSize: number;
     __fontFamily: string;
