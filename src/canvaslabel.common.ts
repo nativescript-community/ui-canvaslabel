@@ -202,6 +202,7 @@ export abstract class Span extends Shape {
         const fontstyle = this.fontStyle || parent.style.fontStyle || parent.fontStyle;
         const fontFamily = this.fontFamily;
         const color = this.color || parent.style.color;
+        const xfermode = this.xfermode;
         const fontSize = this.fontSize;
         const fontKey = fontFamily + fontweight + fontstyle;
         const cacheKey = fontKey + fontSize;
@@ -215,6 +216,9 @@ export abstract class Span extends Shape {
             cachedPaint = paintCache[cacheKey] = paint;
             paintFontCache[fontKey] = paint;
         }
+        if (xfermode) {
+            cachedPaint.setXfermode(xfermode);
+        }
         cachedPaint.color = color;
         this._staticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
         return this._staticlayout;
@@ -223,9 +227,13 @@ export abstract class Span extends Shape {
     // needsMeasurement = false;
     @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
-        const text = this.getText(parent);
+        let text = this.getText(parent);
         if (!text) {
             return;
+        }
+        const textTransform = this.textTransform || (parent && parent.textTransform);
+        if (textTransform) {
+            text = getTransformedText(text, textTransform);
         }
         // const startTime = Date.now();
         const cW = canvas.getWidth();
@@ -342,7 +350,6 @@ export abstract class Span extends Shape {
                 deltaY += cH / 2 - height + decale;
             } else {
                 deltaY += cH / 2 + decale;
-
             }
         } else {
             if (paddingTop !== 0) {
