@@ -12,8 +12,8 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
     const fontFamily = span.fontFamily;
     const fontSize = span.fontSize;
     const realMaxFontSize = Math.max(maxFontSize, parentCanvas.fontSize || 0);
-    const fontweight = span.fontWeight || 'normal';
-    const fontstyle = span.fontStyle || (parent && parent.fontStyle) || 'normal';
+    const fontweight = span.fontWeight;
+    const fontstyle = span.fontStyle;
     const textcolor = span.color;
     const backgroundcolor = span.backgroundColor || (parent && parent.backgroundColor);
     const textDecorations = span.textDecoration || (parent && parent.textDecoration);
@@ -23,7 +23,12 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
     const verticaltextalignment = span.verticalTextAlignment;
     let iosFont: UIFont;
     if (fontweight || fontstyle || fontFamily || fontSize) {
-        const font = new Font(fontFamily, fontSize, fontstyle, typeof span.fontWeight === 'string' ? fontweight : ((fontweight + '') as any));
+        const font = new Font(
+            fontFamily || (parent && parent.fontFamily) || (parentCanvas && parentCanvas.fontFamily),
+            fontSize || (parent && parent.fontSize) || (parentCanvas && parentCanvas.fontSize),
+            fontstyle || (parent && parent.fontStyle) || ((parentCanvas && parentCanvas.fontStyle) as any),
+            fontweight || (parent && parent.fontWeight) || ((parentCanvas && parentCanvas.fontWeight) as any)
+        );
         iosFont = font.getUIFont(UIFont.systemFontOfSize(fontSize));
         attrDict[NSFontAttributeName] = iosFont;
     }
