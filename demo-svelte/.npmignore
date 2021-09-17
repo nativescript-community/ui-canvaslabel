@@ -4,6 +4,7 @@ hooks/*
 !hooks/after-createProject/after-createProject.js
 lib/
 node_modules/
+pnpm-global/
 platforms/
 .idea
 .cloud
