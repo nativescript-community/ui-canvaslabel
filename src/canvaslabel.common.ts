@@ -459,6 +459,8 @@ export abstract class Group extends Span {
         }
         // ensure we reset our natives
         this.reset();
+        // request a redraw
+        this.redraw();
     }
     @profile
     public _addChildFromBuilder(name: string, value: any): void {
