@@ -126,7 +126,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
             ssb.setSpan(new Style.StrikethroughSpan(), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
-    // if (span._tappable) {
+    // if (span.mTappable) {
     //     initializeClickableSpan();
     //     ssb.setSpan(new ClickableSpan(span), 0, length, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
     // }
@@ -138,7 +138,7 @@ export class Span extends SpanBase {
 
     @profile
     createNative(parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?: number) {
-        this._native = this._ssb = createSpannable(this, parentCanvas, parent, maxFontSize);
+        this.mNative = this._ssb = createSpannable(this, parentCanvas, parent, maxFontSize);
     }
 }
 
@@ -148,8 +148,8 @@ export class Group extends GroupBase {
 
     @profile
     createNative(parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?: number) {
-        if (!this._spans) {
-            this._native = null;
+        if (!this.mSpans) {
+            this.mNative = null;
             return;
         }
         let ssb = this._ssb;
@@ -163,18 +163,18 @@ export class Group extends GroupBase {
             // top group let s get max font Size
             maxFontSize = this.getMaxFontSize();
         }
-        this._spans &&
-            this._spans.forEach((s) => {
+        this.mSpans &&
+            this.mSpans.forEach((s) => {
                 const native = (s as Span).getOrCreateNative(parentCanvas, this, maxFontSize);
                 if (native) {
                     ssb.append(native);
                 }
             });
-        this._native = ssb;
+        this.mNative = ssb;
     }
     onChildChange(span: Span) {
-        this._native = null;
-        this._staticlayout = null;
+        this.mNative = null;
+        this.mStaticlayout = null;
         super.onChildChange(span);
     }
 }

@@ -37,7 +37,7 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
         const descent = CTFontGetDescent(iosFont);
         attrDict[NSBaselineOffsetAttributeName] = -computeBaseLineOffset(verticaltextalignment, -ascent, descent, -iosFont.descender, -iosFont.ascender, fontSize, realMaxFontSize);
     }
-    // if (span._tappable) {
+    // if (span.mTappable) {
     //     attrDict[NSLinkAttributeName] = text;
     // }
     if (textcolor) {
@@ -108,7 +108,7 @@ export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, paren
 
 export class Span extends SpanBase {
     createNative(parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?: number) {
-        this._native = createSpannable(this, parentCanvas, parent, maxFontSize);
+        this.mNative = createSpannable(this, parentCanvas, parent, maxFontSize);
     }
 }
 export class Group extends GroupBase {
@@ -119,8 +119,8 @@ export class Group extends GroupBase {
             // top group let s get max font Size
             maxFontSize = this.getMaxFontSize();
         }
-        this._spans &&
-            this._spans.forEach((s) => {
+        this.mSpans &&
+            this.mSpans.forEach((s) => {
                 // s._startIndexInGroup = ssb.length;
                 // s._endIndexInGroup = s.text ? s.text.length : 0;
                 const native = s.getOrCreateNative(parentCanvas, this, maxFontSize);
@@ -129,11 +129,11 @@ export class Group extends GroupBase {
                 }
             });
         // console.log('Group', 'createNative', ssb.toString());
-        this._native = ssb;
+        this.mNative = ssb;
     }
     onChildChange(span: Span) {
-        this._native = null;
-        this._staticlayout = null;
+        this.mNative = null;
+        this.mStaticlayout = null;
         super.onChildChange(span);
         // console.log('Group onChildChange', span.text, !!this._native, span._startIndexInGroup, span._endIndexInGroup, span.getOrCreateNative(this));
         // if (this._native) {

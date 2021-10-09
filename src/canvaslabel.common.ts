@@ -44,37 +44,38 @@ export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'c
 // debugPaint.color = 'red';
 
 export abstract class Span extends Shape {
-    _parent: WeakRef<any>;
+    mParent: WeakRef<any>;
     static linkTapEvent = 'linkTap';
-    @numberProperty({ nonPaintProp: true }) fontSize: number;
-    @stringProperty({ nonPaintProp: true }) fontFamily: string;
-    @stringProperty({ nonPaintProp: true }) fontStyle: FontStyle;
-    @stringProperty({ nonPaintProp: true }) fontWeight: FontWeight;
-    @stringProperty({ nonPaintProp: true }) textAlignment: TextAlignment & 'middle';
-    @stringProperty({ nonPaintProp: true }) textDecoration: TextDecoration;
-    @stringProperty({ nonPaintProp: true }) textTransform: TextTransform;
+    @numberProperty fontSize: number;
+    @stringProperty fontFamily: string;
+    @stringProperty fontStyle: FontStyle;
+    @stringProperty fontWeight: FontWeight;
+    @stringProperty textAlignment: TextAlignment & 'middle';
+    @stringProperty textDecoration: TextDecoration;
+    @stringProperty textTransform: TextTransform;
 
-    @percentLengthProperty({ nonPaintProp: true }) width: PercentLength;
-    @percentLengthProperty({ nonPaintProp: true }) height: PercentLength;
+    @percentLengthProperty width: PercentLength;
+    @percentLengthProperty height: PercentLength;
 
-    @percentLengthProperty({ nonPaintProp: true }) paddingLeft: PercentLength;
-    @percentLengthProperty({ nonPaintProp: true }) paddingRight: PercentLength;
-    @percentLengthProperty({ nonPaintProp: true }) paddingTop: PercentLength;
-    @percentLengthProperty({ nonPaintProp: true }) paddingBottom: PercentLength;
+    @percentLengthProperty paddingLeft: PercentLength;
+    @percentLengthProperty paddingRight: PercentLength;
+    @percentLengthProperty paddingTop: PercentLength;
+    @percentLengthProperty paddingBottom: PercentLength;
 
-    @stringProperty({ nonPaintProp: true }) verticalTextAlignment: VerticalTextAlignment;
-    @colorProperty({ nonPaintProp: true }) backgroundColor: Color;
-    @numberProperty({ nonPaintProp: true }) borderRadius: number;
-    @numberProperty({ nonPaintProp: true }) letterSpacing: number;
-    @numberProperty({ nonPaintProp: true }) lineHeight: number;
-    @stringProperty({ nonPaintProp: true }) text: any;
+    @stringProperty verticalTextAlignment: VerticalTextAlignment;
+    @colorProperty backgroundColor: Color;
+    @numberProperty borderRadius: number;
+    @numberProperty letterSpacing: number;
+    @numberProperty lineHeight: number;
+    @stringProperty text: any;
 
-    @numberProperty({ nonPaintProp: true }) xfermode: PorterDuffXfermode;
+    @numberProperty xfermode: PorterDuffXfermode;
 
-    __fontSize: number;
-    __fontFamily: string;
-    __fontWeight: FontWeight;
-    __verticalTextAlignment: any;
+    mFontSize: number;
+    mFontFamily: string;
+    mFontWeight: FontWeight;
+    mVerticalTextAlignment: any;
+    mTappable = false;
 
     addEventListener(arg: string, callback: (data: EventData) => void, thisArg?: any) {
         super.addEventListener(arg, callback, thisArg);
@@ -89,10 +90,9 @@ export abstract class Span extends Shape {
             this._setTappable(this.hasListeners(Span.linkTapEvent));
         }
     }
-    _tappable = false;
     private _setTappable(value: boolean): void {
-        if (this._tappable !== value) {
-            this._tappable = value;
+        if (this.mTappable !== value) {
+            this.mTappable = value;
             this.notifyPropertyChange('tappable', value, !value);
         }
     }
@@ -100,16 +100,13 @@ export abstract class Span extends Shape {
     get style() {
         return this;
     }
-    // toString() {
-    //     return `[CSpan: ${this.text}]`;
-    // }
     set _fontFamily(value) {
-        this.__fontFamily = value;
+        this.mFontFamily = value;
     }
     get _fontFamily() {
-        const parent = this._parent && this._parent.get();
-        if (this.__fontFamily) {
-            return this.__fontFamily;
+        const parent = this.mParent && this.mParent.get();
+        if (this.mFontFamily) {
+            return this.mFontFamily;
         }
         if (parent) {
             return parent._fontFamily || (parent.style && parent.style.fontFamily);
@@ -117,24 +114,24 @@ export abstract class Span extends Shape {
     }
 
     set _fontSize(value) {
-        this.__fontSize = value;
+        this.mFontSize = value;
     }
     get _fontSize() {
-        const parent = this._parent && this._parent.get();
-        if (this.__fontSize) {
-            return this.__fontSize;
+        const parent = this.mParent && this.mParent.get();
+        if (this.mFontSize) {
+            return this.mFontSize;
         }
         if (parent) {
             return parent._fontSize || (parent.style && parent.style.fontSize);
         }
     }
     set _fontWeight(value: FontWeight) {
-        this.__fontWeight = value;
+        this.mFontWeight = value;
     }
     get _fontWeight(): FontWeight {
-        const parent = this._parent && this._parent.get();
-        if (this.__fontWeight) {
-            return this.__fontWeight;
+        const parent = this.mParent && this.mParent.get();
+        if (this.mFontWeight) {
+            return this.mFontWeight;
         }
         if (parent) {
             return parent._fontWeight || (parent.style && parent.style.fontWeight);
@@ -142,12 +139,12 @@ export abstract class Span extends Shape {
         return null;
     }
     set _verticalTextAlignment(value: any) {
-        this.__verticalTextAlignment = value;
+        this.mVerticalTextAlignment = value;
     }
     get _verticalTextAlignment(): any {
-        const parent = this._parent && this._parent.get();
-        if (this.__verticalTextAlignment) {
-            return this.__verticalTextAlignment;
+        const parent = this.mParent && this.mParent.get();
+        if (this.mVerticalTextAlignment) {
+            return this.mVerticalTextAlignment;
         }
         if (parent) {
             return parent._verticalTextAlignment || (parent.style && parent.style.verticalTextAlignment);
@@ -159,41 +156,41 @@ export abstract class Span extends Shape {
         super();
         this.handleAlignment = true;
         this['handlesFont'] = true;
-        this.paint.setAntiAlias(true);
+        this['handlesPaint'] = true;
+        // this.paint.setAntiAlias(true);
     }
     resetLayout() {
-        this._staticlayout = null;
+        this.mStaticlayout = null;
     }
     reset() {
-        this._staticlayout = null;
-        this._native = null;
+        this.mStaticlayout = null;
+        this.mNative = null;
     }
     notifyPropertyChange(propertyName, value, oldValue) {
+        if (!this.mParent) return;
         if (propertyName === '.' || (value !== oldValue && propertyName !== 'visibility' && propertyName.indexOf('padding') === -1)) {
             this.reset();
         }
         super.notifyPropertyChange(propertyName, value, oldValue);
     }
 
-    _staticlayout: StaticLayout;
-    // _startIndexInGroup = 0;
-    // _endIndexInGroup = 0;
-    _native: any; // NSMutableAttributedString | android.text.Spannable
+    mStaticlayout: StaticLayout;
+    mNative: any; // NSMutableAttributedString | android.text.Spannable
 
     abstract createNative(parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number);
 
     // @profile
     getOrCreateNative(parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number) {
-        if (!this._native) {
+        if (!this.mNative) {
             this.createNative(parentCanvas, parent, maxFontSize);
         }
-        return this._native;
+        return this.mNative;
     }
     getText(canvasLabel: CanvasLabel) {
         return this.text;
     }
     redraw() {
-        const parent = this._parent && this._parent.get();
+        const parent = this.mParent && this.mParent.get();
         if (parent) {
             parent.redraw();
         }
@@ -222,11 +219,12 @@ export abstract class Span extends Shape {
             cachedPaint.setXfermode(xfermode);
         }
         cachedPaint.color = color;
-        this._staticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
-        return this._staticlayout;
+        this.mStaticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
+        return this.mStaticlayout;
     }
 
-    // needsMeasurement = false;
+    static mBackgroundPaint: Paint;
+
     @profile
     drawOnCanvas(canvas: Canvas, parent: CanvasLabel) {
         let text = this.getText(parent);
@@ -303,7 +301,7 @@ export abstract class Span extends Shape {
                 deltaX += -paddingRight;
             }
         }
-        let staticlayout = this._staticlayout;
+        let staticlayout = this.mStaticlayout;
         if (!staticlayout) {
             staticlayout = this.createStaticLayout(text, w, align, parent);
         }
@@ -375,17 +373,19 @@ export abstract class Span extends Shape {
         const backgroundcolor = this.backgroundColor;
         if (backgroundcolor) {
             // check if we are a Span inside a Group
-            const spanParent = this._parent && this._parent.get();
+            const spanParent = this.mParent && this.mParent.get();
             if (!(spanParent instanceof Group)) {
-                const paint = new Paint();
-                paint.color = backgroundcolor;
+                if (!Span.mBackgroundPaint) {
+                    Span.mBackgroundPaint = new Paint();
+                }
+                Span.mBackgroundPaint.color = backgroundcolor;
                 const borderRadius = this.borderRadius;
                 const top = this.height ? -getStaticHeight() / 2 : 0;
                 const bottom = top + (this.height ? h : getStaticHeight());
                 if (borderRadius > 0) {
-                    canvas.drawRoundRect(new RectF(0, top, getStaticWidth(), bottom), borderRadius, borderRadius, paint);
+                    canvas.drawRoundRect(new RectF(0, top, getStaticWidth(), bottom), borderRadius, borderRadius, Span.mBackgroundPaint);
                 } else {
-                    canvas.drawRect(0, top, getStaticWidth(), bottom, paint);
+                    canvas.drawRect(0, top, getStaticWidth(), bottom, Span.mBackgroundPaint);
                 }
             }
         }
@@ -395,35 +395,36 @@ export abstract class Span extends Shape {
 }
 Span.prototype.toNativeString = NSPan.prototype.toNativeString;
 export abstract class Group extends Span {
-    _spans: ObservableArray<Span>;
+    mSpans: ObservableArray<Span>;
     getOrCreateSpans() {
-        if (!this._spans) {
-            this._spans = new ObservableArray<Span>();
-            this._spans.addEventListener(ObservableArray.changeEvent, this.onShapesCollectionChanged, this);
+        if (!this.mSpans) {
+            this.mSpans = new ObservableArray<Span>();
+            this.mSpans.addEventListener(ObservableArray.changeEvent, this.onShapesCollectionChanged, this);
         }
-        return this._spans;
+        return this.mSpans;
     }
     resetLayout() {
         super.resetLayout();
-        this._spans && this._spans.forEach((s) => s.resetLayout());
+        this.mSpans && this.mSpans.forEach((s) => s.resetLayout());
     }
     reset() {
         super.reset();
-        this._spans && this._spans.forEach((s) => s.reset());
+        this.mSpans && this.mSpans.forEach((s) => s.reset());
     }
     getMaxFontSize() {
-        let max = this.__fontSize || 0;
-        this._spans &&
-            this._spans.forEach((s) => {
+        let max = this.mFontSize || 0;
+        this.mSpans &&
+            this.mSpans.forEach((s) => {
                 if (s instanceof Group) {
                     max = Math.max(max, s.getMaxFontSize());
-                } else if (s.__fontSize) {
-                    max = Math.max(max, s.__fontSize);
+                } else if (s.mFontSize) {
+                    max = Math.max(max, s.mFontSize);
                 }
             });
         return max;
     }
     onShapePropertyChange(event) {
+        console.log('onShapePropertyChange');
         if (event.oldValue !== event.value || event.propertyName === '.') {
             this.notifyPropertyChange('.', null, null);
         }
@@ -442,7 +443,7 @@ export abstract class Group extends Span {
 
                 // Then attach handlers - we skip the first nofitication because
                 // we raise change for the whole instance.
-                shape._parent = new WeakRef(this as any);
+                shape.mParent = new WeakRef(this as any);
                 this.addPropertyChangeHandler(shape);
             }
         }
@@ -453,7 +454,7 @@ export abstract class Group extends Span {
 
                 // First remove handlers so that we don't listen for changes
                 // on inherited properties.
-                shape._parent = null;
+                shape.mParent = null;
                 this.removePropertyChangeHandler(shape);
             }
         }
@@ -469,10 +470,10 @@ export abstract class Group extends Span {
         }
     }
     public _removeView(view: any) {
-        if (view instanceof Span && this._spans) {
-            const index = this._spans.indexOf(view);
+        if (view instanceof Span && this.mSpans) {
+            const index = this.mSpans.indexOf(view);
             if (index !== -1) {
-                this._spans.splice(index, 1);
+                this.mSpans.splice(index, 1);
             }
             // } else {
             // super._removeView(view);
@@ -487,10 +488,6 @@ export abstract class Group extends Span {
     getText(canvasLabel: CanvasLabel) {
         return this.getOrCreateNative(canvasLabel);
     }
-
-    // toString() {
-    //     return `[Group:${this._spans.length}]:` + JSON.stringify(this._spans.map((s) => s.text));
-    // }
 }
 
 declare module '@nativescript/core/ui/core/view' {
