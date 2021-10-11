@@ -424,7 +424,6 @@ export abstract class Group extends Span {
         return max;
     }
     onShapePropertyChange(event) {
-        console.log('onShapePropertyChange');
         if (event.oldValue !== event.value || event.propertyName === '.') {
             this.notifyPropertyChange('.', null, null);
         }
