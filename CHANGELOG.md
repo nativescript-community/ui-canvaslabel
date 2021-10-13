@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.62](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.61...v1.0.62) (2021-10-13)
+
+
+### Bug Fixes
+
+* **android:** better handle of custom fonts weight and styleon <28 ([41e3aef](https://github.com/nativescript-community/ui-canvaslabel/commit/41e3aefb45af1b2a3e1669888c74e9843a9e0acb))
+
+
+
+
+
 ## [1.0.61](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.60...v1.0.61) (2021-10-11)
 
 
