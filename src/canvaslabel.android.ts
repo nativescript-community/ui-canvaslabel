@@ -11,6 +11,8 @@ function isBold(fontWeight: FontWeight): boolean {
 let lineSeparator;
 let Style: typeof android.text.style;
 let Spanned: typeof android.text.Spanned;
+let Text: typeof com.nativescript.text;
+let Typeface: typeof android.graphics.Typeface;
 
 export const createSpannable = profile('createSpannable', function (span: Span, parentCanvas: CanvasLabel, parent?: Group, maxFontSize?: number) {
     let text = span.text;
@@ -62,21 +64,19 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     if (!Spanned) {
         Spanned = android.text.Spanned;
     }
+    if (!Text) {
+        Text = com.nativescript.text;
+    }
+    if (!Typeface) {
+        Typeface = android.graphics.Typeface;
+    }
     const bold = isBold(fontWeight);
     const italic = fontStyle === 'italic';
-    // if (getSDK() < 28) {
-    if (bold && italic) {
-        ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    } else if (bold) {
-        ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.BOLD), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    } else if (italic) {
-        ssb.setSpan(new Style.StyleSpan(android.graphics.Typeface.ITALIC), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
-    // }
+
+    let typeface: android.graphics.Typeface;
     if (fontFamily || (fontWeight !== 'normal' && !bold)) {
         const fontCacheKey = fontFamily + fontWeight + fontStyle;
-
-        let typeface = typefaceCache[fontCacheKey];
+        typeface = typefaceCache[fontCacheKey];
         if (!typeface) {
             let paint: Paint = paintFontCache[fontCacheKey];
             if (!paint) {
@@ -88,11 +88,19 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
             }
             typeface = typefaceCache[fontCacheKey] = paint.getFont().getAndroidTypeface();
         }
-        const typefaceSpan = new com.nativescript.text.CustomTypefaceSpan(fontFamily, typeface);
+        const typefaceSpan = new Text.CustomTypefaceSpan(fontFamily, typeface);
         ssb.setSpan(typefaceSpan, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
+
+    if (bold && italic && typeface == null && !typeface.isItalic() && !typeface.isBold()) {
+        ssb.setSpan(new Style.StyleSpan(Typeface.BOLD_ITALIC), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    } else if (bold && typeface == null && !typeface.isBold()) {
+        ssb.setSpan(new Style.StyleSpan(Typeface.BOLD), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    } else if (italic && typeface == null && !typeface.isItalic()) {
+        ssb.setSpan(new Style.StyleSpan(Typeface.ITALIC), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
     if (verticalTextAlignment && verticalTextAlignment !== 'initial') {
-        ssb.setSpan(new com.nativescript.text.BaselineAdjustedSpan(fontSize as any, verticalTextAlignment, realMaxFontSize as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new Text.BaselineAdjustedSpan(fontSize as any, verticalTextAlignment, realMaxFontSize as any), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (fontSize) {
         ssb.setSpan(new Style.AbsoluteSizeSpan(fontSize), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -103,7 +111,7 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
     }
 
     if (lineHeight !== undefined) {
-        ssb.setSpan(new com.nativescript.text.HeightSpan(lineHeight), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new Text.HeightSpan(lineHeight), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     if (color) {
