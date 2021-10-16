@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.63](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.62...v1.0.63) (2021-10-16)
+
+
+### Bug Fixes
+
+* **android:** crash fix ([dfa569a](https://github.com/nativescript-community/ui-canvaslabel/commit/dfa569aea8afe9f282f2fecb660db2f3acfe2461))
+
+
+
+
+
 ## [1.0.62](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.61...v1.0.62) (2021-10-13)
 
 
