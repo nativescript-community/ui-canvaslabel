@@ -92,11 +92,11 @@ export const createSpannable = profile('createSpannable', function (span: Span, 
         ssb.setSpan(typefaceSpan, 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    if (bold && italic && typeface == null && !typeface.isItalic() && !typeface.isBold()) {
+    if (bold && italic && (typeface == null || (!typeface.isItalic() && !typeface.isBold()))) {
         ssb.setSpan(new Style.StyleSpan(Typeface.BOLD_ITALIC), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    } else if (bold && typeface == null && !typeface.isBold()) {
+    } else if (bold && (typeface == null || !typeface.isBold())) {
         ssb.setSpan(new Style.StyleSpan(Typeface.BOLD), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    } else if (italic && typeface == null && !typeface.isItalic()) {
+    } else if (italic && (typeface == null || !typeface.isItalic())) {
         ssb.setSpan(new Style.StyleSpan(Typeface.ITALIC), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     if (verticalTextAlignment && verticalTextAlignment !== 'initial') {
