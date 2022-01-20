@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.64](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.63...v1.0.64) (2022-01-20)
+
+
+### Bug Fixes
+
+* `CSpan` `letterSpacing` support ([7287823](https://github.com/nativescript-community/ui-canvaslabel/commit/7287823c5db919ba2c1fb139ce9d51cfaa97b099))
+
+
+
+
+
 ## [1.0.63](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.62...v1.0.63) (2021-10-16)
 
 
