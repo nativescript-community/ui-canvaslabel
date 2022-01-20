@@ -1,14 +1,16 @@
 import { cssProperty, init } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, PorterDuffXfermode, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile } from '@nativescript/core';
+import { CSSType, ChangedData, Color, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile, Device } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
+import lazy from '@nativescript/core/utils/lazy';
 
 const toDpi = layout.toDeviceIndependentPixels;
 export const paintCache = {};
 export const paintFontCache = {};
+const sdkVersion = lazy(() => parseInt(Device.sdkVersion, 10));
 
 // init text to ensure font overrides are called
 init();
@@ -203,6 +205,7 @@ export abstract class Span extends Shape {
         const color = this.color || parent.style.color;
         const xfermode = this.xfermode;
         const fontSize = this.fontSize;
+        const letterSpacing = this.letterSpacing;
         const fontKey = fontFamily + fontweight + fontstyle;
         const cacheKey = fontKey + fontSize;
         let cachedPaint = paintCache[cacheKey];
@@ -217,6 +220,9 @@ export abstract class Span extends Shape {
         }
         if (xfermode) {
             cachedPaint.setXfermode(xfermode);
+        }
+        if (letterSpacing && sdkVersion() >= 21) {
+            cachedPaint.setletterSpacing(letterSpacing);
         }
         cachedPaint.color = color;
         this.mStaticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
