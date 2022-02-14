@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.64...v1.1.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* depend fully on @nativescript-community/text to get better spannables ([e12d738](https://github.com/nativescript-community/ui-canvaslabel/commit/e12d7389b016a3f8b41f6c878280a0de42e86a0e))
+
+
+### Features
+
+* **android:** native-api-usage ([96ae035](https://github.com/nativescript-community/ui-canvaslabel/commit/96ae035c886809778a705e1f2c55df317724162b))
+
+
+
+
+
 ## [1.0.64](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.0.63...v1.0.64) (2022-01-20)
 
 
