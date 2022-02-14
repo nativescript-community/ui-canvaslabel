@@ -1,9 +1,8 @@
 import { cssProperty, init } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, PorterDuffXfermode, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile, Device } from '@nativescript/core';
+import { CSSType, ChangedData, Color, Device, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile, CoreTypes } from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
-import { TextAlignment, TextDecoration, TextTransform, WhiteSpace } from '@nativescript/core/ui/text-base';
 import { layout } from '@nativescript/core/utils/utils';
 import lazy from '@nativescript/core/utils/lazy';
 
@@ -26,7 +25,7 @@ function getCapitalizedString(str: string): string {
     return newWords.join(' ');
 }
 
-export function getTransformedText(text: string, textTransform: TextTransform): string {
+export function getTransformedText(text: string, textTransform: CoreTypes.TextTransformType): string {
     switch (textTransform) {
         case 'uppercase':
             return text.toUpperCase();
@@ -52,17 +51,17 @@ export abstract class Span extends Shape {
     @stringProperty fontFamily: string;
     @stringProperty fontStyle: FontStyle;
     @stringProperty fontWeight: FontWeight;
-    @stringProperty textAlignment: TextAlignment & 'middle';
-    @stringProperty textDecoration: TextDecoration;
-    @stringProperty textTransform: TextTransform;
+    @stringProperty textAlignment: CoreTypes.TextAlignmentType & 'middle';
+    @stringProperty textDecoration: CoreTypes.TextDecorationType;
+    @stringProperty textTransform: CoreTypes.TextTransformType;
 
-    @percentLengthProperty width: PercentLength;
-    @percentLengthProperty height: PercentLength;
+    @percentLengthProperty width: CoreTypes.PercentLengthType;
+    @percentLengthProperty height: CoreTypes.PercentLengthType;
 
-    @percentLengthProperty paddingLeft: PercentLength;
-    @percentLengthProperty paddingRight: PercentLength;
-    @percentLengthProperty paddingTop: PercentLength;
-    @percentLengthProperty paddingBottom: PercentLength;
+    @percentLengthProperty paddingLeft: CoreTypes.PercentLengthType;
+    @percentLengthProperty paddingRight: CoreTypes.PercentLengthType;
+    @percentLengthProperty paddingTop: CoreTypes.PercentLengthType;
+    @percentLengthProperty paddingBottom: CoreTypes.PercentLengthType;
 
     @stringProperty verticalTextAlignment: VerticalTextAlignment;
     @colorProperty backgroundColor: Color;
@@ -515,10 +514,10 @@ export class CanvasLabel extends CanvasView {
     @cssProperty fontWeight: FontWeight;
     @cssProperty letterSpacing: number;
     @cssProperty lineHeight: number;
-    @cssProperty textAlignment: TextAlignment;
-    @cssProperty textDecoration: TextDecoration;
-    @cssProperty textTransform: TextTransform;
-    @cssProperty whiteSpace: WhiteSpace;
+    @cssProperty textAlignment: CoreTypes.TextAlignmentType & 'middle';
+    @cssProperty textDecoration: CoreTypes.TextDecorationType;
+    @cssProperty textTransform: CoreTypes.TextTransformType;
+    @cssProperty whiteSpace: CoreTypes.WhiteSpaceType;
 
     handlePropertyChange() {
         const shapes = this.shapes;
@@ -535,38 +534,38 @@ export class CanvasLabel extends CanvasView {
         this.handlePropertyChange();
     }
 
-    get padding(): string | Length {
+    get padding(): string | CoreTypes.LengthType {
         return this.style.padding;
     }
-    set padding(value: string | Length) {
+    set padding(value: string | CoreTypes.LengthType) {
         this.style.padding = value;
     }
 
-    get paddingTop(): Length {
+    get paddingTop(): CoreTypes.LengthType {
         return this.style.paddingTop;
     }
-    set paddingTop(value: Length) {
+    set paddingTop(value: CoreTypes.LengthType) {
         this.style.paddingTop = value;
     }
 
-    get paddingRight(): Length {
+    get paddingRight(): CoreTypes.LengthType {
         return this.style.paddingRight;
     }
-    set paddingRight(value: Length) {
+    set paddingRight(value: CoreTypes.LengthType) {
         this.style.paddingRight = value;
     }
 
-    get paddingBottom(): Length {
+    get paddingBottom(): CoreTypes.LengthType {
         return this.style.paddingBottom;
     }
-    set paddingBottom(value: Length) {
+    set paddingBottom(value: CoreTypes.LengthType) {
         this.style.paddingBottom = value;
     }
 
-    get paddingLeft(): Length {
+    get paddingLeft(): CoreTypes.LengthType {
         return this.style.paddingLeft;
     }
-    set paddingLeft(value: Length) {
+    set paddingLeft(value: CoreTypes.LengthType) {
         this.style.paddingLeft = value;
     }
 }
