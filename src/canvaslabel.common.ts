@@ -401,6 +401,10 @@ export abstract class Span extends Shape {
 Span.prototype.toNativeString = NSPan.prototype.toNativeString;
 export abstract class Group extends Span {
     mSpans: ObservableArray<Span>;
+
+    get spans() {
+        return this.mSpans;
+    }
     getOrCreateSpans() {
         if (!this.mSpans) {
             this.mSpans = new ObservableArray<Span>();
