@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.1...v1.1.2) (2022-02-25)
+
+
+### Bug Fixes
+
+* `isSpan` for `Span` to work correctly with minifaction ([3fc3c3e](https://github.com/nativescript-community/ui-canvaslabel/commit/3fc3c3e5b454d2bdb46e1a47a030833c8a59cd4f))
+
+
+
+
+
 ## [1.1.1](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.0...v1.1.1) (2022-02-14)
 
 
