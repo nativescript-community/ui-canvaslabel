@@ -1,7 +1,21 @@
 import { cssProperty, init } from '@nativescript-community/text';
 import { Canvas, CanvasView, LayoutAlignment, Paint, PorterDuffXfermode, RectF, StaticLayout } from '@nativescript-community/ui-canvas';
 import Shape, { colorProperty, numberProperty, percentLengthProperty, stringProperty } from '@nativescript-community/ui-canvas/shapes/shape';
-import { CSSType, ChangedData, Color, Device, EventData, Length, colorProperty as NColorProperty, Span as NSPan, Observable, ObservableArray, PercentLength, profile, CoreTypes } from '@nativescript/core';
+import {
+    CSSType,
+    ChangedData,
+    Color,
+    CoreTypes,
+    Device,
+    EventData,
+    Length,
+    colorProperty as NColorProperty,
+    Span as NSPan,
+    Observable,
+    ObservableArray,
+    PercentLength,
+    profile
+} from '@nativescript/core';
 import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
 import { layout } from '@nativescript/core/utils/utils';
 import lazy from '@nativescript/core/utils/lazy';
@@ -45,6 +59,9 @@ export type VerticalTextAlignment = 'initial' | 'top' | 'middle' | 'bottom' | 'c
 // debugPaint.color = 'red';
 
 export abstract class Span extends Shape {
+    static get isSpan() {
+        return true;
+    }
     mParent: WeakRef<any>;
     static linkTapEvent = 'linkTap';
     @numberProperty fontSize: number;
