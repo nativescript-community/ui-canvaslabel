@@ -21,7 +21,7 @@ import { layout } from '@nativescript/core/utils/utils';
 import lazy from '@nativescript/core/utils/lazy';
 
 const toDpi = layout.toDeviceIndependentPixels;
-export const paintCache = {};
+export const paintCache: { [k: string]: Paint } = {};
 export const paintFontCache = {};
 const sdkVersion = lazy(() => parseInt(Device.sdkVersion, 10));
 
@@ -237,8 +237,8 @@ export abstract class Span extends Shape {
         if (xfermode) {
             cachedPaint.setXfermode(xfermode);
         }
-        if (letterSpacing && sdkVersion() >= 21) {
-            cachedPaint.setletterSpacing(letterSpacing);
+        if (letterSpacing) {
+            cachedPaint.setLetterSpacing(letterSpacing);
         }
         cachedPaint.color = color;
         this.mStaticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
