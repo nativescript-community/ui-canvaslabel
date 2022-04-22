@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.2...v1.1.3) (2022-04-22)
+
+
+### Bug Fixes
+
+* letterSpacing fix ([8e0975c](https://github.com/nativescript-community/ui-canvaslabel/commit/8e0975c7dac0d172ddb78852c73a9afbe78ad534))
+
+
+
+
+
 ## [1.1.2](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.1...v1.1.2) (2022-02-25)
 
 
