@@ -87,8 +87,6 @@ export abstract class Span extends Shape {
     @numberProperty lineHeight: number;
     @stringProperty text: any;
 
-    @numberProperty xfermode: PorterDuffXfermode;
-
     mFontSize: number;
     mFontFamily: string;
     mFontWeight: FontWeight;

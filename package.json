@@ -19,7 +19,7 @@
         "@commitlint/cli": "^16.2.1",
         "@commitlint/config-conventional": "^16.2.1",
         "@nativescript-community/text": "^1.5.5",
-        "@nativescript-community/ui-canvas": "^4.4.2",
+        "@nativescript-community/ui-canvas": "^4.4.3",
         "@nativescript/core": "8.1.5",
         "@nativescript/types-android": "8.1.0",
         "@nativescript/types-ios": "8.1.1",
