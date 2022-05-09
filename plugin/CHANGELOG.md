@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.3...v1.1.4) (2022-05-09)
+
+
+### Bug Fixes
+
+* fix for CSPan used as a view child ([1e86e31](https://github.com/nativescript-community/ui-canvaslabel/commit/1e86e3198640ef2534aabbbdcb3ca6ebe28610f3))
+
+
+
+
+
 ## [1.1.3](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.2...v1.1.3) (2022-04-22)
 
 **Note:** Version bump only for package @nativescript-community/ui-canvaslabel
