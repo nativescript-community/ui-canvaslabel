@@ -323,7 +323,7 @@ export abstract class Span extends Shape {
         }
         let staticlayout = this.mStaticlayout;
         if (!staticlayout) {
-            staticlayout = this.createStaticLayout(text, w, align, parent);
+            staticlayout = this.createStaticLayout(text, Math.max(0, w), align, parent);
         }
         let _staticWidth;
         const getStaticWidth = () => {
