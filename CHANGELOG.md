@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.4...v1.1.5) (2022-10-17)
+
+
+### Bug Fixes
+
+* **android:** crash if staticlayout width is <0 ([1bc729d](https://github.com/nativescript-community/ui-canvaslabel/commit/1bc729de6e1f45e7f3ab3c41d935b7b703c99da4))
+
+
+
+
+
 ## [1.1.4](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.3...v1.1.4) (2022-05-09)
 
 
