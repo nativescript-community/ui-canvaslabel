@@ -541,6 +541,7 @@ export class CanvasLabel extends CanvasView {
     handlePropertyChange() {
         const shapes = this.shapes;
         shapes && shapes.forEach((s) => s instanceof Span && s.reset());
+        this.invalidate();
     }
 
     onSizeChanged(w, h, oldw, oldh) {
