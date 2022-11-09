@@ -224,7 +224,7 @@ export abstract class Span extends Shape {
         const cacheKey = fontKey + fontSize;
         let cachedPaint = paintCache[cacheKey];
         if (!cachedPaint) {
-            const paint = this.paint;
+            const paint = new Paint(this.paint);
             paint.setFontFamily(fontFamily);
             paint.setFontWeight(fontweight);
             paint.setFontStyle(fontstyle);
