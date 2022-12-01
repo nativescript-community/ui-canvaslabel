@@ -1,10 +1,10 @@
 import { Paint } from '@nativescript-community/ui-canvas';
 import { Color, getTransformedText, profile } from '@nativescript/core';
-import { FontWeight } from '@nativescript/core/ui/styling/font';
+import { FontWeight, FontWeightType } from '@nativescript/core/ui/styling/font';
 import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase, paintFontCache } from './canvaslabel.common';
 import { createSpannable, typefaceCache } from '@nativescript-community/text';
 
-function isBold(fontWeight: FontWeight): boolean {
+function isBold(fontWeight: FontWeightType): boolean {
     return fontWeight === 'bold' || fontWeight === '700' || fontWeight === '800' || fontWeight === '900';
 }
 

@@ -26,3 +26,5 @@ plugin/**/*js
 pnpm-lock.yaml
 /.gradle
 /.settings
+yarn.lock
+.yarn

@@ -16,8 +16,8 @@ import {
     PercentLength,
     profile
 } from '@nativescript/core';
-import { FontStyle, FontWeight } from '@nativescript/core/ui/styling/font';
-import { layout } from '@nativescript/core/utils/utils';
+import { FontStyle, FontStyleType, FontWeight, FontWeightType } from '@nativescript/core/ui/styling/font';
+import { layout } from '@nativescript/core/utils/layout-helper';
 import lazy from '@nativescript/core/utils/lazy';
 
 const toDpi = layout.toDeviceIndependentPixels;
@@ -66,8 +66,8 @@ export abstract class Span extends Shape {
     static linkTapEvent = 'linkTap';
     @numberProperty fontSize: number;
     @stringProperty fontFamily: string;
-    @stringProperty fontStyle: FontStyle;
-    @stringProperty fontWeight: FontWeight;
+    @stringProperty fontStyle: FontStyleType;
+    @stringProperty fontWeight: FontWeightType;
     @stringProperty textAlignment: CoreTypes.TextAlignmentType & 'middle';
     @stringProperty textDecoration: CoreTypes.TextDecorationType;
     @stringProperty textTransform: CoreTypes.TextTransformType;
@@ -89,7 +89,7 @@ export abstract class Span extends Shape {
 
     mFontSize: number;
     mFontFamily: string;
-    mFontWeight: FontWeight;
+    mFontWeight: FontWeightType;
     mVerticalTextAlignment: any;
     mTappable = false;
 
@@ -141,10 +141,10 @@ export abstract class Span extends Shape {
             return parent._fontSize || (parent.style && parent.style.fontSize);
         }
     }
-    set _fontWeight(value: FontWeight) {
+    set _fontWeight(value: FontWeightType) {
         this.mFontWeight = value;
     }
-    get _fontWeight(): FontWeight {
+    get _fontWeight(): FontWeightType {
         const parent = this.mParent && this.mParent.get();
         if (this.mFontWeight) {
             return this.mFontWeight;
@@ -514,7 +514,7 @@ export abstract class Group extends Span {
 }
 
 declare module '@nativescript/core/ui/core/view' {
-    interface View {
+    interface ViewCommon {
         _addChildFromBuilder(name: string, value: any);
     }
 }
@@ -529,12 +529,13 @@ export class CanvasLabel extends CanvasView {
     // textDecoration: TextDecoration;
     @cssProperty fontFamily: string;
     @cssProperty fontSize: number;
-    @cssProperty fontStyle: FontStyle;
-    @cssProperty fontWeight: FontWeight;
+    @cssProperty fontStyle: FontStyleType;
+    @cssProperty fontWeight: FontWeightType;
     @cssProperty letterSpacing: number;
     @cssProperty lineHeight: number;
     @cssProperty textAlignment: CoreTypes.TextAlignmentType & 'middle';
     @cssProperty textDecoration: CoreTypes.TextDecorationType;
+    //@ts-ignore
     @cssProperty textTransform: CoreTypes.TextTransformType;
     @cssProperty whiteSpace: CoreTypes.WhiteSpaceType;
 
