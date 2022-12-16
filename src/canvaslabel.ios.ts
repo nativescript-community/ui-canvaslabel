@@ -1,6 +1,4 @@
-import { Color, getTransformedText } from '@nativescript/core';
-import { Font } from '@nativescript/core/ui/styling/font';
-import { computeBaseLineOffset, createSpannable } from '@nativescript-community/text';
+import { createSpannable } from '@nativescript-community/text';
 import { CanvasLabel as CanvasLabelBase, Group as GroupBase, Span as SpanBase } from './canvaslabel.common';
 
 // export function createSpannable(span: Span, parentCanvas: CanvasLabelBase, parent?: Group, maxFontSize?): NSMutableAttributedString {

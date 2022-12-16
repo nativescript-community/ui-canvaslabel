@@ -14,13 +14,13 @@ import {
     Observable,
     ObservableArray,
     PercentLength,
-    profile
+    profile,
+    Utils
 } from '@nativescript/core';
 import { FontStyle, FontStyleType, FontWeight, FontWeightType } from '@nativescript/core/ui/styling/font';
-import { layout } from '@nativescript/core/utils/layout-helper';
 import lazy from '@nativescript/core/utils/lazy';
 
-const toDpi = layout.toDeviceIndependentPixels;
+const toDpi = Utils.layout.toDeviceIndependentPixels;
 export const paintCache: { [k: string]: Paint } = {};
 export const paintFontCache = {};
 const sdkVersion = lazy(() => parseInt(Device.sdkVersion, 10));
@@ -260,8 +260,8 @@ export abstract class Span extends Shape {
         const cH = canvas.getHeight();
         let w = cW;
         let h = cH;
-        const wPx = layout.toDevicePixels(w);
-        const hPx = layout.toDevicePixels(h);
+        const wPx = Utils.layout.toDevicePixels(w);
+        const hPx = Utils.layout.toDevicePixels(h);
 
         let paddingLeft = toDpi(parent.effectivePaddingLeft + parent.effectiveBorderLeftWidth);
         let paddingRight = toDpi(parent.effectivePaddingRight + parent.effectiveBorderRightWidth);
