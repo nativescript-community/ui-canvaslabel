@@ -14,8 +14,8 @@ import {
     Observable,
     ObservableArray,
     PercentLength,
-    profile,
-    Utils
+    Utils,
+    profile
 } from '@nativescript/core';
 import { FontStyle, FontStyleType, FontWeight, FontWeightType } from '@nativescript/core/ui/styling/font';
 import lazy from '@nativescript/core/utils/lazy';
@@ -238,7 +238,9 @@ export abstract class Span extends Shape {
         if (letterSpacing) {
             cachedPaint.setLetterSpacing(letterSpacing);
         }
-        cachedPaint.color = color;
+        if (color) {
+            cachedPaint.color = color;
+        }
         this.mStaticlayout = new StaticLayout(text, cachedPaint, w, align, 1, 0, true);
         return this.mStaticlayout;
     }
