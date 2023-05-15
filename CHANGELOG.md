@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.9...v1.1.10) (2023-01-31)
+
+### Bug Fixes
+
+-   prevent error if no color on StaticLayout ([12c59aa](https://github.com/nativescript-community/ui-canvaslabel/commit/12c59aab91da527d22941c4e71376dc7c82806ef))
+
+## [1.1.9](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.8...v1.1.9) (2022-12-16)
+
+**Note:** Version bump only for package @nativescript-community/ui-canvaslabel
+
 ## [1.1.8](https://github.com/nativescript-community/ui-canvaslabel/compare/v1.1.7...v1.1.8) (2022-12-01)
 
 **Note:** Version bump only for package @nativescript-community/ui-canvaslabel
