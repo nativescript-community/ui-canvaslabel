@@ -1,3 +1,6 @@
+>**Warning**
+This repo is no archived as @nativescript-community/ui-canvaslabel is now maintained inside [ui-canvas monorepo](https://github.com/nativescript-community/ui-canvas)
+
 # NativeScript Label widget
 [![npm downloads](https://img.shields.io/npm/dm/@nativescript-community/ui-canvaslabel.svg)](https://www.npmjs.com/package/@nativescript-community/ui-canvaslabel)
 [![npm downloads](https://img.shields.io/npm/dt/@nativescript-community/ui-canvaslabel.svg)](https://www.npmjs.com/package/@nativescript-community/ui-canvaslabel)
